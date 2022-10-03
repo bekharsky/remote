@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/ui/remote_icons.dart';
@@ -19,7 +20,7 @@ class RemoteControllerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'FlutterRemote',
+      title: 'Remote',
       home: Scaffold(
         backgroundColor: Color(0XFF2e2e2e),
         body: RemotePanel(),
