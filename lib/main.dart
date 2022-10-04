@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'dart:io';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/ui/remote_icons.dart';
@@ -10,7 +10,17 @@ void main() {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-  return runApp(const RemoteControllerApp());
+  runApp(const RemoteControllerApp());
+
+  doWhenWindowReady(() {
+    final win = appWindow;
+    const initialSize = Size(262, 450);
+    win.minSize = initialSize;
+    win.maxSize = initialSize;
+    win.size = initialSize;
+    win.alignment = Alignment.center;
+    win.show();
+  });
 }
 
 class RemoteControllerApp extends StatelessWidget {
@@ -41,10 +51,14 @@ class RemotePanelState extends State<RemotePanel> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30),
+        // padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(
+              height: 63,
+              child: MoveWindow(),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
