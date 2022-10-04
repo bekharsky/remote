@@ -15,7 +15,7 @@ class RemoteButton extends StatefulWidget {
 }
 
 class _RemoteButtonState extends State<RemoteButton> {
-  bool _active = false;
+  bool _pressed = false;
 
   final BoxDecoration _defaultStyle = const BoxDecoration(
     borderRadius: BorderRadius.all(Radius.circular(37)),
@@ -46,7 +46,7 @@ class _RemoteButtonState extends State<RemoteButton> {
     ],
   );
 
-  final BoxDecoration _activeStyle = const BoxDecoration(
+  final BoxDecoration _pressedStyle = const BoxDecoration(
     borderRadius: BorderRadius.all(Radius.circular(37)),
     color: Color.fromRGBO(44, 44, 44, 1),
     boxShadow: [
@@ -84,7 +84,7 @@ class _RemoteButtonState extends State<RemoteButton> {
 
   void _handleTapDown(TapDownDetails details) {
     setState(() {
-      _active = true;
+      _pressed = true;
     });
 
     widget.onPressed();
@@ -92,7 +92,7 @@ class _RemoteButtonState extends State<RemoteButton> {
 
   void _handleTapUp(TapUpDetails details) {
     setState(() {
-      _active = false;
+      _pressed = false;
     });
   }
 
@@ -104,7 +104,7 @@ class _RemoteButtonState extends State<RemoteButton> {
         child: Container(
           width: 37,
           height: 37,
-          decoration: _active ? _activeStyle : _defaultStyle,
+          decoration: _pressed ? _pressedStyle : _defaultStyle,
           child: widget.child,
         ));
   }
