@@ -50,35 +50,32 @@ class RemotePanelState extends State<RemotePanel> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        // padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 63,
-              child: MoveWindow(),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                RemoteButton(
-                  child: RemoteIcons.power,
-                  onPressed: () async {
-                    log('Power button pressed');
-                  },
-                ),
-                RemoteButton(
-                  child: RemoteIcons.home,
-                  onPressed: () async {
-                    log('Home button pressed');
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: 63,
+            child: MoveWindow(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              RemoteButton(
+                child: RemoteIcons.power,
+                onPressed: () async {
+                  log('Power button pressed');
+                },
+              ),
+              RemoteButton(
+                child: RemoteIcons.home,
+                onPressed: () async {
+                  log('Home button pressed');
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 30),
+        ],
       ),
     );
   }
