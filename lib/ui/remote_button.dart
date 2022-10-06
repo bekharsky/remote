@@ -4,6 +4,7 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 class RemoteButton extends StatefulWidget {
   final Widget child;
   final void Function() onPressed;
+
   const RemoteButton({
     Key? key,
     required this.child,

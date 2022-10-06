@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_button.dart';
+import 'package:remote/ui/remote_ring.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -75,6 +76,39 @@ class RemotePanelState extends State<RemotePanel> {
             ],
           ),
           const SizedBox(height: 16),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            RemoteRing(
+              onPressedUp: () {},
+              onPressedRight: () {},
+              onPressedDown: () {},
+              onPressedLeft: () {},
+              onPressedCenter: () {},
+            )
+          ]),
+          const SizedBox(height: 30),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            RemoteButton(
+              child: RemoteIcons.voice,
+              onPressed: () async {
+                log('Voice button pressed');
+              },
+            ),
+          ]),
+          const SizedBox(height: 20),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            RemoteButton(
+              child: RemoteIcons.back,
+              onPressed: () async {
+                log('Back button pressed');
+              },
+            ),
+            RemoteButton(
+              child: RemoteIcons.ok,
+              onPressed: () async {
+                log('Ok button pressed');
+              },
+            )
+          ]),
         ],
       ),
     );

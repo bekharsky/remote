@@ -17,4 +17,8 @@ class RemoteIcons {
       Icon(Icons.keyboard_arrow_down, size: 20, color: _lightText);
   static const Icon arrowLeft =
       Icon(Icons.keyboard_arrow_left_rounded, size: 20, color: _lightText);
+  static const Icon voice = Icon(Icons.mic, size: 20, color: _lightText);
+  static const Icon back = Icon(Icons.arrow_back, size: 20, color: _lightText);
+  static const Icon ok =
+      Icon(Icons.circle_outlined, size: 20, color: _lightText);
 }
