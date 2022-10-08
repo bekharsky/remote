@@ -15,9 +15,9 @@ void main() {
 
   doWhenWindowReady(() {
     final win = appWindow;
-    const initialSize = Size(262, 450);
+    const initialSize = Size(262, 548);
     win.minSize = initialSize;
-    win.maxSize = initialSize;
+    // win.maxSize = initialSize;
     win.size = initialSize;
     win.alignment = Alignment.center;
     win.show();
@@ -78,11 +78,11 @@ class RemotePanelState extends State<RemotePanel> {
           const SizedBox(height: 16),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             RemoteRing(
-              onPressedUp: () {},
-              onPressedRight: () {},
-              onPressedDown: () {},
-              onPressedLeft: () {},
-              onPressedCenter: () {},
+              onPressedUp: () async {},
+              onPressedRight: () async {},
+              onPressedDown: () async {},
+              onPressedLeft: () async {},
+              onPressedCenter: () async {},
             )
           ]),
           const SizedBox(height: 30),
@@ -107,7 +107,7 @@ class RemotePanelState extends State<RemotePanel> {
               onPressed: () async {
                 log('Ok button pressed');
               },
-            )
+            ),
           ]),
         ],
       ),

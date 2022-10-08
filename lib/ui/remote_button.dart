@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -89,6 +90,8 @@ class _RemoteButtonState extends State<RemoteButton> {
     });
 
     widget.onPressed();
+    // TODO: settings
+    HapticFeedback.lightImpact();
   }
 
   void _handleTapUp(TapUpDetails details) {
