@@ -12,12 +12,12 @@ class RemoteTap extends StatefulWidget {
 
   const RemoteTap({
     Key? key,
-    required this.child,
     required this.width,
     required this.height,
     required this.onPressed,
     this.defaultStyle = const BoxDecoration(),
     this.pressedStyle = const BoxDecoration(),
+    this.child = const SizedBox.shrink(),
   }) : super(key: key);
 
   @override

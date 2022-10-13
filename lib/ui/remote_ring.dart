@@ -134,10 +134,11 @@ class _RemoteRingState extends State<RemoteRing> {
                 height: _buttonSize,
                 child: RemoteIcons.arrowLeft,
               ),
-              Container(
+              RemoteTap(
+                onPressed: () => {},
                 width: _centerDia,
                 height: _centerDia,
-                decoration: _centerDefaultStyle,
+                defaultStyle: _centerDefaultStyle,
               ),
               RemoteTap(
                 onPressed: () => {},
