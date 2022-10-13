@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,10 +55,14 @@ class RemotePanelState extends State<RemotePanel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(
-            height: 63,
-            child: MoveWindow(),
-          ),
+          Platform.isMacOS
+              ? SizedBox(
+                  height: 63,
+                  child: MoveWindow(),
+                )
+              : const SizedBox(
+                  height: 30,
+                ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

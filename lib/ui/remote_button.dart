@@ -1,8 +1,8 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:remote/ui/remote_tap.dart';
 
-class RemoteButton extends StatefulWidget {
+class RemoteButton extends StatelessWidget {
   final Widget child;
   final void Function() onPressed;
 
@@ -11,13 +11,6 @@ class RemoteButton extends StatefulWidget {
     required this.child,
     required this.onPressed,
   }) : super(key: key);
-
-  @override
-  State<RemoteButton> createState() => _RemoteButtonState();
-}
-
-class _RemoteButtonState extends State<RemoteButton> {
-  bool _pressed = false;
 
   final BoxDecoration _defaultStyle = const BoxDecoration(
     borderRadius: BorderRadius.all(Radius.circular(37)),
@@ -84,32 +77,15 @@ class _RemoteButtonState extends State<RemoteButton> {
     ],
   );
 
-  void _handleTapDown(TapDownDetails details) {
-    setState(() {
-      _pressed = true;
-    });
-
-    widget.onPressed();
-    // TODO: settings
-    HapticFeedback.lightImpact();
-  }
-
-  void _handleTapUp(TapUpDetails details) {
-    setState(() {
-      _pressed = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTapDown: _handleTapDown,
-        onTapUp: _handleTapUp,
-        child: Container(
-          width: 37,
-          height: 37,
-          decoration: _pressed ? _pressedStyle : _defaultStyle,
-          child: widget.child,
-        ));
+    return RemoteTap(
+      onPressed: onPressed,
+      width: 37,
+      height: 37,
+      defaultStyle: _defaultStyle,
+      pressedStyle: _pressedStyle,
+      child: child,
+    );
   }
 }

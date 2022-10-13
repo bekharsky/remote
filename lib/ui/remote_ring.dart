@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:remote/ui/remote_icons.dart';
+import 'package:remote/ui/remote_tap.dart';
 
 class RemoteRing extends StatefulWidget {
   final void Function() onPressedUp;
@@ -115,8 +116,9 @@ class _RemoteRingState extends State<RemoteRing> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              SizedBox(
+            children: [
+              RemoteTap(
+                onPressed: () => {},
                 width: _buttonSize,
                 height: _buttonSize,
                 child: RemoteIcons.arrowUp,
@@ -126,16 +128,19 @@ class _RemoteRingState extends State<RemoteRing> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
+              RemoteTap(
+                onPressed: () => {},
                 width: _buttonSize,
                 height: _buttonSize,
                 child: RemoteIcons.arrowLeft,
               ),
               Container(
-                  width: _centerDia,
-                  height: _centerDia,
-                  decoration: _centerDefaultStyle),
-              const SizedBox(
+                width: _centerDia,
+                height: _centerDia,
+                decoration: _centerDefaultStyle,
+              ),
+              RemoteTap(
+                onPressed: () => {},
                 width: _buttonSize,
                 height: _buttonSize,
                 child: RemoteIcons.arrowRight,
@@ -144,8 +149,9 @@ class _RemoteRingState extends State<RemoteRing> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              SizedBox(
+            children: [
+              RemoteTap(
+                onPressed: () => {},
                 width: _buttonSize,
                 height: _buttonSize,
                 child: RemoteIcons.arrowBottom,
