@@ -8,7 +8,9 @@ import 'package:remote/ui/remote_button.dart';
 import 'package:remote/ui/remote_level.dart';
 import 'package:remote/ui/remote_ring.dart';
 import 'package:remote/ui/remote_rocker.dart';
+import 'package:remote/ui/remote_settings.dart';
 import 'package:remote/ui/remote_tap.dart';
+import 'package:sheet/route.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +102,14 @@ class RemotePanelState extends State<RemotePanel> {
                     width: _powerButtonSize,
                     height: _powerButtonSize,
                     onPressed: () async {
-                      log('Power button pressed');
+                      log('Settings button pressed');
+                      Navigator.of(context).push(
+                        CupertinoSheetRoute<void>(
+                          builder: (BuildContext context) {
+                            return const RemoteSettings();
+                          },
+                        ),
+                      );
                     },
                     child: RemoteIcons.settings,
                   ),
