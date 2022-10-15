@@ -1,13 +1,12 @@
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart' hide BoxDecoration, BoxShadow;
-import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+import 'package:flutter/widgets.dart';
 
 class RemoteTap extends StatefulWidget {
   final double width;
   final double height;
+  final void Function() onPressed;
   final BoxDecoration defaultStyle;
   final BoxDecoration pressedStyle;
-  final void Function() onPressed;
   final Widget child;
 
   const RemoteTap({
@@ -53,14 +52,15 @@ class _RemoteTapState extends State<RemoteTap> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTapDown: _handleTapDown,
-        onTapUp: _handleTapUp,
-        onTapCancel: _handleTapCancel,
-        child: Container(
-          width: 37,
-          height: 37,
-          decoration: _pressed ? widget.pressedStyle : widget.defaultStyle,
-          child: widget.child,
-        ));
+      onTapDown: _handleTapDown,
+      onTapUp: _handleTapUp,
+      onTapCancel: _handleTapCancel,
+      child: Container(
+        width: widget.width,
+        height: widget.height,
+        decoration: _pressed ? widget.pressedStyle : widget.defaultStyle,
+        child: widget.child,
+      ),
+    );
   }
 }
