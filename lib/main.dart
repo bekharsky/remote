@@ -56,12 +56,14 @@ class RemotePanel extends StatefulWidget {
 }
 
 class RemotePanelState extends State<RemotePanel> {
-  static final double _ringSize = Platform.isMacOS ? 166 : 220;
-  static final double _buttonSize = Platform.isMacOS ? 48 : 64;
-  static final double _powerButtonSize = Platform.isMacOS ? 36 : 48;
+  static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
+  static final bool _isMac = Platform.isMacOS;
+  static final double _ringSize = _isMobile ? 220 : 166;
+  static final double _buttonSize = _isMobile ? 64 : 48;
+  static final double _powerButtonSize = _isMobile ? 48 : 36;
   static final double _powerPad = (_buttonSize - _powerButtonSize) / 2;
-  static final double _hPad = Platform.isMacOS ? 30 : 48;
-  static final double _vPad = Platform.isMacOS ? 30 : 48;
+  static final double _hPad = _isMobile ? 48 : 30;
+  static final double _vPad = _isMobile ? 48 : 30;
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +74,8 @@ class RemotePanelState extends State<RemotePanel> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
-              height: Platform.isMacOS ? _buttonSize : _powerPad,
-              child: Platform.isMacOS ? MoveWindow() : const SizedBox.shrink(),
+              height: _isMobile ? _powerPad : _buttonSize,
+              child: _isMac ? MoveWindow() : const SizedBox.shrink(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,8 +108,7 @@ class RemotePanelState extends State<RemotePanel> {
               ],
             ),
             SizedBox(
-              height:
-                  Platform.isMacOS ? _powerButtonSize : _powerButtonSize * 2,
+              height: _powerButtonSize * (_isMobile ? 2 : 1),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
