@@ -163,7 +163,7 @@ class RemotePanelState extends State<RemotePanel> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             const RemoteLevel(
               level: 5,
             ),
