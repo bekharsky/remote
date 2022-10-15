@@ -32,7 +32,7 @@ class _RemoteTapState extends State<RemoteTap> {
     });
 
     // TODO: settings
-    HapticFeedback.lightImpact();
+    HapticFeedback.mediumImpact();
   }
 
   void _handleTapUp(TapUpDetails details) {

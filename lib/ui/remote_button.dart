@@ -15,7 +15,7 @@ class RemoteButton extends StatelessWidget {
   }) : super(key: key);
 
   final BoxDecoration _defaultStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(37)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       BoxShadow(
@@ -44,7 +44,7 @@ class RemoteButton extends StatelessWidget {
   );
 
   final BoxDecoration _pressedStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(37)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       BoxShadow(
@@ -75,11 +75,11 @@ class RemoteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RemoteTap(
-      onPressed: onPressed,
       width: size,
       height: size,
       defaultStyle: _defaultStyle,
       pressedStyle: _pressedStyle,
+      onPressed: onPressed,
       child: child,
     );
   }

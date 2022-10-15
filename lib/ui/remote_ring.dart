@@ -4,6 +4,7 @@ import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_tap.dart';
 
 class RemoteRing extends StatefulWidget {
+  final double size;
   final void Function() onPressedUp;
   final void Function() onPressedRight;
   final void Function() onPressedBottom;
@@ -12,6 +13,7 @@ class RemoteRing extends StatefulWidget {
 
   const RemoteRing({
     Key? key,
+    this.size = 166,
     required this.onPressedUp,
     required this.onPressedRight,
     required this.onPressedBottom,
@@ -25,10 +27,10 @@ class RemoteRing extends StatefulWidget {
 
 class _RemoteRingState extends State<RemoteRing> {
   String _pressed = '';
+  late final double _size = widget.size;
+  late final double _centerDia = _size / 2;
+  late final double _buttonSize = (_size - _centerDia) / 2;
 
-  static const double _ringDia = 166;
-  static const double _centerDia = 86;
-  static const double _buttonSize = (_ringDia - _centerDia) / 2;
   static const List<BoxShadow> _baseShadow = [
     BoxShadow(
       color: Color.fromRGBO(2, 2, 2, 0.34),
@@ -51,7 +53,7 @@ class _RemoteRingState extends State<RemoteRing> {
   ];
 
   final BoxDecoration _ringDefaultStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_ringDia)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       ..._baseShadow,
@@ -69,7 +71,7 @@ class _RemoteRingState extends State<RemoteRing> {
   );
 
   final BoxDecoration _ringPressedTopStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_ringDia)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       ..._baseShadow,
@@ -87,7 +89,7 @@ class _RemoteRingState extends State<RemoteRing> {
   );
 
   final BoxDecoration _ringPressedRightStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_ringDia)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       ..._baseShadow,
@@ -105,7 +107,7 @@ class _RemoteRingState extends State<RemoteRing> {
   );
 
   final BoxDecoration _ringPressedBottomStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_ringDia)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       ..._baseShadow,
@@ -123,7 +125,7 @@ class _RemoteRingState extends State<RemoteRing> {
   );
 
   final BoxDecoration _ringPressedLeftStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_ringDia)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       ..._baseShadow,
@@ -141,7 +143,7 @@ class _RemoteRingState extends State<RemoteRing> {
   );
 
   final BoxDecoration _centerDefaultStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_centerDia)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       BoxShadow(
@@ -173,7 +175,7 @@ class _RemoteRingState extends State<RemoteRing> {
   );
 
   final BoxDecoration _centerPressedStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_centerDia)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       BoxShadow(
@@ -261,8 +263,8 @@ class _RemoteRingState extends State<RemoteRing> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: _ringDia,
-      height: _ringDia,
+      width: _size,
+      height: _size,
       decoration: _pressed == 'up'
           ? _ringPressedTopStyle
           : _pressed == 'right'
@@ -307,7 +309,7 @@ class _RemoteRingState extends State<RemoteRing> {
                 ),
               ),
               RemoteTap(
-                onPressed: () => {},
+                onPressed: widget.onPressedCenter,
                 width: _centerDia,
                 height: _centerDia,
                 defaultStyle: _centerDefaultStyle,

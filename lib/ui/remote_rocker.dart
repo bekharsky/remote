@@ -4,11 +4,13 @@ import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_tap.dart';
 
 class RemoteRocker extends StatefulWidget {
+  final double size;
   final void Function() onPressedLower;
   final void Function() onPressedHigher;
 
   const RemoteRocker({
     Key? key,
+    this.size = 166,
     required this.onPressedLower,
     required this.onPressedHigher,
   }) : super(key: key);
@@ -19,9 +21,9 @@ class RemoteRocker extends StatefulWidget {
 
 class _RemoteRockerState extends State<RemoteRocker> {
   String _pressed = ''; // TODO: enum type
+  late final double _width = widget.size;
+  late final double _height = _width / 5;
 
-  static const double _width = 166;
-  static const double _height = 35;
   static const List<BoxShadow> _baseShadow = [
     BoxShadow(
       color: Color.fromRGBO(109, 109, 109, 0.25),
@@ -38,7 +40,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
   ];
 
   final BoxDecoration _rockerDefaultStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_height)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       ..._baseShadow,
@@ -56,7 +58,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
   );
 
   final BoxDecoration _rockerPressedLowerStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_height)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       ..._baseShadow,
@@ -74,7 +76,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
   );
 
   final BoxDecoration _rockerPressedHigherStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_height)),
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
       ..._baseShadow,

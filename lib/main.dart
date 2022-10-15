@@ -19,15 +19,17 @@ void main() {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   runApp(const RemoteControllerApp());
 
-  doWhenWindowReady(() {
-    final win = appWindow;
-    const initialSize = Size(280, 600);
-    win.minSize = initialSize;
-    // win.maxSize = initialSize;
-    win.size = initialSize;
-    win.alignment = Alignment.centerRight;
-    win.show();
-  });
+  if (Platform.isMacOS) {
+    doWhenWindowReady(() {
+      final win = appWindow;
+      const initialSize = Size(280, 600);
+      win.minSize = initialSize;
+      // win.maxSize = initialSize;
+      win.size = initialSize;
+      win.alignment = Alignment.centerRight;
+      win.show();
+    });
+  }
 }
 
 class RemoteControllerApp extends StatelessWidget {
@@ -54,25 +56,34 @@ class RemotePanel extends StatefulWidget {
 }
 
 class RemotePanelState extends State<RemotePanel> {
+  static final double _ringSize = Platform.isMacOS ? 166 : 220;
+  static final double _buttonSize = Platform.isMacOS ? 48 : 64;
+  static final double _powerButtonSize = Platform.isMacOS ? 36 : 48;
+  static final double _powerPad = (_buttonSize - _powerButtonSize) / 2;
+  static final double _hPad = Platform.isMacOS ? 30 : 48;
+  static final double _vPad = Platform.isMacOS ? 30 : 48;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+        padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
-              height: 48,
+              height: Platform.isMacOS ? _buttonSize : _powerPad,
               child: Platform.isMacOS ? MoveWindow() : const SizedBox.shrink(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 6),
+                  padding: EdgeInsets.only(
+                    left: _powerPad,
+                  ),
                   child: RemoteButton(
-                    size: 36,
+                    size: _powerButtonSize,
                     onPressed: () async {
                       log('Power button pressed');
                     },
@@ -80,10 +91,12 @@ class RemotePanelState extends State<RemotePanel> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 6),
+                  padding: EdgeInsets.only(
+                    right: _powerPad,
+                  ),
                   child: RemoteTap(
-                    width: 36,
-                    height: 36,
+                    width: _powerButtonSize,
+                    height: _powerButtonSize,
                     onPressed: () async {
                       log('Power button pressed');
                     },
@@ -92,21 +105,26 @@ class RemotePanelState extends State<RemotePanel> {
                 ),
               ],
             ),
-            const SizedBox(height: 36),
+            SizedBox(
+              height:
+                  Platform.isMacOS ? _powerButtonSize : _powerButtonSize * 2,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 RemoteButton(
-                  child: RemoteIcons.num,
+                  size: _buttonSize,
                   onPressed: () async {
                     log('123 button pressed');
                   },
+                  child: RemoteIcons.num,
                 ),
                 RemoteButton(
-                  child: RemoteIcons.abc,
+                  size: _buttonSize,
                   onPressed: () async {
                     log('ABC button pressed');
                   },
+                  child: RemoteIcons.abc,
                 ),
               ],
             ),
@@ -115,6 +133,7 @@ class RemotePanelState extends State<RemotePanel> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RemoteRing(
+                  size: _ringSize,
                   onPressedUp: () async {
                     log('Up button pressed');
                   },
@@ -138,16 +157,18 @@ class RemotePanelState extends State<RemotePanel> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 RemoteButton(
-                  child: RemoteIcons.back,
+                  size: _buttonSize,
                   onPressed: () async {
                     log('Back button pressed');
                   },
+                  child: RemoteIcons.back,
                 ),
                 RemoteButton(
-                  child: RemoteIcons.play,
+                  size: _buttonSize,
                   onPressed: () async {
                     log('Play button pressed');
                   },
+                  child: RemoteIcons.play,
                 ),
               ],
             ),
@@ -156,10 +177,11 @@ class RemotePanelState extends State<RemotePanel> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RemoteButton(
-                  child: RemoteIcons.home,
+                  size: _buttonSize,
                   onPressed: () async {
                     log('Home button pressed');
                   },
+                  child: RemoteIcons.home,
                 ),
               ],
             ),
@@ -172,6 +194,7 @@ class RemotePanelState extends State<RemotePanel> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RemoteRocker(
+                  size: _ringSize,
                   onPressedLower: () async {
                     log('Lower button pressed');
                   },
