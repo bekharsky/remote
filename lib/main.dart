@@ -79,7 +79,7 @@ class RemotePanelState extends State<RemotePanel> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CupertinoPageScaffold(
-        backgroundColor: Color(0XFF2e2e2e),
+        backgroundColor: const Color(0XFF2e2e2e),
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),

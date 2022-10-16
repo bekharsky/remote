@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart' hide BoxDecoration, BoxShadow;
 
 class RemoteLevel extends StatelessWidget {
   final int level;

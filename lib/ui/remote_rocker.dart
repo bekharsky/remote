@@ -3,6 +3,8 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_tap.dart';
 
+enum Pressed { lower, higher, none }
+
 class RemoteRocker extends StatefulWidget {
   final double size;
   final void Function() onPressedLower;
@@ -20,7 +22,7 @@ class RemoteRocker extends StatefulWidget {
 }
 
 class _RemoteRockerState extends State<RemoteRocker> {
-  String _pressed = ''; // TODO: enum type
+  Pressed _pressed = Pressed.none;
   late final double _width = widget.size;
   late final double _height = _width / 5;
 
@@ -95,31 +97,31 @@ class _RemoteRockerState extends State<RemoteRocker> {
 
   void _handleTapDownLower(TapDownDetails details) {
     setState(() {
-      _pressed = 'lower';
+      _pressed = Pressed.lower;
     });
   }
 
   void _handleTapUpLower(TapUpDetails details) {
     setState(() {
-      _pressed = '';
+      _pressed = Pressed.none;
     });
   }
 
   void _handleTapDownHigher(TapDownDetails details) {
     setState(() {
-      _pressed = 'higher';
+      _pressed = Pressed.higher;
     });
   }
 
   void _handleTapUpHigher(TapUpDetails details) {
     setState(() {
-      _pressed = '';
+      _pressed = Pressed.none;
     });
   }
 
   void _handleTapCancel() {
     setState(() {
-      _pressed = '';
+      _pressed = Pressed.none;
     });
   }
 
@@ -128,9 +130,9 @@ class _RemoteRockerState extends State<RemoteRocker> {
     return Container(
       width: _width,
       height: _height,
-      decoration: _pressed == 'lower'
+      decoration: _pressed == Pressed.lower
           ? _rockerPressedLowerStyle
-          : _pressed == 'higher'
+          : _pressed == Pressed.higher
               ? _rockerPressedHigherStyle
               : _rockerDefaultStyle,
       child: Column(

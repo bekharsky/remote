@@ -3,6 +3,8 @@ import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_tap.dart';
 
+enum Pressed { up, right, bottom, left, center, none }
+
 class RemoteRing extends StatefulWidget {
   final double size;
   final void Function() onPressedUp;
@@ -26,7 +28,7 @@ class RemoteRing extends StatefulWidget {
 }
 
 class _RemoteRingState extends State<RemoteRing> {
-  String _pressed = '';
+  Pressed _pressed = Pressed.none;
   late final double _size = widget.size;
   late final double _centerDia = _size / 2;
   late final double _buttonSize = (_size - _centerDia) / 2;
@@ -208,55 +210,55 @@ class _RemoteRingState extends State<RemoteRing> {
 
   void _handleTapDownUp(TapDownDetails details) {
     setState(() {
-      _pressed = 'up';
+      _pressed = Pressed.up;
     });
   }
 
   void _handleTapUpUp(TapUpDetails details) {
     setState(() {
-      _pressed = '';
+      _pressed = Pressed.none;
     });
   }
 
   void _handleTapDownRight(TapDownDetails details) {
     setState(() {
-      _pressed = 'right';
+      _pressed = Pressed.right;
     });
   }
 
   void _handleTapUpRight(TapUpDetails details) {
     setState(() {
-      _pressed = '';
+      _pressed = Pressed.none;
     });
   }
 
   void _handleTapDownBottom(TapDownDetails details) {
     setState(() {
-      _pressed = 'down';
+      _pressed = Pressed.bottom;
     });
   }
 
   void _handleTapUpBottom(TapUpDetails details) {
     setState(() {
-      _pressed = '';
+      _pressed = Pressed.none;
     });
   }
 
   void _handleTapDownLeft(TapDownDetails details) {
     setState(() {
-      _pressed = 'left';
+      _pressed = Pressed.left;
     });
   }
 
   void _handleTapUpLeft(TapUpDetails details) {
     setState(() {
-      _pressed = '';
+      _pressed = Pressed.none;
     });
   }
 
   void _handleTapCancel() {
     setState(() {
-      _pressed = '';
+      _pressed = Pressed.none;
     });
   }
 
@@ -265,13 +267,13 @@ class _RemoteRingState extends State<RemoteRing> {
     return Container(
       width: _size,
       height: _size,
-      decoration: _pressed == 'up'
+      decoration: _pressed == Pressed.up
           ? _ringPressedTopStyle
-          : _pressed == 'right'
+          : _pressed == Pressed.right
               ? _ringPressedRightStyle
-              : _pressed == 'bottom'
+              : _pressed == Pressed.bottom
                   ? _ringPressedBottomStyle
-                  : _pressed == 'left'
+                  : _pressed == Pressed.left
                       ? _ringPressedLeftStyle
                       : _ringDefaultStyle,
       child: Column(
