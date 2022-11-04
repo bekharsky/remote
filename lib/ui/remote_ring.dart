@@ -72,7 +72,7 @@ class _RemoteRingState extends State<RemoteRing> {
     ],
   );
 
-  final BoxDecoration _ringPressedTopStyle = const BoxDecoration(
+  final BoxDecoration _ringPressedUpStyle = const BoxDecoration(
     borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
     boxShadow: [
@@ -214,21 +214,9 @@ class _RemoteRingState extends State<RemoteRing> {
     });
   }
 
-  void _handleTapUpUp(TapUpDetails details) {
-    setState(() {
-      _pressed = Pressed.none;
-    });
-  }
-
   void _handleTapDownRight(TapDownDetails details) {
     setState(() {
       _pressed = Pressed.right;
-    });
-  }
-
-  void _handleTapUpRight(TapUpDetails details) {
-    setState(() {
-      _pressed = Pressed.none;
     });
   }
 
@@ -238,19 +226,13 @@ class _RemoteRingState extends State<RemoteRing> {
     });
   }
 
-  void _handleTapUpBottom(TapUpDetails details) {
-    setState(() {
-      _pressed = Pressed.none;
-    });
-  }
-
   void _handleTapDownLeft(TapDownDetails details) {
     setState(() {
       _pressed = Pressed.left;
     });
   }
 
-  void _handleTapUpLeft(TapUpDetails details) {
+  void _handleTapUp(TapUpDetails details) {
     setState(() {
       _pressed = Pressed.none;
     });
@@ -262,20 +244,27 @@ class _RemoteRingState extends State<RemoteRing> {
     });
   }
 
+  BoxDecoration _handlePress(Pressed state) {
+    switch (state) {
+      case Pressed.up:
+        return _ringPressedUpStyle;
+      case Pressed.right:
+        return _ringPressedRightStyle;
+      case Pressed.bottom:
+        return _ringPressedBottomStyle;
+      case Pressed.left:
+        return _ringPressedLeftStyle;
+      default:
+        return _ringDefaultStyle;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: _size,
       height: _size,
-      decoration: _pressed == Pressed.up
-          ? _ringPressedTopStyle
-          : _pressed == Pressed.right
-              ? _ringPressedRightStyle
-              : _pressed == Pressed.bottom
-                  ? _ringPressedBottomStyle
-                  : _pressed == Pressed.left
-                      ? _ringPressedLeftStyle
-                      : _ringDefaultStyle,
+      decoration: _handlePress(_pressed),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -285,7 +274,7 @@ class _RemoteRingState extends State<RemoteRing> {
             children: [
               GestureDetector(
                 onTapDown: _handleTapDownUp,
-                onTapUp: _handleTapUpUp,
+                onTapUp: _handleTapUp,
                 onTapCancel: _handleTapCancel,
                 child: RemoteTap(
                   onPressed: widget.onPressedUp,
@@ -301,7 +290,7 @@ class _RemoteRingState extends State<RemoteRing> {
             children: [
               GestureDetector(
                 onTapDown: _handleTapDownLeft,
-                onTapUp: _handleTapUpLeft,
+                onTapUp: _handleTapUp,
                 onTapCancel: _handleTapCancel,
                 child: RemoteTap(
                   onPressed: widget.onPressedLeft,
@@ -319,7 +308,7 @@ class _RemoteRingState extends State<RemoteRing> {
               ),
               GestureDetector(
                 onTapDown: _handleTapDownRight,
-                onTapUp: _handleTapUpRight,
+                onTapUp: _handleTapUp,
                 onTapCancel: _handleTapCancel,
                 child: RemoteTap(
                   onPressed: widget.onPressedRight,
@@ -335,7 +324,7 @@ class _RemoteRingState extends State<RemoteRing> {
             children: [
               GestureDetector(
                 onTapDown: _handleTapDownBottom,
-                onTapUp: _handleTapUpBottom,
+                onTapUp: _handleTapUp,
                 onTapCancel: _handleTapCancel,
                 child: RemoteTap(
                   onPressed: widget.onPressedBottom,
