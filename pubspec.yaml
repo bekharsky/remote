@@ -38,6 +38,8 @@ dependencies:
     flutter_inset_box_shadow: ^1.0.8
     bitsdojo_window: ^0.1.5
     sheet: ^0.0.4+1
+    http: ^0.13.5
+    xml: ^6.2.2
 
 dev_dependencies:
     flutter_test:

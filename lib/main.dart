@@ -20,12 +20,13 @@ void main() {
     DeviceOrientation.portraitDown,
   ]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-  runApp(RemoteControllerApp());
+  runApp(const RemoteControllerApp());
 
-  if (Platform.isMacOS) {
+  // TODO: doesn't work properly with a scaled resolution on Linux
+  if (Platform.isMacOS || Platform.isLinux) {
     doWhenWindowReady(() {
       final win = appWindow;
-      const initialSize = Size(280, 600);
+      const initialSize = Size(320, 680);
       win.minSize = initialSize;
       // win.maxSize = initialSize;
       win.size = initialSize;

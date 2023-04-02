@@ -2,14 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
-main() async {
-  // String urn = 'urn:samsung.com:device:RemoteControlReceiver:1';
-  String urn = 'ssdp:all';
-  Discover discover = Discover(urn);
-  List<String> result = await discover.search();
-  print(result);
-}
-
 class Discover {
   String urn;
   String message = '';
@@ -44,21 +36,24 @@ class Discover {
         Datagram? dg = socket.receive();
 
         if (dg != null) {
-          List<String> response = utf8.decode(dg.data).trim().split('\r\n');
-          // String ip = '';
+          var response = utf8.decode(dg.data).trim().split('\r\n');
+          var ip = dg.address;
+          String location = '';
 
           for (var line in response) {
             int splitter = line.indexOf(':');
 
             if (splitter > -1) {
-              String header = line.substring(0, splitter);
-              String value = line.substring(splitter).replaceFirst(': ', '');
+              var header = line.substring(0, splitter);
+              var value = line.substring(splitter).replaceFirst(': ', '');
 
-              if (header == 'ST') {
-                buffer.add(value);
+              if (header == 'LOCATION') {
+                location = value;
               }
             }
           }
+
+          buffer.add(location);
         }
       }
     });
