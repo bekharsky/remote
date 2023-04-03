@@ -137,16 +137,15 @@ class Tv {
 }
 
 main() async {
-  var urn = 'urn:samsung.com:device:RemoteControlReceiver:1';
-  var tvCollector = TvCollector(urn);
+  var tvCollector = TvCollector();
   print(await tvCollector.collect());
 }
 
 class TvCollector {
-  final String urn;
+  final urn = 'urn:samsung.com:device:RemoteControlReceiver:1';
   final headers = {'Accept': 'application/json'};
 
-  TvCollector(this.urn);
+  TvCollector();
 
   collect() async {
     List<Tv> tvs = [];
