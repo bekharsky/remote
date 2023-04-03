@@ -11,6 +11,13 @@ class TvListView extends StatefulWidget {
 
 class TvListViewState extends State<TvListView> {
   final tvCollector = TvCollector();
+  final dummyTv = Tv(
+    name: 'Some Samsung TV',
+    modelName: 'UW888',
+    id: 'uuid',
+    ip: '127.0.0.1',
+    wifiMac: '00:00',
+  );
   Future<List<Tv>> _tvsFuture = Future.value([]);
 
   @override
@@ -20,7 +27,23 @@ class TvListViewState extends State<TvListView> {
   }
 
   Future<List<Tv>> _loadItems() async {
-    return await tvCollector.collect();
+    List<Tv> tvs = await tvCollector.collect();
+    return [
+      ...tvs,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+      dummyTv,
+    ];
   }
 
   @override
@@ -33,16 +56,44 @@ class TvListViewState extends State<TvListView> {
             itemCount: snapshot.data?.length ?? 0,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(snapshot.data?[index].name ?? ''),
-                leading: const Icon(Icons.tv),
+                dense: true,
+                horizontalTitleGap: 6,
+                minLeadingWidth: 0,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 4,
+                ),
+                title: Text(
+                  snapshot.data?[index].name ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 10),
+                ),
+                subtitle: Text(
+                  snapshot.data?[index].modelName ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 8),
+                ),
+                leading: Container(
+                  alignment: Alignment.center,
+                  width: 48,
+                  child: const Icon(Icons.tv),
+                ),
+                // leading: const Icon(Icons.tv),
                 onTap: () => Navigator.of(context).pop(),
               );
             },
           );
         } else if (snapshot.hasError) {
-          return const Text('Error loading items');
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [Text('Error loading items')],
+          );
         } else {
-          return const Text('Loading...');
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [CircularProgressIndicator()],
+          );
         }
       },
     );

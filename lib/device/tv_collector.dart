@@ -122,14 +122,14 @@ class Device {
 
 class Tv {
   final String name;
-  final String model;
+  final String modelName;
   final String id;
   final String ip;
   final String wifiMac;
 
   Tv({
     required this.name,
-    required this.model,
+    required this.modelName,
     required this.id,
     required this.ip,
     required this.wifiMac,
@@ -162,7 +162,7 @@ class TvCollector {
       final device = deviceInfo.device;
       final tv = Tv(
         name: device.name,
-        model: device.modelName,
+        modelName: device.modelName,
         id: device.id,
         ip: device.ip,
         wifiMac: device.wifiMac,
