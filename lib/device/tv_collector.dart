@@ -144,30 +144,31 @@ main() async {
 
 class TvCollector {
   final String urn;
-  final Map<String, String> headers = {'Accept': 'application/json'};
+  final headers = {'Accept': 'application/json'};
 
   TvCollector(this.urn);
 
   collect() async {
     List<Tv> tvs = [];
-    var list = await Discover(urn).search();
+    final rcrList = await Discover(urn).search();
 
-    for (var location in list) {
+    for (var location in rcrList) {
       if (location == '') {
         continue;
       }
 
       final uri = Uri.parse(location).replace(port: 8001, path: '/api/v2/');
       final response = await http.get(uri, headers: headers);
-      DeviceInfo deviceInfo = DeviceInfo.fromJson(json.decode(response.body));
+      final deviceInfo = DeviceInfo.fromJson(json.decode(response.body));
       final device = deviceInfo.device;
-      Tv tv = Tv(
+      final tv = Tv(
         name: device.name,
         model: device.modelName,
         id: device.id,
         ip: device.ip,
         wifiMac: device.wifiMac,
       );
+
       tvs.add(tv);
     }
 
