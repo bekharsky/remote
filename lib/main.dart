@@ -64,11 +64,9 @@ class RemotePanelState extends State<RemotePanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.amber,
-      child: const CupertinoPageScaffold(
-        child: SafeArea(
-          child: Remote(),
-        ),
+      color: const Color(0XFF2e2e2e),
+      child: const SafeArea(
+        child: Remote(),
       ),
     );
   }
