@@ -10,7 +10,7 @@ class TvListView extends StatefulWidget {
 }
 
 class TvListViewState extends State<TvListView> {
-  final tvCollector = TvCollector();
+  final tvCollector = Collector();
   final dummyTv = Tv(
     name: 'Some Samsung TV',
     modelName: 'UW888',

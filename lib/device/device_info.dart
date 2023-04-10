@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'discover.dart';
-
 class DeviceInfo {
   Device device;
   String id;
@@ -117,60 +113,5 @@ class Device {
       udn: json['udn'],
       wifiMac: json['wifiMac'],
     );
-  }
-}
-
-class Tv {
-  final String name;
-  final String modelName;
-  final String id;
-  final String ip;
-  final String wifiMac;
-
-  Tv({
-    required this.name,
-    required this.modelName,
-    required this.id,
-    required this.ip,
-    required this.wifiMac,
-  });
-}
-
-main() async {
-  var tvCollector = TvCollector();
-  print(await tvCollector.collect());
-}
-
-class TvCollector {
-  final urn = 'urn:samsung.com:device:RemoteControlReceiver:1';
-  final headers = {'Accept': 'application/json'};
-
-  TvCollector();
-
-  collect() async {
-    List<Tv> tvs = [];
-    final rcrList = await Discover(urn).search();
-
-    for (var location in rcrList) {
-      if (location == '') {
-        continue;
-      }
-
-      final uri = Uri.parse(location).replace(port: 8001, path: '/api/v2/');
-      final response = await http.get(uri, headers: headers);
-      final deviceInfo = DeviceInfo.fromJson(json.decode(response.body));
-      final device = deviceInfo.device;
-      final tv = Tv(
-        name: device.name,
-        modelName: device.modelName,
-        id: device.id,
-        ip: device.ip,
-        wifiMac: device.wifiMac,
-      );
-
-      tvs.add(tv);
-    }
-
-    return tvs;
   }
 }
