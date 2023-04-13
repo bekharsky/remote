@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class RemoteLevel extends StatelessWidget {
   final int level;
@@ -16,7 +16,9 @@ class RemoteLevel extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List<Padding>.generate(10, (i) {
-            Color color = i <= level ? Colors.orange : Colors.black;
+            Color color = i <= level
+                ? const Color.fromRGBO(255, 152, 0, 1)
+                : const Color.fromRGBO(0, 0, 0, 1);
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),

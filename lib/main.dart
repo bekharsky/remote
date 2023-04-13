@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sheet/route.dart';
@@ -64,7 +63,7 @@ class RemotePanelState extends State<RemotePanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0XFF2e2e2e),
+      color: const Color.fromRGBO(46, 46, 46, 1),
       child: const SafeArea(
         child: Remote(),
       ),
