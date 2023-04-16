@@ -37,7 +37,6 @@ class Discover {
 
         if (dg != null) {
           var response = utf8.decode(dg.data).trim().split('\r\n');
-          var ip = dg.address;
           String location = '';
 
           for (var line in response) {

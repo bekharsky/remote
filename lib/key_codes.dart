@@ -1,7 +1,7 @@
-// ignore_for_file: constant_identifier_names, camel_case_types
+// ignore_for_file: constant_identifier_names
 // https://github.com/ersinayaz/rn-samsung-tv-remote/blob/master/Keys.md
 
-enum KEY_CODES {
+enum KeyCode {
   KEY_MENU,
   KEY_UP,
   KEY_DOWN,

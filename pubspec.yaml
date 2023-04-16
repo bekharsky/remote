@@ -40,6 +40,7 @@ dependencies:
     sheet: ^0.0.4+1
     http: ^0.13.5
     xml: ^6.2.2
+    web_socket_channel: ^2.4.0
 
 dev_dependencies:
     flutter_test:
