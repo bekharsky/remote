@@ -5,7 +5,7 @@ import '../key_codes.dart';
 
 main() async {
   var commander = Commander();
-  print(await commander.sendKey(KeyCode.KEY_PAUSE));
+  await commander.sendKey(KeyCode.KEY_PAUSE);
 }
 
 class SamsungHttpOverrides extends HttpOverrides {
@@ -33,7 +33,7 @@ class Commander {
     HttpOverrides.global = SamsungHttpOverrides();
   }
 
-  sendKey(KeyCode key) async {
+  sendKey(KeyCode keyCode) async {
     final bytes = utf8.encode(name);
     final base64Name = base64.encode(bytes);
 
@@ -44,28 +44,28 @@ class Commander {
       }),
     );
 
-    print(wssUri.toString());
-
     socket = await WebSocket.connect(wssUri.toString());
-    print('Connected to server!');
 
     socket?.listen((message) {
-      print(message);
+      // print(message);
       var data = jsonDecode(message);
 
       if (data['event'] == 'ms.channel.connect') {
         token = int.parse(data['data']['clients'][0]['attributes']['token']);
-        print(token);
-
-        // send key
-        // close socket
-      }
-
-      Timer(timeout, () {
+        // print(token);
+        String command = jsonEncode({
+          'method': 'ms.remote.control',
+          'params': {
+            'TypeOfRemote': 'SendRemoteKey',
+            'Cmd': 'Click',
+            'Option': 'false',
+            'DataOfCmd': keyCode.name,
+          }
+        });
+        // print(command);
+        socket?.add(command);
         socket?.close();
-      });
+      }
     });
-
-    return 'xxx';
   }
 }
