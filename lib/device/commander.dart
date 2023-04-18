@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import '../key_codes.dart';
@@ -36,7 +35,6 @@ class Commander {
   sendKey(KeyCode keyCode) async {
     final bytes = utf8.encode(name);
     final base64Name = base64.encode(bytes);
-
     final wssUri = wssUriTemplate.replace(
       queryParameters: Map.from({
         'token': "$token",
