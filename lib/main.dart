@@ -15,13 +15,13 @@ void main() {
 
   runApp(const RemoteControllerApp());
 
-  if (Platform.isMacOS || Platform.isLinux) {
+  if (!Platform.isAndroid && !Platform.isIOS) {
     doWhenWindowReady(() {
       final win = appWindow;
       // doesn't work properly with a scaled resolution on Linux
       const initialSize = Size(320, 680);
       win.minSize = initialSize;
-      // win.maxSize = initialSize;
+      win.maxSize = initialSize;
       win.size = initialSize;
       win.alignment = Alignment.centerRight;
       win.show();

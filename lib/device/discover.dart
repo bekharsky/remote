@@ -2,16 +2,23 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+main() async {
+  var discover = Discover('urn:samsung.com:device:RemoteControlReceiver:1');
+  // var discover = Discover('ssdp:all');
+  print(await discover.search());
+}
+
 class Discover {
   String urn;
   String message = '';
-  final int port = 1900;
-  final String mcast = '239.255.255.250';
+  final int port = 0;
+  final int ssdpPort = 1900;
+  final String ssdpHost = '239.255.255.250';
 
   Discover(this.urn) {
     message = ''
         'M-SEARCH * HTTP/1.1\r\n'
-        'HOST: "$mcast:$port"\r\n'
+        'HOST: "$ssdpHost:$ssdpPort"\r\n'
         'MAN: "ssdp:discover"\r\n'
         'MX: 3\r\n'
         'ST: $urn\r\n\r\n';
@@ -25,7 +32,8 @@ class Discover {
 
     socket.broadcastEnabled = true;
     socket.readEventsEnabled = true;
-    socket.send(message.codeUnits, InternetAddress(mcast), port);
+    socket.joinMulticast(InternetAddress(ssdpHost));
+    socket.send(message.codeUnits, InternetAddress(ssdpHost), ssdpPort);
 
     Timer(timeout, () {
       socket.close();

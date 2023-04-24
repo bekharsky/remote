@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class RemoteIcons {
   RemoteIcons._();
 
-  static final double _size = Platform.isMacOS ? 20 : 24;
+  static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
+  static final double _size = _isMobile ? 24 : 20;
   static const Color _lightText = Colors.white60;
 
   static Icon power = Icon(
