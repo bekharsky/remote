@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:developer';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:sheet/route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:remote/ui/remote_icons.dart';
@@ -10,7 +9,6 @@ import 'package:remote/ui/remote_ring.dart';
 import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_settings.dart';
 import 'package:remote/ui/remote_tap.dart';
-import 'window_buttons.dart';
 
 class Remote extends StatelessWidget {
   const Remote({
@@ -18,7 +16,6 @@ class Remote extends StatelessWidget {
   });
 
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
-  static final bool _isMac = Platform.isMacOS;
   static final double _ringSize = _isMobile ? 220 : 166;
   static final double _buttonSize = _isMobile ? 64 : 48;
   static final double _powerButtonSize = _isMobile ? 48 : 36;
@@ -29,24 +26,15 @@ class Remote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0XFF2e2e2e),
+      decoration: const BoxDecoration(
+        color: Color(0XFF2e2e2e),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
       child: Column(
         children: [
-          // TODO: move to main widget
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: _buttonSize,
-                  child: MoveWindow(
-                    onDoubleTap: () => {},
-                  ),
-                ),
-              ),
-              _isMac ? Container() : const WindowButtons(),
-            ],
-          ),
           Padding(
             padding: EdgeInsets.fromLTRB(_hPad, _vPad, _hPad, _vPad),
             child: Column(
