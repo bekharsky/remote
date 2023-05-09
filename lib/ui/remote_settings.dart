@@ -87,6 +87,7 @@ class TvListViewState extends State<TvListView> {
             },
           );
         } else if (snapshot.hasError) {
+          print(snapshot.error);
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [Text('Error loading items')],
