@@ -88,14 +88,14 @@ class TvListViewState extends State<TvListView> {
           );
         } else if (snapshot.hasError) {
           print(snapshot.error);
-          return Row(
+          return const Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [Text('Error loading items')],
+            children: [Text('Error loading items')],
           );
         } else {
-          return Row(
+          return const Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [CircularProgressIndicator()],
+            children: [CircularProgressIndicator()],
           );
         }
       },
