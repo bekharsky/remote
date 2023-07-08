@@ -69,7 +69,7 @@ class RemotePanelState extends State<RemotePanel> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[200],
+      backgroundColor: const Color.fromRGBO(73, 73, 73, 1),
       body: Stack(
         children: <Widget>[
           Container(
@@ -78,6 +78,7 @@ class RemotePanelState extends State<RemotePanel> {
             width: double.infinity,
             alignment: Alignment.center,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +94,12 @@ class RemotePanelState extends State<RemotePanel> {
                     _isMac ? Container() : const WindowButtons(),
                   ],
                 ),
-                const Text('Samsung 5 Series (43)'),
+                const Text(
+                  'Samsung 5 Series (43)',
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                  ),
+                ),
                 const Text('UE43M5550'),
               ],
             ),

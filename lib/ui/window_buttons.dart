@@ -4,14 +4,14 @@ import 'package:flutter/widgets.dart';
 final buttonColors = WindowButtonColors(
   mouseOver: const Color(0xFFF6A00C),
   mouseDown: const Color(0xFF805306),
-  iconNormal: const Color.fromRGBO(73, 73, 73, 1),
+  iconNormal: const Color.fromRGBO(255, 255, 255, 1),
   iconMouseOver: const Color.fromRGBO(255, 255, 255, 1),
 );
 
 final closeButtonColors = WindowButtonColors(
   mouseOver: const Color(0xFFD32F2F),
   mouseDown: const Color(0xFFB71C1C),
-  iconNormal: const Color.fromRGBO(73, 73, 73, 1),
+  iconNormal: const Color.fromRGBO(255, 255, 255, 1),
   iconMouseOver: const Color.fromRGBO(255, 255, 255, 1),
 );
 

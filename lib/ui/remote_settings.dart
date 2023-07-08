@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remote/device/collector.dart';
 import 'package:sheet/sheet.dart';
-
 import '../device/tv.dart';
 
 class TvListView extends StatefulWidget {
@@ -87,15 +86,18 @@ class TvListViewState extends State<TvListView> {
             },
           );
         } else if (snapshot.hasError) {
-          print(snapshot.error);
-          return const Row(
+          return Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text('Error loading items')],
+            children: const [
+              Text('Error loading items'),
+            ],
           );
         } else {
-          return const Row(
+          return Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [CircularProgressIndicator()],
+            children: const [
+              CircularProgressIndicator(),
+            ],
           );
         }
       },

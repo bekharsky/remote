@@ -29,8 +29,8 @@ class Remote extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Color(0XFF2e2e2e),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
         ),
       ),
       child: Column(
