@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'device_info.dart';
-import 'discover.dart';
-import 'tv.dart';
+import '../types/device_info.dart';
+import 'browser.dart';
+import '../types/tv.dart';
 
 main() async {
-  var tvCollector = Collector();
-  print(await tvCollector.collect());
+  var collector = Collector();
+  print(await collector.collect());
 }
 
 class Collector {
