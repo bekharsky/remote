@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../types/device_info.dart';
-import 'browser.dart';
+import 'discoverer.dart';
 import '../types/tv.dart';
 
 main() async {
@@ -17,7 +17,7 @@ class Collector {
 
   collect() async {
     List<Tv> tvs = [];
-    final rcrList = await Browser(urn).search();
+    final rcrList = await Discoverer(urn).search();
 
     for (var location in rcrList) {
       if (location == '') {
