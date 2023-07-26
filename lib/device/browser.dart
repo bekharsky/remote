@@ -3,19 +3,19 @@ import 'dart:io';
 import 'dart:convert';
 
 main() async {
-  var discover = Discover('urn:samsung.com:device:RemoteControlReceiver:1');
-  // var discover = Discover('ssdp:all');
-  print(await discover.search());
+  var browser = Browser('urn:samsung.com:device:RemoteControlReceiver:1');
+  // var browser = Browser('ssdp:all');
+  print(await browser.search());
 }
 
-class Discover {
+class Browser {
   String urn;
   String message = '';
   final int port = 0;
   final int ssdpPort = 1900;
   final String ssdpHost = '239.255.255.250';
 
-  Discover(this.urn) {
+  Browser(this.urn) {
     message = ''
         'M-SEARCH * HTTP/1.1\r\n'
         'HOST: "$ssdpHost:$ssdpPort"\r\n'

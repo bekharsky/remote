@@ -17,7 +17,7 @@ class Collector {
 
   collect() async {
     List<Tv> tvs = [];
-    final rcrList = await Discover(urn).search();
+    final rcrList = await Browser(urn).search();
 
     for (var location in rcrList) {
       if (location == '') {

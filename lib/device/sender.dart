@@ -4,10 +4,9 @@ import 'dart:async';
 import '../key_codes.dart';
 
 main() async {
-  var sender = Sender('Remote', '192.168.3.6');
-  await sender.getToken();
-  await sender.sendKey(KeyCode.KEY_HOME);
-  print(sender.wssUri);
+  var sender = Sender(name: 'Remote', host: '192.168.3.6');
+  await sender.fetchToken();
+  await sender.sendKey(KeyCode.KEY_VOLDOWN);
 }
 
 class SamsungHttpOverrides extends HttpOverrides {
@@ -22,32 +21,43 @@ class SamsungHttpOverrides extends HttpOverrides {
 class Sender {
   Duration timeout = const Duration(milliseconds: 2000);
   final _completer = Completer();
-  final wssUriTemplate = Uri(
-    scheme: 'wss',
-    port: 8002,
-    path: 'api/v2/channels/samsung.remote.control',
-  );
-  String? token;
-  String? name;
+
   Uri? wssUri;
   WebSocket? socket;
+  String? token;
+  String? host;
+  String? name;
 
-  Sender(name, host) {
+  Sender({name, this.host}) {
     HttpOverrides.global = SamsungHttpOverrides();
-
     final bytes = utf8.encode(name);
     final base64Name = base64.encode(bytes);
 
-    wssUri = wssUriTemplate.replace(
-      host: host,
-      queryParameters: Map.from({
-        'name': base64Name,
-      }),
-    );
+    this.name = base64Name;
   }
 
-  getToken() async {
-    print("getToken $wssUri");
+  getToken() {
+    return token;
+  }
+
+  setToken(token) {
+    this.token = token;
+  }
+
+  fetchToken() async {
+    wssUri = Uri(
+      scheme: 'wss',
+      port: 8002,
+      host: host,
+      path: 'api/v2/channels/samsung.remote.control',
+      queryParameters: Map.from(
+        {
+          'name': name,
+          'token': token,
+        },
+      ),
+    );
+
     socket = await WebSocket.connect(wssUri.toString());
 
     socket?.listen((message) {
@@ -55,18 +65,6 @@ class Sender {
 
       if (data['event'] == 'ms.channel.connect') {
         token = data['data']['token'];
-        final bytes = utf8.encode(token!);
-        final base64Token = base64Encode(bytes);
-
-        wssUri = wssUriTemplate.replace(
-          queryParameters: Map.from({
-            'token': base64Token,
-            ...wssUri!.queryParameters,
-          }),
-        );
-
-        print("getToken token $wssUri");
-
         socket?.close();
         _completer.complete();
       }
@@ -76,7 +74,19 @@ class Sender {
   }
 
   sendKey(KeyCode keyCode) async {
-    print("sendKey $wssUri");
+    wssUri = Uri(
+      scheme: 'wss',
+      port: 8002,
+      host: host,
+      path: 'api/v2/channels/samsung.remote.control',
+      queryParameters: Map.from(
+        {
+          'name': name,
+          'token': token,
+        },
+      ),
+    );
+
     socket = await WebSocket.connect(wssUri.toString());
 
     socket?.listen((message) {
