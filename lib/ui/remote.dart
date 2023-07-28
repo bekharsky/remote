@@ -57,6 +57,7 @@ class Remote extends StatelessWidget {
                       child: RemoteButton(
                         size: _powerButtonSize,
                         onPressed: () {
+                          log('Power button pressed');
                           onButtonPressCallback(KeyCode.KEY_POWER);
                           // onButtonPressCallback(KeyCode.KEY_POWEROFF);
                         },
@@ -105,11 +106,11 @@ class Remote extends StatelessWidget {
                     RemoteButton(
                       size: _buttonSize,
                       onPressed: () {
-                        log('ABC button pressed');
-                        // TODO: find the key code
-                        // onButtonPressCallback(KeyCode.KEY_);
+                        log('Pause button pressed');
+                        // TODO: rearrange buttons to make sense
+                        onButtonPressCallback(KeyCode.KEY_PAUSE);
                       },
-                      child: RemoteIcons.abc,
+                      child: RemoteIcons.pause,
                     ),
                   ],
                 ),
@@ -120,20 +121,24 @@ class Remote extends StatelessWidget {
                     RemoteRing(
                       size: _ringSize,
                       onPressedUp: () {
+                        log('Up button pressed');
                         onButtonPressCallback(KeyCode.KEY_UP);
                       },
                       onPressedRight: () {
+                        log('Right button pressed');
                         onButtonPressCallback(KeyCode.KEY_RIGHT);
                       },
                       onPressedBottom: () {
+                        log('Down button pressed');
                         onButtonPressCallback(KeyCode.KEY_DOWN);
                       },
                       onPressedLeft: () {
+                        log('Left button pressed');
                         onButtonPressCallback(KeyCode.KEY_LEFT);
                       },
                       onPressedCenter: () {
-                        // TODO what is the key?
-                        // onButtonPressCallback(KeyCode.KEY_OPEN);
+                        log('Center aka enter button pressed');
+                        onButtonPressCallback(KeyCode.KEY_ENTER);
                       },
                     )
                   ],
@@ -145,6 +150,7 @@ class Remote extends StatelessWidget {
                     RemoteButton(
                       size: _buttonSize,
                       onPressed: () {
+                        log('Back aka return button pressed');
                         onButtonPressCallback(KeyCode.KEY_RETURN);
                       },
                       child: RemoteIcons.back,
@@ -153,6 +159,7 @@ class Remote extends StatelessWidget {
                       size: _buttonSize,
                       onPressed: () {
                         // TODO: detect play state
+                        log('Play button pressed');
                         onButtonPressCallback(KeyCode.KEY_PLAY);
                         // onButtonPressCallback(KeyCode.KEY_PAUSE);
                       },
@@ -182,11 +189,14 @@ class Remote extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     RemoteRocker(
+                      // TODO: detect current volume
                       size: _ringSize,
                       onPressedLower: () {
+                        log('Volume down button pressed');
                         onButtonPressCallback(KeyCode.KEY_VOLDOWN);
                       },
                       onPressedHigher: () {
+                        log('Volume up button pressed');
                         onButtonPressCallback(KeyCode.KEY_VOLUP);
                       },
                     ),

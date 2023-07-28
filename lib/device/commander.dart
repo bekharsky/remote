@@ -3,12 +3,6 @@ import 'dart:io';
 import 'dart:async';
 import '../key_codes.dart';
 
-main() async {
-  var sender = Commander(name: 'Remote', host: '192.168.3.6');
-  await sender.fetchToken();
-  await sender.sendKey(KeyCode.KEY_VOLDOWN);
-}
-
 class SamsungHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {

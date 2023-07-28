@@ -4,16 +4,9 @@ import '../types/device_info.dart';
 import 'discoverer.dart';
 import '../types/tv.dart';
 
-main() async {
-  var collector = Collector();
-  print(await collector.collect());
-}
-
 class Collector {
   final urn = 'urn:samsung.com:device:RemoteControlReceiver:1';
   final headers = {'Accept': 'application/json'};
-
-  Collector();
 
   collect() async {
     List<Tv> tvs = [];

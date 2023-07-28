@@ -69,6 +69,7 @@ class RemotePanelState extends State<RemotePanel> {
   static final bool _isMac = Platform.isMacOS;
   static final double _buttonSize = _isMobile ? 64 : 48;
   late Commander commander;
+  final appName = 'TV Remote';
   SharedPreferences? prefs;
   String name = 'Connect TV';
   String modelName = '';
@@ -90,7 +91,8 @@ class RemotePanelState extends State<RemotePanel> {
       modelName = tv.modelName;
     });
 
-    commander = Commander(name: 'Remote', host: tv.ip);
+    // TODO: connect using stored settings
+    commander = Commander(name: appName, host: tv.ip);
     final token = await commander.fetchToken();
 
     prefs?.setString('name', tv.name);

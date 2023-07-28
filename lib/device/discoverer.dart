@@ -2,12 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
-main() async {
-  var discoverer = Discoverer('urn:samsung.com:device:RemoteControlReceiver:1');
-  // var discoverer = Discoverer('ssdp:all');
-  print(await discoverer.search());
-}
-
 class Discoverer {
   String urn;
   String message = '';
