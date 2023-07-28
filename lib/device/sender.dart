@@ -5,8 +5,11 @@ import '../key_codes.dart';
 
 main() async {
   var sender = Sender(name: 'Remote', host: '192.168.3.6');
-  await sender.fetchToken();
-  await sender.sendKey(KeyCode.KEY_VOLDOWN);
+  String token;
+  token = await sender.fetchToken();
+  print(token);
+  token = await sender.sendKey(KeyCode.KEY_VOLDOWN);
+  print(token);
 }
 
 class SamsungHttpOverrides extends HttpOverrides {
@@ -20,20 +23,29 @@ class SamsungHttpOverrides extends HttpOverrides {
 
 class Sender {
   Duration timeout = const Duration(milliseconds: 2000);
-  final _completer = Completer();
 
   Uri? wssUri;
   WebSocket? socket;
   String? token;
   String? host;
-  String? name;
 
-  Sender({name, this.host}) {
+  Sender({name, this.host, this.token}) {
     HttpOverrides.global = SamsungHttpOverrides();
     final bytes = utf8.encode(name);
     final base64Name = base64.encode(bytes);
 
-    this.name = base64Name;
+    wssUri = Uri(
+      scheme: 'wss',
+      port: 8002,
+      host: host,
+      path: 'api/v2/channels/samsung.remote.control',
+      queryParameters: Map.from(
+        {
+          'name': base64Name,
+          'token': token ?? '',
+        },
+      ),
+    );
   }
 
   getToken() {
@@ -45,19 +57,7 @@ class Sender {
   }
 
   fetchToken() async {
-    wssUri = Uri(
-      scheme: 'wss',
-      port: 8002,
-      host: host,
-      path: 'api/v2/channels/samsung.remote.control',
-      queryParameters: Map.from(
-        {
-          'name': name,
-          'token': token,
-        },
-      ),
-    );
-
+    final completer = Completer();
     socket = await WebSocket.connect(wssUri.toString());
 
     socket?.listen((message) {
@@ -65,34 +65,30 @@ class Sender {
 
       if (data['event'] == 'ms.channel.connect') {
         token = data['data']['token'];
+        wssUri = wssUri?.replace(
+          queryParameters: Map.from({
+            ...wssUri!.queryParameters,
+            'token': token,
+          }),
+        );
         socket?.close();
-        _completer.complete();
+        completer.complete(token);
       }
     });
 
-    return _completer.future;
+    return completer.future;
   }
 
   sendKey(KeyCode keyCode) async {
-    wssUri = Uri(
-      scheme: 'wss',
-      port: 8002,
-      host: host,
-      path: 'api/v2/channels/samsung.remote.control',
-      queryParameters: Map.from(
-        {
-          'name': name,
-          'token': token,
-        },
-      ),
-    );
-
+    final completer = Completer();
     socket = await WebSocket.connect(wssUri.toString());
 
     socket?.listen((message) {
       var data = jsonDecode(message);
 
       if (data['event'] == 'ms.channel.connect') {
+        token = data['data']['token'] ?? token;
+
         String command = jsonEncode({
           'method': 'ms.remote.control',
           'params': {
@@ -105,7 +101,10 @@ class Sender {
 
         socket?.add(command);
         socket?.close();
+        completer.complete(token);
       }
     });
+
+    return completer.future;
   }
 }

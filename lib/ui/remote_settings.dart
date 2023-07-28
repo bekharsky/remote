@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:remote/device/collector.dart';
 import 'package:sheet/sheet.dart';
-import '../device/tv.dart';
+import '../types/tv.dart';
 
 class TvListView extends StatefulWidget {
   const TvListView({super.key});
