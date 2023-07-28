@@ -57,7 +57,7 @@ class Sender {
   }
 
   fetchToken() async {
-    final completer = Completer();
+    final Completer<String> completer = Completer<String>();
     socket = await WebSocket.connect(wssUri.toString());
 
     socket?.listen((message) {
@@ -72,7 +72,7 @@ class Sender {
           }),
         );
         socket?.close();
-        completer.complete(token);
+        completer.complete('$token');
       }
     });
 
@@ -80,7 +80,7 @@ class Sender {
   }
 
   sendKey(KeyCode keyCode) async {
-    final completer = Completer();
+    final Completer<String> completer = Completer<String>();
     socket = await WebSocket.connect(wssUri.toString());
 
     socket?.listen((message) {
@@ -101,7 +101,7 @@ class Sender {
 
         socket?.add(command);
         socket?.close();
-        completer.complete(token);
+        completer.complete('$token');
       }
     });
 
