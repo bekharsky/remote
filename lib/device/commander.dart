@@ -4,12 +4,9 @@ import 'dart:async';
 import '../key_codes.dart';
 
 main() async {
-  var sender = Sender(name: 'Remote', host: '192.168.3.6');
-  String token;
-  token = await sender.fetchToken();
-  print(token);
-  token = await sender.sendKey(KeyCode.KEY_VOLDOWN);
-  print(token);
+  var sender = Commander(name: 'Remote', host: '192.168.3.6');
+  await sender.fetchToken();
+  await sender.sendKey(KeyCode.KEY_VOLDOWN);
 }
 
 class SamsungHttpOverrides extends HttpOverrides {
@@ -21,7 +18,7 @@ class SamsungHttpOverrides extends HttpOverrides {
   }
 }
 
-class Sender {
+class Commander {
   Duration timeout = const Duration(milliseconds: 2000);
 
   Uri? wssUri;
@@ -29,7 +26,7 @@ class Sender {
   String? token;
   String? host;
 
-  Sender({name, this.host, this.token}) {
+  Commander({name, this.host, this.token}) {
     HttpOverrides.global = SamsungHttpOverrides();
     final bytes = utf8.encode(name);
     final base64Name = base64.encode(bytes);
