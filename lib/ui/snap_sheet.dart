@@ -1,10 +1,18 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:remote/key_codes.dart';
 import 'package:remote/ui/remote.dart';
 import 'package:sheet/sheet.dart';
+import '../types/tv.dart';
 
 class SnapSheet extends StatefulWidget {
-  const SnapSheet({super.key});
+  final void Function(Tv) onTvSelectCallback;
+  final void Function(KeyCode) onButtonPressCallback;
+  const SnapSheet({
+    super.key,
+    required this.onTvSelectCallback,
+    required this.onButtonPressCallback,
+  });
 
   @override
   SnapSheetState createState() => SnapSheetState();
@@ -43,7 +51,10 @@ class SnapSheetState extends State<SnapSheet> {
       ),
       controller: controller,
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-      child: const Remote(),
+      child: Remote(
+        onTvSelectCallback: widget.onTvSelectCallback,
+        onButtonPressCallback: widget.onButtonPressCallback,
+      ),
     );
   }
 }

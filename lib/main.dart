@@ -2,9 +2,13 @@ import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:remote/device/commander.dart';
+import 'package:remote/key_codes.dart';
+import 'package:remote/types/tv.dart';
 import 'package:remote/ui/snap_sheet.dart';
 import 'package:sheet/route.dart';
 import 'ui/window_buttons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +68,39 @@ class RemotePanelState extends State<RemotePanel> {
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
   static final bool _isMac = Platform.isMacOS;
   static final double _buttonSize = _isMobile ? 64 : 48;
+  late Commander commander;
+  SharedPreferences? prefs;
+  String name = 'Connect TV';
+  String modelName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // TODO: init commander
+    initPrefs();
+  }
+
+  Future<void> initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  onTvSelectCallback(Tv tv) async {
+    setState(() {
+      name = tv.name;
+      modelName = tv.modelName;
+    });
+
+    commander = Commander(name: 'Remote', host: tv.ip);
+    final token = await commander.fetchToken();
+
+    prefs?.setString('name', tv.name);
+    prefs?.setString('model', tv.modelName);
+    prefs?.setString('token', token ?? '');
+  }
+
+  onButtonPressCallback(KeyCode keyCode) {
+    commander.sendKey(keyCode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,17 +131,20 @@ class RemotePanelState extends State<RemotePanel> {
                     _isMac ? Container() : const WindowButtons(),
                   ],
                 ),
-                const Text(
-                  'Samsung 5 Series (43)',
-                  style: TextStyle(
+                Text(
+                  name,
+                  style: const TextStyle(
                     color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                 ),
-                const Text('UE43M5550'),
+                Text(modelName),
               ],
             ),
           ),
-          const SnapSheet(),
+          SnapSheet(
+            onTvSelectCallback: onTvSelectCallback,
+            onButtonPressCallback: onButtonPressCallback,
+          ),
         ],
       ),
     );

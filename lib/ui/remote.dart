@@ -10,9 +10,16 @@ import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_settings.dart';
 import 'package:remote/ui/remote_tap.dart';
 
+import '../key_codes.dart';
+import '../types/tv.dart';
+
 class Remote extends StatelessWidget {
+  final void Function(Tv) onTvSelectCallback;
+  final void Function(KeyCode) onButtonPressCallback;
   const Remote({
     super.key,
+    required this.onTvSelectCallback,
+    required this.onButtonPressCallback,
   });
 
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
@@ -49,8 +56,9 @@ class Remote extends StatelessWidget {
                       ),
                       child: RemoteButton(
                         size: _powerButtonSize,
-                        onPressed: () async {
-                          log('Power button pressed');
+                        onPressed: () {
+                          onButtonPressCallback(KeyCode.KEY_POWER);
+                          // onButtonPressCallback(KeyCode.KEY_POWEROFF);
                         },
                         child: RemoteIcons.power,
                       ),
@@ -62,12 +70,14 @@ class Remote extends StatelessWidget {
                       child: RemoteTap(
                         width: _powerButtonSize,
                         height: _powerButtonSize,
-                        onPressed: () async {
+                        onPressed: () {
                           log('Settings button pressed');
                           Navigator.of(context).push(
                             CupertinoSheetRoute<void>(
                               builder: (BuildContext context) {
-                                return const RemoteSettings();
+                                return RemoteSettings(
+                                  onTapCallback: onTvSelectCallback,
+                                );
                               },
                             ),
                           );
@@ -85,15 +95,19 @@ class Remote extends StatelessWidget {
                   children: [
                     RemoteButton(
                       size: _buttonSize,
-                      onPressed: () async {
+                      onPressed: () {
                         log('123 button pressed');
+                        // TODO: find the key code
+                        // onButtonPressCallback(KeyCode.KEY_);
                       },
                       child: RemoteIcons.num,
                     ),
                     RemoteButton(
                       size: _buttonSize,
-                      onPressed: () async {
+                      onPressed: () {
                         log('ABC button pressed');
+                        // TODO: find the key code
+                        // onButtonPressCallback(KeyCode.KEY_);
                       },
                       child: RemoteIcons.abc,
                     ),
@@ -105,20 +119,21 @@ class Remote extends StatelessWidget {
                   children: [
                     RemoteRing(
                       size: _ringSize,
-                      onPressedUp: () async {
-                        log('Up button pressed');
+                      onPressedUp: () {
+                        onButtonPressCallback(KeyCode.KEY_UP);
                       },
-                      onPressedRight: () async {
-                        log('Right button pressed');
+                      onPressedRight: () {
+                        onButtonPressCallback(KeyCode.KEY_RIGHT);
                       },
-                      onPressedBottom: () async {
-                        log('Bottom button pressed');
+                      onPressedBottom: () {
+                        onButtonPressCallback(KeyCode.KEY_DOWN);
                       },
-                      onPressedLeft: () async {
-                        log('Left button pressed');
+                      onPressedLeft: () {
+                        onButtonPressCallback(KeyCode.KEY_LEFT);
                       },
-                      onPressedCenter: () async {
-                        log('Center button pressed');
+                      onPressedCenter: () {
+                        // TODO what is the key?
+                        // onButtonPressCallback(KeyCode.KEY_OPEN);
                       },
                     )
                   ],
@@ -129,15 +144,17 @@ class Remote extends StatelessWidget {
                   children: [
                     RemoteButton(
                       size: _buttonSize,
-                      onPressed: () async {
-                        log('Back button pressed');
+                      onPressed: () {
+                        onButtonPressCallback(KeyCode.KEY_RETURN);
                       },
                       child: RemoteIcons.back,
                     ),
                     RemoteButton(
                       size: _buttonSize,
-                      onPressed: () async {
-                        log('Play button pressed');
+                      onPressed: () {
+                        // TODO: detect play state
+                        onButtonPressCallback(KeyCode.KEY_PLAY);
+                        // onButtonPressCallback(KeyCode.KEY_PAUSE);
                       },
                       child: RemoteIcons.play,
                     ),
@@ -149,8 +166,8 @@ class Remote extends StatelessWidget {
                   children: [
                     RemoteButton(
                       size: _buttonSize,
-                      onPressed: () async {
-                        log('Home button pressed');
+                      onPressed: () {
+                        onButtonPressCallback(KeyCode.KEY_HOME);
                       },
                       child: RemoteIcons.home,
                     ),
@@ -166,11 +183,11 @@ class Remote extends StatelessWidget {
                   children: [
                     RemoteRocker(
                       size: _ringSize,
-                      onPressedLower: () async {
-                        log('Lower button pressed');
+                      onPressedLower: () {
+                        onButtonPressCallback(KeyCode.KEY_VOLDOWN);
                       },
-                      onPressedHigher: () async {
-                        log('Higher button pressed');
+                      onPressedHigher: () {
+                        onButtonPressCallback(KeyCode.KEY_VOLUP);
                       },
                     ),
                   ],

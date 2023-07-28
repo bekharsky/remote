@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:remote/device/collector.dart';
-import 'package:remote/device/commander.dart';
 import 'package:sheet/sheet.dart';
 import '../types/tv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TvListView extends StatefulWidget {
-  const TvListView({super.key});
+  final void Function(Tv) onTapCallback;
+  const TvListView({super.key, required this.onTapCallback});
 
   @override
   TvListViewState createState() => TvListViewState();
 }
 
 class TvListViewState extends State<TvListView> {
-  SharedPreferences? prefs;
   final tvCollector = Collector();
   final dummyTv = Tv(
     name: 'Some Samsung TV',
@@ -27,12 +25,7 @@ class TvListViewState extends State<TvListView> {
   @override
   void initState() {
     super.initState();
-    initPrefs();
     _tvsFuture = _loadItems();
-  }
-
-  Future<void> initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
   }
 
   Future<List<Tv>> _loadItems() async {
@@ -91,25 +84,13 @@ class TvListViewState extends State<TvListView> {
                 // leading: const Icon(Icons.tv),
                 onTap: () async {
                   Navigator.of(context).pop();
-                  // TODO: all tv operations after click should happen inside main
                   final tv = snapshot.data?[index];
 
                   if (tv == null) {
                     return;
                   }
 
-                  prefs?.setString('name', tv.name);
-                  prefs?.setString('model', tv.modelName);
-
-                  final commander = Commander(
-                    name: 'Remote',
-                    host: tv.ip,
-                  );
-                  final token = await commander.fetchToken();
-
-                  if (token != null) {
-                    prefs?.setString('token', token);
-                  }
+                  widget.onTapCallback(tv);
                 },
               );
             },
@@ -135,14 +116,15 @@ class TvListViewState extends State<TvListView> {
 }
 
 class RemoteSettings extends StatelessWidget {
-  const RemoteSettings({super.key});
+  final void Function(Tv) onTapCallback;
+  const RemoteSettings({super.key, required this.onTapCallback});
 
   @override
   Widget build(BuildContext context) {
-    return const Material(
+    return Material(
       color: Colors.transparent,
       child: SheetMediaQuery(
-        child: TvListView(),
+        child: TvListView(onTapCallback: onTapCallback),
       ),
     );
   }
