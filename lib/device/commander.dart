@@ -45,7 +45,7 @@ class Commander {
     );
   }
 
-  getToken() {
+  String? getToken() {
     return token;
   }
 
@@ -53,7 +53,7 @@ class Commander {
     this.token = token;
   }
 
-  fetchToken() async {
+  Future<String?> fetchToken() async {
     final Completer<String> completer = Completer<String>();
     socket = await WebSocket.connect(wssUri.toString());
 
@@ -76,7 +76,7 @@ class Commander {
     return completer.future;
   }
 
-  sendKey(KeyCode keyCode) async {
+  Future<String?> sendKey(KeyCode keyCode) async {
     final Completer<String> completer = Completer<String>();
     socket = await WebSocket.connect(wssUri.toString());
 
