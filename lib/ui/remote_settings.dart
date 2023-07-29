@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remote/device/collector.dart';
+import 'package:remote/services/collector.dart';
 import 'package:sheet/sheet.dart';
 import '../types/tv.dart';
 

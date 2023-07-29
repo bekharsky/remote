@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:remote/device/commander.dart';
+import 'package:remote/services/commander.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
-import 'package:remote/ui/snap_sheet.dart';
+import 'package:remote/ui/remote_sheet.dart';
 import 'package:sheet/route.dart';
 import 'ui/window_buttons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,7 +110,7 @@ class RemotePanelState extends State<RemotePanel> {
     prefs?.setString('token', token ?? '');
   }
 
-  onButtonPressCallback(KeyCode keyCode) {
+  onPressedCallback(KeyCode keyCode) {
     commander.sendKey(keyCode);
   }
 
@@ -158,9 +158,9 @@ class RemotePanelState extends State<RemotePanel> {
               ],
             ),
           ),
-          SnapSheet(
+          RemoteSheet(
             onTvSelectCallback: onTvSelectCallback,
-            onButtonPressCallback: onButtonPressCallback,
+            onPressedCallback: onPressedCallback,
           ),
         ],
       ),
