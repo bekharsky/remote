@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:remote/key_codes.dart';
+import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote.dart';
 import 'package:sheet/sheet.dart';
 import '../types/tv.dart';

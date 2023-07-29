@@ -3,7 +3,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/device/commander.dart';
-import 'package:remote/key_codes.dart';
+import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
 import 'package:remote/ui/snap_sheet.dart';
 import 'package:sheet/route.dart';
@@ -79,7 +79,6 @@ class RemotePanelState extends State<RemotePanel> {
   @override
   void initState() {
     initPrefs();
-
     super.initState();
   }
 

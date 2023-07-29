@@ -10,7 +10,7 @@ import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_settings.dart';
 import 'package:remote/ui/remote_tap.dart';
 
-import '../key_codes.dart';
+import '../types/key_codes.dart';
 import '../types/tv.dart';
 
 class Remote extends StatelessWidget {

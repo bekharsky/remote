@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
-import '../key_codes.dart';
+import '../types/key_codes.dart';
 
 class SamsungHttpOverrides extends HttpOverrides {
   @override
