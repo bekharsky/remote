@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'dart:io';
@@ -30,16 +31,17 @@ class RemoteSheet extends StatefulWidget {
 class RemoteSheetState extends State<RemoteSheet> {
   final SheetController controller = SheetController();
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
-  static final double _ringSize = _isMobile ? 220 : 166;
+  static final double _ringSize = _isMobile ? 220 : 180;
   static final double _buttonSize = _isMobile ? 64 : 48;
   static final double _powerButtonSize = _isMobile ? 48 : 36;
   static final double _powerPad = (_buttonSize - _powerButtonSize) / 2;
-  static final double _hPad = _isMobile ? 48 : 30;
-  static final double _vPad = _isMobile ? 48 : 30;
+  static final double _hPad = _isMobile ? 48 : 24;
+  static final double _vPad = _isMobile ? 24 : 16;
 
   @override
   void initState() {
     Future<void>.delayed(const Duration(milliseconds: 400), animateSheet);
+    log('$_vPad, $_hPad');
 
     super.initState();
   }
@@ -77,6 +79,22 @@ class RemoteSheetState extends State<RemoteSheet> {
         ),
         child: Column(
           children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 8,
+                  bottom: 8,
+                ),
+                child: Container(
+                  height: 4,
+                  width: 56,
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(73, 73, 73, 1),
+                    borderRadius: BorderRadius.all(Radius.circular(2)),
+                  ),
+                ),
+              ),
+            ]),
             Padding(
               padding: EdgeInsets.fromLTRB(_hPad, _vPad, _hPad, _vPad),
               child: Column(
@@ -107,6 +125,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                           width: _powerButtonSize,
                           height: _powerButtonSize,
                           onPressed: () {
+                            // TODO: move that to the main section/window frame
                             log('Settings button pressed');
                             Navigator.of(context).push(
                               CupertinoSheetRoute<void>(
@@ -132,17 +151,16 @@ class RemoteSheetState extends State<RemoteSheet> {
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
-                          log('123 button pressed');
-                          // TODO: find the key code
-                          // onButtonPressCallback(KeyCode.KEY_);
+                          log('Play button pressed');
+                          widget.onPressedCallback(KeyCode.KEY_PLAY);
                         },
-                        child: RemoteIcons.num,
+                        child: RemoteIcons.play,
                       ),
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
                           log('Pause button pressed');
-                          // TODO: rearrange buttons to make sense
+                          // TODO: detect play state
                           widget.onPressedCallback(KeyCode.KEY_PAUSE);
                         },
                         child: RemoteIcons.pause,
@@ -193,12 +211,10 @@ class RemoteSheetState extends State<RemoteSheet> {
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
-                          // TODO: detect play state
-                          log('Play button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_PLAY);
-                          // onButtonPressCallback(KeyCode.KEY_PAUSE);
+                          log('123 button pressed');
+                          // widget.onPressedCallback(KeyCode.KEY_PLAY);
                         },
-                        child: RemoteIcons.play,
+                        child: RemoteIcons.num,
                       ),
                     ],
                   ),
