@@ -73,30 +73,41 @@ class RemotePanelState extends State<RemotePanel> {
   SharedPreferences? prefs;
   String name = 'Connect TV';
   String modelName = '';
+  String? token;
+  String? host;
 
   @override
   void initState() {
-    super.initState();
-    // TODO: init commander
     initPrefs();
+
+    super.initState();
   }
 
   Future<void> initPrefs() async {
     prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs?.getString('name') ?? '';
+      modelName = prefs?.getString('modelName') ?? '';
+      token = prefs?.getString('token') ?? '';
+      host = prefs?.getString('host') ?? '';
+    });
+
+    commander = Commander(name: appName, host: host, token: token);
   }
 
   onTvSelectCallback(Tv tv) async {
     setState(() {
       name = tv.name;
       modelName = tv.modelName;
+      host = tv.ip;
     });
 
-    // TODO: connect using stored settings
-    commander = Commander(name: appName, host: tv.ip);
-    final token = await commander.fetchToken();
+    commander = Commander(name: appName, host: host);
+    token = await commander.fetchToken();
 
     prefs?.setString('name', tv.name);
-    prefs?.setString('model', tv.modelName);
+    prefs?.setString('modelName', tv.modelName);
+    prefs?.setString('host', tv.ip);
     prefs?.setString('token', token ?? '');
   }
 
@@ -139,7 +150,12 @@ class RemotePanelState extends State<RemotePanel> {
                     color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                 ),
-                Text(modelName),
+                Text(
+                  modelName,
+                  style: const TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                  ),
+                ),
               ],
             ),
           ),
