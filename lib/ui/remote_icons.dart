@@ -20,6 +20,12 @@ class RemoteIcons {
     color: Colors.white10,
   );
 
+  static Icon tv = Icon(
+    Icons.tv,
+    size: _size,
+    color: Colors.white10,
+  );
+
   static Icon home = Icon(
     Icons.home_outlined,
     size: _size,

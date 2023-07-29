@@ -10,7 +10,7 @@ import 'package:remote/ui/remote_button.dart';
 import 'package:remote/ui/remote_level.dart';
 import 'package:remote/ui/remote_ring.dart';
 import 'package:remote/ui/remote_rocker.dart';
-import 'package:remote/ui/remote_settings.dart';
+import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tap.dart';
 import 'package:sheet/sheet.dart';
 import '../types/tv.dart';
@@ -41,8 +41,6 @@ class RemoteSheetState extends State<RemoteSheet> {
   @override
   void initState() {
     Future<void>.delayed(const Duration(milliseconds: 400), animateSheet);
-    log('$_vPad, $_hPad');
-
     super.initState();
   }
 
@@ -112,6 +110,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                           onPressed: () {
                             log('Power button pressed');
                             widget.onPressedCallback(KeyCode.KEY_POWER);
+                            // TODO: not all TVs support power toggle
                             // onButtonPressCallback(KeyCode.KEY_POWEROFF);
                           },
                           child: RemoteIcons.power,
@@ -126,18 +125,24 @@ class RemoteSheetState extends State<RemoteSheet> {
                           height: _powerButtonSize,
                           onPressed: () {
                             // TODO: move that to the main section/window frame
-                            log('Settings button pressed');
+                            log('TV list button pressed');
                             Navigator.of(context).push(
                               CupertinoSheetRoute<void>(
                                 builder: (BuildContext context) {
-                                  return RemoteSettings(
-                                    onTapCallback: widget.onTvSelectCallback,
+                                  return Material(
+                                    color: Colors.transparent,
+                                    child: SheetMediaQuery(
+                                      child: TvList(
+                                        onTapCallback:
+                                            widget.onTvSelectCallback,
+                                      ),
+                                    ),
                                   );
                                 },
                               ),
                             );
                           },
-                          child: RemoteIcons.settings,
+                          child: RemoteIcons.tv,
                         ),
                       ),
                     ],
@@ -181,7 +186,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                           log('Right button pressed');
                           widget.onPressedCallback(KeyCode.KEY_RIGHT);
                         },
-                        onPressedBottom: () {
+                        onPressedDown: () {
                           log('Down button pressed');
                           widget.onPressedCallback(KeyCode.KEY_DOWN);
                         },

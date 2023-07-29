@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:remote/services/collector.dart';
-import 'package:sheet/sheet.dart';
 import '../types/tv.dart';
 
-class TvListView extends StatefulWidget {
+class TvList extends StatefulWidget {
   final void Function(Tv) onTapCallback;
-  const TvListView({super.key, required this.onTapCallback});
+  const TvList({super.key, required this.onTapCallback});
 
   @override
-  TvListViewState createState() => TvListViewState();
+  TvListState createState() => TvListState();
 }
 
-class TvListViewState extends State<TvListView> {
+class TvListState extends State<TvList> {
   final tvCollector = Collector();
   final dummyTv = Tv(
     name: 'Some Samsung TV',
@@ -111,21 +110,6 @@ class TvListViewState extends State<TvListView> {
           );
         }
       },
-    );
-  }
-}
-
-class RemoteSettings extends StatelessWidget {
-  final void Function(Tv) onTapCallback;
-  const RemoteSettings({super.key, required this.onTapCallback});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: SheetMediaQuery(
-        child: TvListView(onTapCallback: onTapCallback),
-      ),
     );
   }
 }

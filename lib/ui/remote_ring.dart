@@ -8,29 +8,28 @@ class RemoteRing extends StatefulWidget {
   final double size;
   final void Function() onPressedUp;
   final void Function() onPressedRight;
-  final void Function() onPressedBottom;
+  final void Function() onPressedDown;
   final void Function() onPressedLeft;
   final void Function() onPressedCenter;
 
   const RemoteRing({
     Key? key,
-    this.size = 166,
+    this.size = 180,
     required this.onPressedUp,
     required this.onPressedRight,
-    required this.onPressedBottom,
+    required this.onPressedDown,
     required this.onPressedLeft,
     required this.onPressedCenter,
   }) : super(key: key);
 
   @override
-  State<RemoteRing> createState() => _RemoteRingState();
+  State<RemoteRing> createState() => RemoteRingState();
 }
 
-class _RemoteRingState extends State<RemoteRing> {
+class RemoteRingState extends State<RemoteRing> {
   late final double _size = widget.size;
   late final double _centerDia = _size / 2;
   late final double _buttonSize = (_size - _centerDia) / 2;
-
   final BoxDecoration _ringDefaultStyle = const BoxDecoration(
     borderRadius: BorderRadius.all(Radius.circular(9999)),
     color: Color.fromRGBO(73, 73, 73, 1),
@@ -80,7 +79,7 @@ class _RemoteRingState extends State<RemoteRing> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RemoteButton(
-                onPressed: widget.onPressedBottom,
+                onPressed: widget.onPressedDown,
                 size: _buttonSize,
                 child: RemoteIcons.arrowBottom,
               ),
