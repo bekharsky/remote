@@ -8,6 +8,7 @@ import 'package:remote/types/tv.dart';
 import 'package:remote/ui/remote_sheet.dart';
 import 'package:sheet/route.dart';
 import 'ui/window_buttons.dart';
+import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -75,11 +76,21 @@ class RemotePanelState extends State<RemotePanel> {
   String modelName = '';
   String? token;
   String? host;
+  String appLogosDir = 'assets/apps';
+  List<FileSystemEntity> appLogos = [];
 
   @override
   void initState() {
-    initPrefs();
     super.initState();
+    listofFiles();
+    initPrefs();
+  }
+
+  void listofFiles() {
+    setState(() {
+      appLogos = Directory(appLogosDir).listSync();
+      log('$appLogos');
+    });
   }
 
   Future<void> initPrefs() async {
@@ -122,7 +133,6 @@ class RemotePanelState extends State<RemotePanel> {
       body: Stack(
         children: <Widget>[
           Container(
-            //    color: Colors.,
             height: double.infinity,
             width: double.infinity,
             alignment: Alignment.center,
@@ -143,16 +153,46 @@ class RemotePanelState extends State<RemotePanel> {
                     _isMac ? Container() : const WindowButtons(),
                   ],
                 ),
-                Text(
-                  name,
-                  style: const TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, 1),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                        ),
+                      ),
+                      Text(
+                        modelName,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Text(
-                  modelName,
-                  style: const TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, 1),
+                SizedBox(
+                  height: 160,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: appLogos.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final path = appLogos[index].path.replaceAll('\\', '/');
+
+                      return Container(
+                        width: 160,
+                        color: Colors.red,
+                        child: Image.asset(
+                          path,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
