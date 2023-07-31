@@ -1,0 +1,77 @@
+[
+    {
+        "name": "Amazon Music",
+        "icon": "amazon_music.png",
+        "ids": ["3201710014874"]
+    },
+    {
+        "name": "Apple Music",
+        "icon": "apple_music.png",
+        "ids": ["3201908019041"]
+    },
+    {
+        "name": "Apple TV",
+        "icon": "apple_tv.png",
+        "ids": ["3201807016597"]
+    },
+    {
+        "name": "Disney+",
+        "icon": "disney_plus.png",
+        "ids": ["3202009021709", "3201901017640", "3202204027038"]
+    },
+    {
+        "name": "Иви",
+        "icon": "ivi.png",
+        "ids": ["20170717142355000"]
+    },
+    {
+        "name": "Max",
+        "icon": "max.png",
+        "ids": ["3202301029760"]
+    },
+    {
+        "name": "Netflix",
+        "icon": "netflix.png",
+        "ids": ["11101200001", "3201907018807"]
+    },
+    {
+        "name": "Plex",
+        "icon": "plex.png",
+        "ids": ["3201512006963"]
+    },
+    {
+        "name": "Prime Video",
+        "icon": "prime_video.png",
+        "ids": ["3201512006785", "3201910019365"]
+    },
+    {
+        "name": "Spotify",
+        "icon": "spotify.png",
+        "ids": ["3201606009684"]
+    },
+    {
+        "name": "TIDAL",
+        "icon": "tidal.png",
+        "ids": ["3201805016367"]
+    },
+    {
+        "name": "TikTok",
+        "icon": "tiktok.png",
+        "ids": ["3202008021577"]
+    },
+    {
+        "name": "YouTube",
+        "icon": "youtube.png",
+        "ids": ["111299001912"]
+    },
+    {
+        "name": "YouTube Kids",
+        "icon": "youtube_kids.png",
+        "ids": ["3201611010983"]
+    },
+    {
+        "name": "YouTube TV",
+        "icon": "youtube_tv.png",
+        "ids": ["3201707014489"]
+    }
+]
