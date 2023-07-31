@@ -88,6 +88,7 @@ class RemotePanelState extends State<RemotePanel> {
 
   void listofFiles() {
     setState(() {
+      // TODO: identify directory path properly
       appLogos = Directory(appLogosDir).listSync();
       log('$appLogos');
     });
