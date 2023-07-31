@@ -1,11 +1,11 @@
-class Tv {
+class ConnectedTv {
   final String name;
   final String modelName;
   final String id;
   final String ip;
   final String wifiMac;
 
-  Tv({
+  ConnectedTv({
     required this.name,
     required this.modelName,
     required this.id,

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:remote/services/commander.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
+import 'package:remote/types/tv_app.dart';
 import 'package:remote/ui/remote_sheet.dart';
 import 'package:sheet/route.dart';
 import 'ui/window_buttons.dart';
@@ -69,44 +71,47 @@ class RemotePanelState extends State<RemotePanel> {
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
   static final bool _isMac = Platform.isMacOS;
   static final double _buttonSize = _isMobile ? 64 : 48;
-  late Commander commander;
   final appName = 'TV Remote';
+  final appsConfig = 'assets/apps.json';
+  final appIconsPath = 'assets/icons';
+  late Commander commander;
   SharedPreferences? prefs;
-  String name = 'Connect TV';
+  String name = '';
   String modelName = '';
   String? token;
   String? host;
-  String appLogosDir = 'assets/apps';
-  List<FileSystemEntity> appLogos = [];
+  List<TvApp> apps = [];
 
   @override
   void initState() {
     super.initState();
-    listofFiles();
     initPrefs();
-  }
-
-  void listofFiles() {
-    setState(() {
-      // TODO: identify directory path properly
-      appLogos = Directory(appLogosDir).listSync();
-      log('$appLogos');
-    });
+    initApps();
   }
 
   Future<void> initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
-      name = prefs?.getString('name') ?? '';
-      modelName = prefs?.getString('modelName') ?? '';
+      name = prefs?.getString('name') ?? 'Connect TV';
+      modelName = prefs?.getString('modelName') ?? 'Click on the TV icon';
       token = prefs?.getString('token') ?? '';
       host = prefs?.getString('host') ?? '';
     });
 
+    // TODO: state?
     commander = Commander(name: appName, host: host, token: token);
   }
 
-  onTvSelectCallback(Tv tv) async {
+  Future<void> initApps() async {
+    final config = await DefaultAssetBundle.of(context).loadString(appsConfig);
+    final data = jsonDecode(config);
+
+    setState(() {
+      apps = data.map((json) => TvApp.fromJson(json)).toList();
+    });
+  }
+
+  onTvSelectCallback(ConnectedTv tv) async {
     setState(() {
       name = tv.name;
       modelName = tv.modelName;
@@ -181,9 +186,10 @@ class RemotePanelState extends State<RemotePanel> {
                   height: 160,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: appLogos.length,
+                    itemCount: apps.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final path = appLogos[index].path.replaceAll('\\', '/');
+                      final icon = apps[index].icon;
+                      final path = '$appIconsPath/$icon';
 
                       return Container(
                         width: 160,

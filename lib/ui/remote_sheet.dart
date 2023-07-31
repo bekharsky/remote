@@ -16,7 +16,7 @@ import 'package:sheet/sheet.dart';
 import '../types/tv.dart';
 
 class RemoteSheet extends StatefulWidget {
-  final void Function(Tv) onTvSelectCallback;
+  final void Function(ConnectedTv) onTvSelectCallback;
   final void Function(KeyCode) onPressedCallback;
   const RemoteSheet({
     Key? key,

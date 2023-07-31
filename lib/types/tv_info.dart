@@ -1,5 +1,5 @@
-class DeviceInfo {
-  Device device;
+class TvInfo {
+  Tv device;
   String id;
   String isSupport;
   String name;
@@ -8,7 +8,7 @@ class DeviceInfo {
   String uri;
   String version;
 
-  DeviceInfo({
+  TvInfo({
     required this.device,
     required this.id,
     required this.isSupport,
@@ -19,9 +19,9 @@ class DeviceInfo {
     required this.version,
   });
 
-  factory DeviceInfo.fromJson(Map<String, dynamic> json) {
-    return DeviceInfo(
-      device: Device.fromJson(json['device']),
+  factory TvInfo.fromJson(Map<String, dynamic> json) {
+    return TvInfo(
+      device: Tv.fromJson(json['device']),
       id: json['id'],
       isSupport: json['isSupport'],
       name: json['name'],
@@ -33,7 +33,7 @@ class DeviceInfo {
   }
 }
 
-class Device {
+class Tv {
   bool frameTVSupport;
   bool gamePadSupport;
   bool imeSyncedSupport;
@@ -59,7 +59,7 @@ class Device {
   String udn;
   String wifiMac;
 
-  Device({
+  Tv({
     required this.frameTVSupport,
     required this.gamePadSupport,
     required this.imeSyncedSupport,
@@ -86,8 +86,8 @@ class Device {
     required this.wifiMac,
   });
 
-  factory Device.fromJson(Map<String, dynamic> json) {
-    return Device(
+  factory Tv.fromJson(Map<String, dynamic> json) {
+    return Tv(
       frameTVSupport: json['FrameTVSupport'] == 'true',
       gamePadSupport: json['GamePadSupport'] == 'true',
       imeSyncedSupport: json['ImeSyncedSupport'] == 'true',

@@ -3,7 +3,7 @@ import 'package:remote/services/collector.dart';
 import '../types/tv.dart';
 
 class TvList extends StatefulWidget {
-  final void Function(Tv) onTapCallback;
+  final void Function(ConnectedTv) onTapCallback;
   const TvList({super.key, required this.onTapCallback});
 
   @override
@@ -12,14 +12,14 @@ class TvList extends StatefulWidget {
 
 class TvListState extends State<TvList> {
   final tvCollector = Collector();
-  final dummyTv = Tv(
+  final dummyTv = ConnectedTv(
     name: 'Some Samsung TV',
     modelName: 'UW888',
     id: 'uuid',
     ip: '127.0.0.1',
     wifiMac: '00:00',
   );
-  Future<List<Tv>> _tvsFuture = Future.value([]);
+  Future<List<ConnectedTv>> _tvsFuture = Future.value([]);
 
   @override
   void initState() {
@@ -27,8 +27,8 @@ class TvListState extends State<TvList> {
     _tvsFuture = _loadItems();
   }
 
-  Future<List<Tv>> _loadItems() async {
-    List<Tv> tvs = await tvCollector.collect();
+  Future<List<ConnectedTv>> _loadItems() async {
+    List<ConnectedTv> tvs = await tvCollector.collect();
     return [
       ...tvs,
       dummyTv,
@@ -49,7 +49,7 @@ class TvListState extends State<TvList> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Tv>>(
+    return FutureBuilder<List<ConnectedTv>>(
       future: _tvsFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
