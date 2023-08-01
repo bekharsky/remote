@@ -91,6 +91,7 @@ class RemotePanelState extends State<RemotePanel> {
 
   Future<void> initPrefs() async {
     prefs = await SharedPreferences.getInstance();
+
     setState(() {
       name = prefs?.getString('name') ?? 'Connect TV';
       modelName = prefs?.getString('modelName') ?? 'Click on the TV icon';
@@ -150,7 +151,8 @@ class RemotePanelState extends State<RemotePanel> {
                   children: [
                     Expanded(
                       child: SizedBox(
-                        height: _buttonSize,
+                        height:
+                            36, // TODO: detect proper height or move text to MoveWindow
                         child: MoveWindow(
                           onDoubleTap: () => {},
                         ),
@@ -160,14 +162,14 @@ class RemotePanelState extends State<RemotePanel> {
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         name,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.w500,
                           color: Color.fromRGBO(255, 255, 255, 1),
                         ),
@@ -182,24 +184,33 @@ class RemotePanelState extends State<RemotePanel> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 160,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: apps.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final icon = apps[index].icon;
-                      final path = '$appIconsPath/$icon';
+                Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  child: SizedBox(
+                    height: 120,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: apps.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final icon = apps[index].icon;
+                        final path = '$appIconsPath/$icon';
 
-                      return Container(
-                        width: 160,
-                        color: Colors.red,
-                        child: Image.asset(
-                          path,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    },
+                        return Container(
+                          width: 120,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          margin: index < apps.length - 1
+                              ? const EdgeInsets.fromLTRB(16, 0, 0, 0)
+                              : const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                          child: Image.asset(
+                            path,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
