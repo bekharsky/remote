@@ -104,7 +104,7 @@ class RemotePanelState extends State<RemotePanel> {
 
   Future<void> initApps() async {
     final config = await DefaultAssetBundle.of(context).loadString(appsConfig);
-    final data = jsonDecode(config);
+    final List<dynamic> data = jsonDecode(config);
 
     setState(() {
       apps = data.map((json) => TvApp.fromJson(json)).toList();
