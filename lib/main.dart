@@ -192,6 +192,7 @@ class RemotePanelState extends State<RemotePanel> {
                       itemBuilder: (BuildContext context, int index) {
                         final icon = apps[index].icon;
                         final path = '$appIconsPath/$icon';
+                        final isLastItem = index == apps.length - 1;
 
                         return Container(
                           width: 120,
@@ -199,9 +200,9 @@ class RemotePanelState extends State<RemotePanel> {
                             borderRadius: BorderRadius.circular(16),
                           ),
                           clipBehavior: Clip.antiAlias,
-                          margin: index < apps.length - 1
-                              ? const EdgeInsets.fromLTRB(16, 0, 0, 0)
-                              : const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                          margin: isLastItem
+                              ? const EdgeInsets.fromLTRB(16, 0, 16, 0)
+                              : const EdgeInsets.fromLTRB(16, 0, 0, 0),
                           child: Image.asset(
                             path,
                             fit: BoxFit.cover,
