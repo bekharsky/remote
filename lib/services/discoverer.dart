@@ -20,7 +20,7 @@ class Discoverer {
 
   Future<List<String>> search() async {
     List<String> buffer = [];
-    Duration timeout = const Duration(milliseconds: 2000);
+    Duration timeout = const Duration(milliseconds: 4000);
     InternetAddress anyIPv4 = InternetAddress.anyIPv4;
     RawDatagramSocket socket = await RawDatagramSocket.bind(anyIPv4, port);
 

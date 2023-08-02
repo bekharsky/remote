@@ -10,7 +10,6 @@ import 'package:remote/types/tv_app.dart';
 import 'package:remote/ui/remote_sheet.dart';
 import 'package:sheet/route.dart';
 import 'ui/window_buttons.dart';
-import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -70,7 +69,6 @@ class RemotePanel extends StatefulWidget {
 class RemotePanelState extends State<RemotePanel> {
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
   static final bool _isMac = Platform.isMacOS;
-  static final double _buttonSize = _isMobile ? 64 : 48;
   final appName = 'TV Remote';
   final appsConfig = 'assets/apps.json';
   final appIconsPath = 'assets/icons';
