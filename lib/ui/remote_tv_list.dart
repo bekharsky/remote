@@ -95,16 +95,16 @@ class TvListState extends State<TvList> {
             },
           );
         } else if (snapshot.hasError) {
-          return const Row(
+          return Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Text('Error loading items'),
             ],
           );
         } else {
-          return const Row(
+          return Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               CircularProgressIndicator(),
             ],
           );

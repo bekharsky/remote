@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:developer';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,8 +127,12 @@ class RemotePanelState extends State<RemotePanel> {
     prefs?.setString('token', token ?? '');
   }
 
-  onPressedCallback(KeyCode keyCode) {
+  onKeyCallback(KeyCode keyCode) {
     commander.sendKey(keyCode);
+  }
+
+  onAppCallback(String appId) {
+    commander.launchApp(appId);
   }
 
   @override
@@ -190,22 +195,29 @@ class RemotePanelState extends State<RemotePanel> {
                       scrollDirection: Axis.horizontal,
                       itemCount: apps.length,
                       itemBuilder: (BuildContext context, int index) {
+                        final id = apps[index].ids[0];
                         final icon = apps[index].icon;
                         final path = '$appIconsPath/$icon';
                         final isLastItem = index == apps.length - 1;
 
-                        return Container(
-                          width: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          margin: isLastItem
-                              ? const EdgeInsets.fromLTRB(16, 0, 16, 0)
-                              : const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                          child: Image.asset(
-                            path,
-                            fit: BoxFit.cover,
+                        return GestureDetector(
+                          onTapDown: (TapDownDetails details) {
+                            log('App launch: $id');
+                            onAppCallback(id);
+                          },
+                          child: Container(
+                            width: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            margin: isLastItem
+                                ? const EdgeInsets.fromLTRB(16, 0, 16, 0)
+                                : const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Image.asset(
+                              path,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         );
                       },
@@ -217,7 +229,7 @@ class RemotePanelState extends State<RemotePanel> {
           ),
           RemoteSheet(
             onTvSelectCallback: onTvSelectCallback,
-            onPressedCallback: onPressedCallback,
+            onPressedCallback: onKeyCallback,
           ),
         ],
       ),

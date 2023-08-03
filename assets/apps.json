@@ -32,7 +32,8 @@
     {
         "name": "Netflix",
         "icon": "netflix.png",
-        "ids": ["11101200001", "3201907018807"]
+        "ids": ["11101200001", "3201907018807"],
+        "org": "org.tizen.netflixapp"
     },
     {
         "name": "Plex",

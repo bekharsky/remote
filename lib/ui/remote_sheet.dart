@@ -13,7 +13,7 @@ import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tap.dart';
 import 'package:sheet/sheet.dart';
-import '../types/tv.dart';
+import 'package:remote/types/tv.dart';
 
 class RemoteSheet extends StatefulWidget {
   final void Function(ConnectedTv) onTvSelectCallback;
@@ -45,8 +45,8 @@ class RemoteSheetState extends State<RemoteSheet> {
   }
 
   void animateSheet() {
-    controller.relativeAnimateTo(
-      0.85,
+    controller.animateTo(
+      580,
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeOut,
     );
@@ -62,7 +62,8 @@ class RemoteSheetState extends State<RemoteSheet> {
   Widget build(BuildContext context) {
     return Sheet(
       physics: const SnapSheetPhysics(
-        stops: <double>[0.6, 0.85],
+        relative: false,
+        stops: <double>[580, 420],
         parent: BouncingSheetPhysics(),
       ),
       controller: controller,
