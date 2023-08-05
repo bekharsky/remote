@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:async';
 import '../types/key_codes.dart';
@@ -105,6 +106,7 @@ class Commander {
 
     socket?.listen((message) {
       var data = jsonDecode(message);
+      log(message);
 
       if (data['event'] == 'ms.channel.connect') {
         token = data['data']['token'] ?? token;

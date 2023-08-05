@@ -2,77 +2,121 @@
     {
         "name": "Amazon Music",
         "icon": "amazon_music.png",
-        "ids": ["3201710014874"]
+        "ids": ["3201710014874"],
+        "orgs": [],
+        "visible": false,
+        "position": 99
     },
     {
         "name": "Apple Music",
         "icon": "apple_music.png",
-        "ids": ["3201908019041"]
+        "ids": ["3201908019041"],
+        "orgs": [],
+        "visible": false,
+        "position": 99
     },
     {
         "name": "Apple TV",
         "icon": "apple_tv.png",
-        "ids": ["3201807016597"]
+        "ids": ["3201807016597"],
+        "orgs": ["Y6A54cEa22.AppleTV"],
+        "visible": true,
+        "position": 2
     },
     {
         "name": "Disney+",
         "icon": "disney_plus.png",
-        "ids": ["3202009021709", "3201901017640", "3202204027038"]
+        "ids": ["3202009021709", "3201901017640", "3202204027038"],
+        "orgs": ["MCmYXNxgcu.DisneyPlus"],
+        "visible": false,
+        "position": 99
     },
     {
         "name": "Иви",
         "icon": "ivi.png",
-        "ids": ["20170717142355000"]
+        "ids": ["20170717142355000"],
+        "orgs": ["FD7JrMU4L1.ivi"],
+        "visible": true,
+        "position": 99
     },
     {
         "name": "Max",
         "icon": "max.png",
-        "ids": ["3202301029760"]
+        "ids": ["3202301029760"],
+        "orgs": [],
+        "visible": false,
+        "position": 99
     },
     {
         "name": "Netflix",
         "icon": "netflix.png",
         "ids": ["11101200001", "3201907018807"],
-        "org": "org.tizen.netflixapp"
+        "orgs": ["RN1MCdNq8t.Netflix", "org.tizen.netflix-app"],
+        "visible": true,
+        "position": 3
     },
     {
         "name": "Plex",
         "icon": "plex.png",
-        "ids": ["3201512006963"]
+        "ids": ["3201512006963"],
+        "orgs": ["kIciSQlYEM.plex"],
+        "visible": true,
+        "position": 99
     },
     {
         "name": "Prime Video",
         "icon": "prime_video.png",
-        "ids": ["3201512006785", "3201910019365"]
+        "ids": ["3201512006785", "3201910019365"],
+        "orgs": ["evKhCgZelL.AmazonIgnitionLauncher2", "org.tizen.ignition", "org.tizen.primevideo"],
+        "visible": true,
+        "position": 4
     },
     {
         "name": "Spotify",
         "icon": "spotify.png",
-        "ids": ["3201606009684"]
+        "ids": ["3201606009684"],
+        "orgs": ["rJeHak5zRg.Spotify"],
+        "visible": true,
+        "position": 5
     },
     {
         "name": "TIDAL",
         "icon": "tidal.png",
-        "ids": ["3201805016367"]
+        "ids": ["3201805016367"],
+        "orgs": [],
+        "visible": false,
+        "position": 99
     },
     {
         "name": "TikTok",
         "icon": "tiktok.png",
-        "ids": ["3202008021577"]
+        "ids": ["3202008021577"],
+        "orgs": [],
+        "visible": false,
+        "position": 99
     },
     {
         "name": "YouTube",
         "icon": "youtube.png",
-        "ids": ["111299001912"]
+        "ids": ["111299001912"],
+        "orgs": ["9Ur5IzDKqV.TizenYouTube"],
+        "visible": true,
+        "position": 1
     },
     {
         "name": "YouTube Kids",
         "icon": "youtube_kids.png",
-        "ids": ["3201611010983"]
+        "ids": ["3201611010983"],
+        "orgs": ["5SLwh7m3En.TizenYouTubeKids"],
+        "visible": true,
+        "position": 6
     },
     {
         "name": "YouTube TV",
         "icon": "youtube_tv.png",
-        "ids": ["3201707014489"]
+        "ids": ["3201707014489"],
+        "orgs": [],
+        "visible": false,
+        "position": 99
     }
 ]

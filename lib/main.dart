@@ -107,7 +107,11 @@ class RemotePanelState extends State<RemotePanel> {
     final List<dynamic> data = jsonDecode(config);
 
     setState(() {
-      apps = data.map((json) => TvApp.fromJson(json)).toList();
+      apps = data
+          .map((json) => TvApp.fromJson(json))
+          .where((app) => app.visible && app.orgs.isNotEmpty)
+          .toList();
+      apps.sort((a, b) => a.position.compareTo(b.position));
     });
   }
 
@@ -195,8 +199,9 @@ class RemotePanelState extends State<RemotePanel> {
                       scrollDirection: Axis.horizontal,
                       itemCount: apps.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final id = apps[index].ids[0];
-                        final icon = apps[index].icon;
+                        final app = apps[index];
+                        final id = app.orgs[0];
+                        final icon = app.icon;
                         final path = '$appIconsPath/$icon';
                         final isLastItem = index == apps.length - 1;
 
