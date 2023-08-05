@@ -195,7 +195,11 @@ class RemotePanelState extends State<RemotePanel> {
                   margin: const EdgeInsets.only(top: 16),
                   child: SizedBox(
                     height: 120,
+                    // child: ReorderableListView.builder(
                     child: ListView.builder(
+                      // onReorder: (oldIndex, newIndex) => {
+                      //   setState(() => {apps[oldIndex].position = newIndex})
+                      // },
                       scrollDirection: Axis.horizontal,
                       itemCount: apps.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -206,6 +210,7 @@ class RemotePanelState extends State<RemotePanel> {
                         final isLastItem = index == apps.length - 1;
 
                         return GestureDetector(
+                          key: ValueKey(app),
                           onTapDown: (TapDownDetails details) {
                             log('App launch: $id');
                             onAppCallback(id);
