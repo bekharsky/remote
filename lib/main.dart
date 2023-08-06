@@ -202,6 +202,7 @@ class RemotePanelState extends State<RemotePanel> {
                         }
 
                         setState(() {
+                          // TODO: store positions
                           final app = apps.removeAt(oldIndex);
                           apps.insert(newIndex, app);
                         });
