@@ -195,11 +195,17 @@ class RemotePanelState extends State<RemotePanel> {
                   margin: const EdgeInsets.only(top: 16),
                   child: SizedBox(
                     height: 120,
-                    // child: ReorderableListView.builder(
-                    child: ListView.builder(
-                      // onReorder: (oldIndex, newIndex) => {
-                      //   setState(() => {apps[oldIndex].position = newIndex})
-                      // },
+                    child: ReorderableList(
+                      onReorder: (oldIndex, newIndex) {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+
+                        setState(() {
+                          final app = apps.removeAt(oldIndex);
+                          apps.insert(newIndex, app);
+                        });
+                      },
                       scrollDirection: Axis.horizontal,
                       itemCount: apps.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -209,24 +215,27 @@ class RemotePanelState extends State<RemotePanel> {
                         final path = '$appIconsPath/$icon';
                         final isLastItem = index == apps.length - 1;
 
-                        return GestureDetector(
+                        return ReorderableDragStartListener(
+                          index: index,
                           key: ValueKey(app),
-                          onTapDown: (TapDownDetails details) {
-                            log('App launch: $id');
-                            onAppCallback(id);
-                          },
-                          child: Container(
-                            width: 120,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            margin: isLastItem
-                                ? const EdgeInsets.fromLTRB(16, 0, 16, 0)
-                                : const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                            child: Image.asset(
-                              path,
-                              fit: BoxFit.cover,
+                          child: GestureDetector(
+                            onTap: () {
+                              log('App launch: $id');
+                              onAppCallback(id);
+                            },
+                            child: Container(
+                              width: 120,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              margin: isLastItem
+                                  ? const EdgeInsets.fromLTRB(16, 0, 16, 0)
+                                  : const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                              child: Image.asset(
+                                path,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         );
