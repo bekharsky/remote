@@ -220,6 +220,7 @@ class RemotePanelState extends State<RemotePanel> {
                           index: index,
                           key: ValueKey(app),
                           child: GestureDetector(
+                            // TODO: scale on hover and on tap
                             onTap: () {
                               log('App launch: $id');
                               onAppCallback(id);
