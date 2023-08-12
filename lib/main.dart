@@ -23,6 +23,7 @@ void main() {
 
   runApp(const RemoteControllerApp());
 
+  // TODO: separate this to a different widget
   if (!Platform.isAndroid && !Platform.isIOS) {
     doWhenWindowReady(() {
       final win = appWindow;
@@ -153,6 +154,7 @@ class RemotePanelState extends State<RemotePanel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // TODO: separate this to a different widget
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

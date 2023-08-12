@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:async';
-import '../types/key_codes.dart';
+import 'package:remote/types/key_codes.dart';
 
 class SamsungHttpOverrides extends HttpOverrides {
   @override
@@ -124,7 +124,7 @@ class Commander {
         });
 
         socket?.add(command);
-        socket?.close();
+        // socket?.close();
         completer.complete('$token');
       }
     });

@@ -237,10 +237,10 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 32),
-                  const RemoteLevel(
-                    level: 5,
-                  ),
+                  // const SizedBox(height: 32),
+                  // const RemoteLevel(
+                  //   level: 5,
+                  // ),
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
