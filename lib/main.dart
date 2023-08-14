@@ -80,6 +80,7 @@ class RemotePanelState extends State<RemotePanel> {
   String modelName = '';
   String? token;
   String? host;
+  String? mac;
   List<TvApp> apps = [];
 
   @override
@@ -97,6 +98,7 @@ class RemotePanelState extends State<RemotePanel> {
       modelName = prefs?.getString('modelName') ?? 'Click on the TV icon';
       token = prefs?.getString('token') ?? '';
       host = prefs?.getString('host') ?? '';
+      mac = prefs?.getString('mac') ?? '';
     });
 
     // TODO: state?
@@ -121,15 +123,18 @@ class RemotePanelState extends State<RemotePanel> {
       name = tv.name;
       modelName = tv.modelName;
       host = tv.ip;
+      mac = tv.wifiMac;
     });
 
     commander = Commander(name: appName, host: host);
     token = await commander.fetchToken();
 
+    // TODO: use SQLite
     prefs?.setString('name', tv.name);
     prefs?.setString('modelName', tv.modelName);
     prefs?.setString('host', tv.ip);
     prefs?.setString('token', token ?? '');
+    prefs?.setString('mac', mac ?? '');
   }
 
   onKeyCallback(KeyCode keyCode) {

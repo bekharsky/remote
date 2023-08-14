@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:remote/services/waker.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'dart:developer';
 import 'package:sheet/route.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_button.dart';
-import 'package:remote/ui/remote_level.dart';
+// import 'package:remote/ui/remote_level.dart';
 import 'package:remote/ui/remote_ring.dart';
 import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_tv_list.dart';
@@ -108,9 +110,13 @@ class RemoteSheetState extends State<RemoteSheet> {
                         ),
                         child: RemoteButton(
                           size: _powerButtonSize,
-                          onPressed: () {
+                          onPressed: () async {
                             log('Power button pressed');
-                            widget.onPressedCallback(KeyCode.KEY_POWER);
+                            final prefs = await SharedPreferences.getInstance();
+                            final mac = prefs.getString('mac') ?? '';
+                            final waker = Waker(mac);
+                            waker.wake();
+                            // widget.onPressedCallback(KeyCode.KEY_POWER);
                             // TODO: not all TVs support power toggle
                             // onButtonPressCallback(KeyCode.KEY_POWEROFF);
                           },

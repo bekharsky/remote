@@ -3,20 +3,21 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 class Waker {
-  String mac;
+  String mac = '';
 
-  Waker(this.mac);
+  Waker(mac) {
+    this.mac = mac.replaceAll(':', '');
+  }
 
   void wake() async {
-    var destAddr = InternetAddress("255.255.255.255");
+    var destAddr = InternetAddress('255.255.255.255');
 
     await RawDatagramSocket.bind(InternetAddress.anyIPv4, 9)
         .then((RawDatagramSocket udpSocket) {
       udpSocket.broadcastEnabled = true;
       Uint8List data = Uint8List(6 + 16 * 6);
 
-      var addr = 0x4cedfb3f0b45;
-      addr = int.parse(mac, radix: 16);
+      final addr = int.parse(mac, radix: 16);
 
       for (var i = 0; i < 6; i++) {
         data[i] = 0xff;
@@ -30,7 +31,7 @@ class Waker {
 
       udpSocket.send(data, destAddr, 9);
     }).catchError((err) {
-      log('help');
+      log(err.toString());
     });
   }
 }
