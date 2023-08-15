@@ -9,27 +9,36 @@ class Waker {
     this.mac = mac.replaceAll(':', '');
   }
 
+  /*
+  Assembles the magic packet for wake-on-LAN functionality.
+  Total size of the wake-on-LAN magic packet is 102 bytes, or 816 bits.
+  First 6 bytes (48 bits) are 0xFF (255) with the remaining 96 bytes (768 bits) as the 6 byte (48 bit)
+  MAC address repeated 16 times as specified by the wake-on-LAN specification.
+  */
+  Uint8List magicPacket() {
+    final data = Uint8List(6 + 16 * 6);
+    final addr = int.parse(mac, radix: 16);
+
+    for (var i = 0; i < 6; i++) {
+      data[i] = 0xff;
+    }
+
+    for (int i = 6; i < data.length; i += 6) {
+      for (int j = 0; j < 6; j++) {
+        data[i + j] = (addr >> (5 - j) * 8) & 0xff;
+      }
+    }
+
+    return data;
+  }
+
   void wake() async {
     var destAddr = InternetAddress('255.255.255.255');
 
     await RawDatagramSocket.bind(InternetAddress.anyIPv4, 9)
         .then((RawDatagramSocket udpSocket) {
       udpSocket.broadcastEnabled = true;
-      Uint8List data = Uint8List(6 + 16 * 6);
-
-      final addr = int.parse(mac, radix: 16);
-
-      for (var i = 0; i < 6; i++) {
-        data[i] = 0xff;
-      }
-
-      for (int i = 6; i < data.length; i += 6) {
-        for (int j = 0; j < 6; j++) {
-          data[i + j] = (addr >> (5 - j) * 8) & 0xff;
-        }
-      }
-
-      udpSocket.send(data, destAddr, 9);
+      udpSocket.send(magicPacket(), destAddr, 9);
     }).catchError((err) {
       log(err.toString());
     });
