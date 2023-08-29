@@ -40,6 +40,13 @@ dependencies:
     http: ^0.13.5
     shared_preferences: ^2.2.0
 
+dependency_overrides:
+    sheet:
+        git:
+            url: https://github.com/jamesblasco/modal_bottom_sheet.git
+            ref: 471c15c92b1410a710020de01569b74535456ddd
+            path: sheet
+
 dev_dependencies:
     flutter_test:
         sdk: flutter
@@ -63,8 +70,8 @@ flutter:
 
     # To add assets to your application, add an assets section, like this:
     assets:
-      - assets/icons/
-      - assets/apps.json
+        - assets/icons/
+        - assets/apps.json
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware
