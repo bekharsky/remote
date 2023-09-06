@@ -2,10 +2,10 @@ import 'dart:io';
 import 'dart:developer';
 import 'dart:typed_data';
 
-class Waker {
+class WakeOnLan {
   String mac = '';
 
-  Waker(mac) {
+  WakeOnLan(mac) {
     this.mac = mac.replaceAll(':', '');
   }
 

@@ -39,6 +39,7 @@ dependencies:
     sheet: ^0.0.4+1
     http: ^0.13.5
     shared_preferences: ^2.2.0
+    xml: ^6.3.0
 
 dependency_overrides:
     sheet:

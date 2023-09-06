@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:remote/services/waker.dart';
+import 'package:remote/services/soap_upnp.dart';
+import 'package:remote/services/wake_on_lan.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -112,10 +113,15 @@ class RemoteSheetState extends State<RemoteSheet> {
                           size: _powerButtonSize,
                           onPressed: () async {
                             log('Power button pressed');
-                            final prefs = await SharedPreferences.getInstance();
-                            final mac = prefs.getString('mac') ?? '';
-                            final waker = Waker(mac);
-                            waker.wake();
+                            // TODO: send a soap action to get volume
+                            // no response in 2 seconds: tv is off, send wol
+                            // got response: tv is sleeping, send KEY_POWER (_ON)
+                            final upnp = SoapUpnp();
+                            final volume = upnp.getVolume();
+                            // final prefs = await SharedPreferences.getInstance();
+                            // final mac = prefs.getString('mac') ?? '';
+                            // final wol = WakeOnLan(mac);
+                            // wol.wake();
                             // widget.onPressedCallback(KeyCode.KEY_POWER);
                             // TODO: not all TVs support power toggle
                             // onButtonPressCallback(KeyCode.KEY_POWEROFF);
