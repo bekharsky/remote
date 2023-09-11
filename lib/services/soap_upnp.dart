@@ -33,10 +33,12 @@ Example response:
 */
 
 class SoapUpnp {
-  // TODO: constructor
-  static const endpoint =
-      'http://192.168.3.6:9197/upnp/control/RenderingControl1';
-  final uri = Uri.parse(endpoint);
+  late Uri uri;
+  int port = 9197;
+
+  SoapUpnp(host) {
+    uri = Uri.parse("http://$host:$port/upnp/control/RenderingControl1");
+  }
 
   Future<int> getVolume() async {
     final document = await sendSoapRequest_('GetVolume');
@@ -53,8 +55,8 @@ class SoapUpnp {
   }
 
   Future<XmlDocument> sendSoapRequest_(String type) async {
-    final body = createSoapEnvelope_(type);
-    final action = createSoapActionHeader_(type);
+    final body = buildSoapEnvelope_(type);
+    final action = buildSoapActionHeader_(type);
     final response = await http.post(
       uri,
       headers: {
@@ -67,7 +69,7 @@ class SoapUpnp {
     return XmlDocument.parse(response.body);
   }
 
-  String createSoapEnvelope_(String type) {
+  String buildSoapEnvelope_(String type) {
     return '''
       <?xml version="1.0" encoding="utf-8"?>
       <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
@@ -81,7 +83,7 @@ class SoapUpnp {
     ''';
   }
 
-  String createSoapActionHeader_(String type) {
+  String buildSoapActionHeader_(String type) {
     return "\"urn:schemas-upnp-org:service:RenderingControl:1#$type\"";
   }
 }

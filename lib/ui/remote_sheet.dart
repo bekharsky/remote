@@ -113,21 +113,26 @@ class RemoteSheetState extends State<RemoteSheet> {
                           size: _powerButtonSize,
                           onPressed: () async {
                             log('Power button pressed');
-                            // TODO: send a soap action to get volume
-                            // no response in 2 seconds: tv is off, send wol
-                            // got response: tv is sleeping, send KEY_POWER (_ON)
-                            // Other options are either send power toggle till timeout
-                            // or just check for API
-                            final upnp = SoapUpnp();
-                            final volume = await upnp.getVolume();
-                            log("$volume");
-                            // final prefs = await SharedPreferences.getInstance();
-                            // final mac = prefs.getString('mac') ?? '';
-                            // final wol = WakeOnLan(mac);
-                            // wol.wake();
-                            // widget.onPressedCallback(KeyCode.KEY_POWER);
-                            // TODO: not all TVs support power toggle
-                            // onButtonPressCallback(KeyCode.KEY_POWEROFF);
+                            const timeout = Duration(milliseconds: 500);
+                            final prefs = await SharedPreferences.getInstance();
+                            final host = prefs.getString('host');
+                            final mac = prefs.getString('mac') ?? '';
+
+                            final timer = Timer(timeout, () {
+                              log('will send wol packet');
+                              final wol = WakeOnLan(mac);
+                              wol.wake();
+                            });
+
+                            try {
+                              final upnp = SoapUpnp(host);
+                              await upnp.getVolume();
+                              timer.cancel();
+                            } catch (e) {
+                              log(e.toString());
+                            } finally {
+                              widget.onPressedCallback(KeyCode.KEY_POWER);
+                            }
                           },
                           child: RemoteIcons.power,
                         ),
