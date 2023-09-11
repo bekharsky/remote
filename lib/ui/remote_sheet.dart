@@ -115,18 +115,16 @@ class RemoteSheetState extends State<RemoteSheet> {
                             log('Power button pressed');
                             const timeout = Duration(milliseconds: 500);
                             final prefs = await SharedPreferences.getInstance();
-                            final host = prefs.getString('host');
+                            final host = prefs.getString('host') ?? '';
                             final mac = prefs.getString('mac') ?? '';
 
                             final timer = Timer(timeout, () {
                               log('will send wol packet');
-                              final wol = WakeOnLan(mac);
-                              wol.wake();
+                              WakeOnLan(mac).wake();
                             });
 
                             try {
-                              final upnp = SoapUpnp(host);
-                              await upnp.getVolume();
+                              await SoapUpnp(host).getVolume();
                               timer.cancel();
                             } catch (e) {
                               log(e.toString());
