@@ -116,8 +116,11 @@ class RemoteSheetState extends State<RemoteSheet> {
                             // TODO: send a soap action to get volume
                             // no response in 2 seconds: tv is off, send wol
                             // got response: tv is sleeping, send KEY_POWER (_ON)
+                            // Other options are either send power toggle till timeout
+                            // or just check for API
                             final upnp = SoapUpnp();
-                            final volume = upnp.getVolume();
+                            final volume = await upnp.getVolume();
+                            log("$volume");
                             // final prefs = await SharedPreferences.getInstance();
                             // final mac = prefs.getString('mac') ?? '';
                             // final wol = WakeOnLan(mac);
