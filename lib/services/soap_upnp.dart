@@ -54,7 +54,7 @@ class SoapUpnp {
 
   Future<XmlDocument> sendSoapRequest_(String type) async {
     final body = createSoapEnvelope_(type);
-    final action = createSoapAction_(type);
+    final action = createSoapActionHeader_(type);
     final response = await http.post(
       uri,
       headers: {
@@ -63,8 +63,6 @@ class SoapUpnp {
       },
       body: utf8.encode(body),
     );
-
-    log(response.body);
 
     return XmlDocument.parse(response.body);
   }
@@ -83,7 +81,7 @@ class SoapUpnp {
     ''';
   }
 
-  String createSoapAction_(String type) {
+  String createSoapActionHeader_(String type) {
     return "\"urn:schemas-upnp-org:service:RenderingControl:1#$type\"";
   }
 }
