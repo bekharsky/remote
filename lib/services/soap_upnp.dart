@@ -1,8 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:ffi';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
@@ -33,8 +29,9 @@ Example response:
 */
 
 class SoapUpnp {
-  late Uri uri;
+  String schema = 'urn:schemas-upnp-org:service:RenderingControl:1';
   int port = 9197;
+  late Uri uri;
 
   SoapUpnp(host) {
     uri = Uri.parse("http://$host:$port/upnp/control/RenderingControl1");
@@ -74,7 +71,7 @@ class SoapUpnp {
       <?xml version="1.0" encoding="utf-8"?>
       <s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
         <s:Body>
-          <ns0:$type xmlns:ns0="urn:schemas-upnp-org:service:RenderingControl:1">
+          <ns0:$type xmlns:ns0="$schema">
             <InstanceID>0</InstanceID>
             <Channel>Master</Channel>
           </ns0:$type>

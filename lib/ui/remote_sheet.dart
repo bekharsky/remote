@@ -113,13 +113,12 @@ class RemoteSheetState extends State<RemoteSheet> {
                           size: _powerButtonSize,
                           onPressed: () async {
                             log('Power button pressed');
-                            const timeout = Duration(milliseconds: 500);
                             final prefs = await SharedPreferences.getInstance();
                             final host = prefs.getString('host') ?? '';
                             final mac = prefs.getString('mac') ?? '';
+                            const timeout = Duration(milliseconds: 500);
 
                             final timer = Timer(timeout, () {
-                              log('will send wol packet');
                               WakeOnLan(mac).wake();
                             });
 
