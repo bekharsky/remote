@@ -1,4 +1,5 @@
 import 'dart:async';
+// import 'dart:developer';
 import 'dart:io';
 import 'dart:convert';
 
@@ -7,26 +8,41 @@ class Discoverer {
   final int port = 0;
   final int ssdpPort = 1900;
   final String ssdpHost = '239.255.255.250';
+  late InternetAddress multicastIPv4;
+  late List<NetworkInterface> interfaces;
 
   Discoverer(String urn) {
+    multicastIPv4 = InternetAddress(ssdpHost);
     message = ''
         'M-SEARCH * HTTP/1.1\r\n'
         'HOST: "$ssdpHost:$ssdpPort"\r\n'
         'MAN: "ssdp:discover"\r\n'
         'MX: 3\r\n'
-        'ST: $urn\r\n\r\n';
+        'ST: $urn\r\n'
+        'USER-AGENT: unix/5.1 UPnP/1.1 crash/1.0\r\n\r\n';
   }
 
   Future<List<String>> search() async {
+    interfaces = await NetworkInterface.list();
     List<String> buffer = [];
-    Duration timeout = const Duration(milliseconds: 4000);
+    Duration timeout = const Duration(seconds: 5);
     InternetAddress anyIPv4 = InternetAddress.anyIPv4;
     RawDatagramSocket socket = await RawDatagramSocket.bind(anyIPv4, port);
 
     socket.broadcastEnabled = true;
     socket.readEventsEnabled = true;
     socket.multicastHops = 50;
-    socket.joinMulticast(InternetAddress(ssdpHost));
+
+    try {
+      socket.joinMulticast(multicastIPv4);
+    } on OSError {}
+
+    for (var interface in interfaces) {
+      try {
+        socket.joinMulticast(multicastIPv4, interface);
+      } on OSError {}
+    }
+
     socket.send(message.codeUnits, InternetAddress(ssdpHost), ssdpPort);
 
     Timer(timeout, () {
