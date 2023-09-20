@@ -3,13 +3,12 @@ import 'dart:io';
 import 'dart:convert';
 
 class Discoverer {
-  String urn;
   String message = '';
   final int port = 0;
   final int ssdpPort = 1900;
   final String ssdpHost = '239.255.255.250';
 
-  Discoverer(this.urn) {
+  Discoverer(String urn) {
     message = ''
         'M-SEARCH * HTTP/1.1\r\n'
         'HOST: "$ssdpHost:$ssdpPort"\r\n'
@@ -26,6 +25,7 @@ class Discoverer {
 
     socket.broadcastEnabled = true;
     socket.readEventsEnabled = true;
+    socket.multicastHops = 50;
     socket.joinMulticast(InternetAddress(ssdpHost));
     socket.send(message.codeUnits, InternetAddress(ssdpHost), ssdpPort);
 
