@@ -1,5 +1,5 @@
 import 'dart:async';
-// import 'dart:developer';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:convert';
 
@@ -11,14 +11,14 @@ class Discoverer {
   late InternetAddress multicastIPv4;
   late List<NetworkInterface> interfaces;
 
-  Discoverer(String urn) {
+  Discoverer(String usn) {
     multicastIPv4 = InternetAddress(ssdpHost);
     message = ''
         'M-SEARCH * HTTP/1.1\r\n'
         'HOST: "$ssdpHost:$ssdpPort"\r\n'
+        'ST: $usn\r\n'
         'MAN: "ssdp:discover"\r\n'
-        'MX: 3\r\n'
-        'ST: $urn\r\n'
+        'MX: 5\r\n'
         'USER-AGENT: unix/5.1 UPnP/1.1 crash/1.0\r\n\r\n';
   }
 
@@ -43,13 +43,14 @@ class Discoverer {
       } on OSError {}
     }
 
-    socket.send(message.codeUnits, InternetAddress(ssdpHost), ssdpPort);
+    socket.send(message.codeUnits, multicastIPv4, ssdpPort);
 
     Timer(timeout, () {
       socket.close();
     });
 
     await socket.forEach((RawSocketEvent event) {
+      log(event.toString());
       if (event == RawSocketEvent.read) {
         Datagram? dg = socket.receive();
 
@@ -58,6 +59,7 @@ class Discoverer {
           String location = '';
 
           for (var line in response) {
+            log(line);
             int splitter = line.indexOf(':');
 
             if (splitter > -1) {
