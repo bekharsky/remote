@@ -39,6 +39,7 @@ class _RemoteTapState extends State<RemoteTap>
         .animate(_controller);
   }
 
+  // TODO: animate only on tap up
   void _handleTapDown(TapDownDetails details) {
     _controller.forward();
 
