@@ -35,8 +35,14 @@ class _RemoteTapState extends State<RemoteTap>
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-    _colorTween = ColorTween(begin: widget.startColor, end: widget.endColor)
-        .animate(_controller);
+
+    final startColor = widget.style.color ?? widget.startColor;
+    final endColor = widget.style.color ?? widget.endColor;
+
+    _colorTween = ColorTween(
+      begin: startColor,
+      end: endColor,
+    ).animate(_controller);
   }
 
   // TODO: animate only on tap up

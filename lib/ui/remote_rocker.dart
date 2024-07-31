@@ -23,6 +23,7 @@ class RemoteRocker extends StatefulWidget {
 class _RemoteRockerState extends State<RemoteRocker> {
   late final double _width = widget.size / 2;
   late final double _height = widget.size / 4;
+  final _radius = const Radius.circular(9999);
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,9 @@ class _RemoteRockerState extends State<RemoteRocker> {
             height: _height,
             style: const BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(9999),
-                  bottomLeft: Radius.circular(9999)),
+                topLeft: Radius.circular(9999),
+                bottomLeft: Radius.circular(9999),
+              ),
             ),
             child: RemoteIcons.lower,
           ),
@@ -47,8 +49,9 @@ class _RemoteRockerState extends State<RemoteRocker> {
             height: _height,
             style: const BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(9999),
-                  bottomRight: Radius.circular(9999)),
+                topRight: Radius.circular(9999),
+                bottomRight: Radius.circular(9999),
+              ),
             ),
             child: RemoteIcons.higher,
           ),

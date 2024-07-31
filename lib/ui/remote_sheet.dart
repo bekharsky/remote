@@ -141,6 +141,9 @@ class RemoteSheetState extends State<RemoteSheet> {
                         child: RemoteTap(
                           width: _powerButtonSize,
                           height: _powerButtonSize,
+                          style: const BoxDecoration(
+                            color: Colors.transparent,
+                          ),
                           onPressed: () {
                             // TODO: move that to the main section/window frame
                             log('TV list button pressed');
@@ -254,16 +257,11 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
-                  // const SizedBox(height: 32),
-                  // const RemoteLevel(
-                  //   level: 5,
-                  // ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 32),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       RemoteRocker(
-                        // TODO: detect current volume
                         size: _ringSize,
                         onPressedLower: () {
                           log('Volume down button pressed');
