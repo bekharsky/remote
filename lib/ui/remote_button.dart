@@ -20,7 +20,6 @@ class RemoteButton extends StatelessWidget {
       height: size,
       style: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(9999)),
-        color: Color.fromRGBO(73, 73, 73, 1),
       ),
       onPressed: onPressed,
       child: child,
