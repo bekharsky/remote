@@ -21,8 +21,8 @@ class RemoteRocker extends StatefulWidget {
 }
 
 class _RemoteRockerState extends State<RemoteRocker> {
-  late final double _width = widget.size;
-  late final double _height = _width / 4;
+  late final double _width = widget.size / 2;
+  late final double _height = widget.size / 4;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
         children: [
           RemoteTap(
             onPressed: widget.onPressedLower,
-            width: _width / 2,
+            width: _width,
             height: _height,
             style: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -43,7 +43,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
           ),
           RemoteTap(
             onPressed: widget.onPressedHigher,
-            width: _width / 2,
+            width: _width,
             height: _height,
             style: const BoxDecoration(
               borderRadius: BorderRadius.only(
