@@ -36,7 +36,7 @@ class WakeOnLan {
     // TODO: use not 255.255.255.255, but actual gateway aka 192.168.3.255
     var destAddr = InternetAddress('192.168.3.255');
 
-    await RawDatagramSocket.bind(InternetAddress.anyIPv4, 9)
+    await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0)
         .then((RawDatagramSocket udpSocket) {
       udpSocket.broadcastEnabled = true;
       udpSocket.send(magicPacket(), destAddr, 9);

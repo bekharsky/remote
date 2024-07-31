@@ -23,7 +23,6 @@ class RemoteRocker extends StatefulWidget {
 class _RemoteRockerState extends State<RemoteRocker> {
   late final double _width = widget.size / 2;
   late final double _height = widget.size / 4;
-  final _radius = const Radius.circular(9999);
 
   @override
   Widget build(BuildContext context) {
