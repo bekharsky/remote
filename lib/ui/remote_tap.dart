@@ -63,8 +63,7 @@ class _RemoteTapState extends State<RemoteTap>
             return Container(
               width: widget.width,
               height: widget.height,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(9999)),
+              decoration: widget.style.copyWith(
                 color: _colorTween.value,
               ),
               child: widget.child,

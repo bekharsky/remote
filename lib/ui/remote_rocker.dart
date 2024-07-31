@@ -21,95 +21,36 @@ class RemoteRocker extends StatefulWidget {
 }
 
 class _RemoteRockerState extends State<RemoteRocker> {
-  Pressed _pressed = Pressed.none;
   late final double _width = widget.size;
-  late final double _height = _width / 5;
-
-  final BoxDecoration _rockerDefaultStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(9999)),
-    color: Color.fromRGBO(73, 73, 73, 1),
-  );
-
-  final BoxDecoration _rockerPressedLowerStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(9999)),
-    color: Color.fromRGBO(255, 152, 0, 1),
-  );
-
-  final BoxDecoration _rockerPressedHigherStyle = const BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(9999)),
-    color: Color.fromRGBO(255, 152, 0, 1),
-  );
-
-  void _handleTapDownLower(TapDownDetails details) {
-    setState(() {
-      _pressed = Pressed.lower;
-    });
-  }
-
-  void _handleTapUpLower(TapUpDetails details) {
-    setState(() {
-      _pressed = Pressed.none;
-    });
-  }
-
-  void _handleTapDownHigher(TapDownDetails details) {
-    setState(() {
-      _pressed = Pressed.higher;
-    });
-  }
-
-  void _handleTapUpHigher(TapUpDetails details) {
-    setState(() {
-      _pressed = Pressed.none;
-    });
-  }
-
-  void _handleTapCancel() {
-    setState(() {
-      _pressed = Pressed.none;
-    });
-  }
+  late final double _height = _width / 4;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: _width,
-      height: _height,
-      decoration: _pressed == Pressed.lower
-          ? _rockerPressedLowerStyle
-          : _pressed == Pressed.higher
-              ? _rockerPressedHigherStyle
-              : _rockerDefaultStyle,
-      child: Column(
+    return SizedBox(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTapDown: _handleTapDownLower,
-                onTapUp: _handleTapUpLower,
-                onTapCancel: _handleTapCancel,
-                child: RemoteTap(
-                  onPressed: widget.onPressedLower,
-                  width: _height,
-                  height: _height,
-                  child: RemoteIcons.lower,
-                ),
-              ),
-              GestureDetector(
-                onTapDown: _handleTapDownHigher,
-                onTapUp: _handleTapUpHigher,
-                onTapCancel: _handleTapCancel,
-                child: RemoteTap(
-                  onPressed: widget.onPressedHigher,
-                  width: _height,
-                  height: _height,
-                  child: RemoteIcons.higher,
-                ),
-              ),
-            ],
+          RemoteTap(
+            onPressed: widget.onPressedLower,
+            width: _width / 2,
+            height: _height,
+            style: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(9999),
+                  bottomLeft: Radius.circular(9999)),
+            ),
+            child: RemoteIcons.lower,
+          ),
+          RemoteTap(
+            onPressed: widget.onPressedHigher,
+            width: _width / 2,
+            height: _height,
+            style: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(9999),
+                  bottomRight: Radius.circular(9999)),
+            ),
+            child: RemoteIcons.higher,
           ),
         ],
       ),
