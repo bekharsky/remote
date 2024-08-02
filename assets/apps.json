@@ -28,7 +28,7 @@
         "icon": "disney_plus.png",
         "ids": ["3202009021709", "3201901017640", "3202204027038"],
         "orgs": ["MCmYXNxgcu.DisneyPlus"],
-        "visible": false,
+        "visible": true,
         "position": 99
     },
     {

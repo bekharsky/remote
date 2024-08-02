@@ -176,17 +176,18 @@ class RemotePanelState extends State<RemotePanel> {
                   ],
                 ),
                 Container(
-                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         name,
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 24,
                           fontWeight: FontWeight.w500,
                           color: Color.fromRGBO(255, 255, 255, 1),
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         modelName,
@@ -198,58 +199,55 @@ class RemotePanelState extends State<RemotePanel> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 16),
-                  child: SizedBox(
-                    height: 120,
-                    child: ReorderableList(
-                      onReorder: (oldIndex, newIndex) {
-                        if (oldIndex < newIndex) {
-                          newIndex -= 1;
-                        }
+                SizedBox(
+                  height: 120,
+                  child: ReorderableList(
+                    onReorder: (oldIndex, newIndex) {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
 
-                        setState(() {
-                          // TODO: store positions
-                          final app = apps.removeAt(oldIndex);
-                          apps.insert(newIndex, app);
-                        });
-                      },
-                      scrollDirection: Axis.horizontal,
-                      itemCount: apps.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final app = apps[index];
-                        final id = app.orgs[0];
-                        final icon = app.icon;
-                        final path = '$appIconsPath/$icon';
-                        final isLastItem = index == apps.length - 1;
+                      setState(() {
+                        // TODO: store positions
+                        final app = apps.removeAt(oldIndex);
+                        apps.insert(newIndex, app);
+                      });
+                    },
+                    scrollDirection: Axis.horizontal,
+                    itemCount: apps.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final app = apps[index];
+                      final id = app.orgs[0];
+                      final icon = app.icon;
+                      final path = '$appIconsPath/$icon';
+                      final isLastItem = index == apps.length - 1;
 
-                        return ReorderableDragStartListener(
-                          index: index,
-                          key: ValueKey(app),
-                          child: GestureDetector(
-                            // TODO: scale on hover and on tap
-                            onTap: () {
-                              log('App launch: $id');
-                              onAppCallback(id);
-                            },
-                            child: Container(
-                              width: 120,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              margin: isLastItem
-                                  ? const EdgeInsets.fromLTRB(16, 0, 16, 0)
-                                  : const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              child: Image.asset(
-                                path,
-                                fit: BoxFit.cover,
-                              ),
+                      return ReorderableDragStartListener(
+                        index: index,
+                        key: ValueKey(app),
+                        child: GestureDetector(
+                          // TODO: scale on hover and on tap
+                          onTap: () {
+                            log('App launch: $id');
+                            onAppCallback(id);
+                          },
+                          child: Container(
+                            width: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            margin: isLastItem
+                                ? const EdgeInsets.fromLTRB(16, 0, 16, 0)
+                                : const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            child: Image.asset(
+                              path,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
