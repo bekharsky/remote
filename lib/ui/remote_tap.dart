@@ -57,9 +57,8 @@ class _RemoteTapState extends State<RemoteTap>
   }
 
   void _handleTapUp(TapUpDetails details) {
-    _controller.duration = const Duration(milliseconds: 480);
-
     Future.delayed(const Duration(milliseconds: 20), () {
+      _controller.duration = const Duration(milliseconds: 480);
       _controller.stop();
       _controller.reverse();
     });
