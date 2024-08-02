@@ -55,6 +55,7 @@ class RemoteSheetState extends State<RemoteSheet> {
         stateColor = Colors.transparent;
       }
 
+      // TODO: lift up the state and hide the apps list, animate opacity
       if (stateColor != _fakeBackgroundColor) {
         setState(() {
           _fakeBackgroundColor = stateColor;
