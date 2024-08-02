@@ -40,7 +40,7 @@ class RemoteSheetState extends State<RemoteSheet> {
   static final double _powerPad = (_buttonSize - _powerButtonSize) / 2;
   static final double _hPad = _isMobile ? 48 : 24;
   static final double _vPad = _isMobile ? 24 : 16;
-  Color _fakeBackgroundColor = const Color.fromRGBO(73, 73, 73, 1);
+  Color _patchColor = const Color.fromRGBO(73, 73, 73, 1);
 
   @override
   void initState() {
@@ -53,9 +53,9 @@ class RemoteSheetState extends State<RemoteSheet> {
           : Colors.transparent;
 
       // TODO: lift up the state and hide the apps list, animate opacity
-      if (color != _fakeBackgroundColor) {
+      if (color != _patchColor) {
         setState(() {
-          _fakeBackgroundColor = color;
+          _patchColor = color;
         });
       }
     });
@@ -88,7 +88,7 @@ class RemoteSheetState extends State<RemoteSheet> {
       controller: controller,
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       child: Container(
-        color: _fakeBackgroundColor,
+        color: _patchColor,
         child: Container(
           decoration: const BoxDecoration(
             color: Color(0XFF2e2e2e),
