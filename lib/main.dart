@@ -165,8 +165,8 @@ class RemotePanelState extends State<RemotePanel> {
                   children: [
                     Expanded(
                       child: SizedBox(
-                        height:
-                            36, // TODO: detect proper height or move text to MoveWindow
+                        // TODO: detect proper height or move text to MoveWindow
+                        height: 36,
                         child: MoveWindow(
                           onDoubleTap: () => {},
                         ),
@@ -208,7 +208,7 @@ class RemotePanelState extends State<RemotePanel> {
                       }
 
                       setState(() {
-                        // TODO: store positions
+                        // TODO: store positions in settings
                         final app = apps.removeAt(oldIndex);
                         apps.insert(newIndex, app);
                       });
@@ -221,6 +221,12 @@ class RemotePanelState extends State<RemotePanel> {
                       final icon = app.icon;
                       final path = '$appIconsPath/$icon';
                       final isLastItem = index == apps.length - 1;
+                      EdgeInsets itemMargin = EdgeInsets.fromLTRB(
+                        16,
+                        0,
+                        isLastItem ? 16 : 0,
+                        0,
+                      );
 
                       return ReorderableDragStartListener(
                         index: index,
@@ -237,9 +243,7 @@ class RemotePanelState extends State<RemotePanel> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             clipBehavior: Clip.antiAlias,
-                            margin: isLastItem
-                                ? const EdgeInsets.fromLTRB(16, 0, 16, 0)
-                                : const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                            margin: itemMargin,
                             child: Image.asset(
                               path,
                               fit: BoxFit.cover,

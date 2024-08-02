@@ -32,7 +32,7 @@ class _RemoteTapState extends State<RemoteTap>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: 0),
       vsync: this,
     );
 
@@ -45,13 +45,10 @@ class _RemoteTapState extends State<RemoteTap>
     ).animate(_controller);
   }
 
-  // TODO: animate only on tap up
   void _handleTapDown(TapDownDetails details) {
+    _controller.duration = const Duration(milliseconds: 20);
+    _controller.stop();
     _controller.forward();
-
-    Future.delayed(const Duration(milliseconds: 150), () {
-      _controller.reverse();
-    });
 
     // TODO: settings
     HapticFeedback.mediumImpact();
@@ -59,10 +56,20 @@ class _RemoteTapState extends State<RemoteTap>
     widget.onPressed();
   }
 
+  void _handleTapUp(TapUpDetails details) {
+    _controller.duration = const Duration(milliseconds: 480);
+
+    Future.delayed(const Duration(milliseconds: 20), () {
+      _controller.stop();
+      _controller.reverse();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: _handleTapDown,
+      onTapUp: _handleTapUp,
       child: AnimatedBuilder(
           animation: _colorTween,
           builder: (context, child) {

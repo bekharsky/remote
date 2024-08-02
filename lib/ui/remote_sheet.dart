@@ -48,11 +48,10 @@ class RemoteSheetState extends State<RemoteSheet> {
 
     controller.addListener(() {
       double offset = controller.offset;
-      Color color = offset >= 570.0
+      Color color = offset >= 570
           ? const Color.fromRGBO(73, 73, 73, 1)
           : Colors.transparent;
 
-      // TODO: lift up the state and hide the apps list, animate opacity
       if (color != _patchColor) {
         setState(() {
           _patchColor = color;
