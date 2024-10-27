@@ -82,16 +82,15 @@ class _RemoteAppsState extends State<RemoteApps> {
                     right: 8,
                     child: ReorderableDragStartListener(
                       index: index,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Colors.black54, // Semi-transparent background
-                          borderRadius: BorderRadius.circular(8),
+                      child: const ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          Colors.white38,
+                          BlendMode.srcATop,
                         ),
-                        child: const Icon(
-                          Icons.drag_handle, // Standard drag handle icon
+                        child: Icon(
+                          Icons.drag_indicator,
                           size: 16,
-                          color: Colors.white, // White color for visibility
+                          color: Colors.black,
                         ),
                       ),
                     ),
