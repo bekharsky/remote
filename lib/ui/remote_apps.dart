@@ -20,12 +20,10 @@ class _RemoteAppsState extends State<RemoteApps> {
   final appIconsPath = 'assets/icons';
   late final List<TvApp> apps = widget.apps;
   late final Function(String) onAppCallback = widget.onAppCallback;
-  List<bool> _enabledList = [];
 
   @override
   void initState() {
     super.initState();
-    _enabledList = List<bool>.filled(apps.length, false);
   }
 
   @override
@@ -60,37 +58,25 @@ class _RemoteAppsState extends State<RemoteApps> {
             0,
           );
 
-          return GestureDetector(
+          return ReorderableDragStartListener(
             key: ValueKey(app),
-            onLongPress: () {
-              setState(() {
-                _enabledList[index] = true;
-              });
-            },
-            onLongPressUp: () {
-              setState(() {
-                _enabledList[index] = false;
-              });
-            },
-            child: ReorderableDragStartListener(
-              index: index,
-              enabled: false,
-              child: GestureDetector(
-                onTap: () {
-                  log('App launch: $id');
-                  onAppCallback(id);
-                },
-                child: Container(
-                  width: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  margin: itemMargin,
-                  child: Image.asset(
-                    path,
-                    fit: BoxFit.cover,
-                  ),
+            index: index,
+            enabled: false,
+            child: GestureDetector(
+              onTap: () {
+                log('App launch: $id');
+                onAppCallback(id);
+              },
+              child: Container(
+                width: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                clipBehavior: Clip.antiAlias,
+                margin: itemMargin,
+                child: Image.asset(
+                  path,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
