@@ -11,8 +11,9 @@ import 'package:remote/types/tv.dart';
 import 'package:remote/types/tv_app.dart';
 import 'package:remote/ui/remote_apps.dart';
 import 'package:remote/ui/remote_sheet.dart';
+import 'package:remote/ui/remote_tv_name.dart';
+import 'package:remote/ui/window_title_bar.dart';
 import 'package:sheet/route.dart';
-import 'ui/window_buttons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyCustomScrollBehavior extends ScrollBehavior {
@@ -170,51 +171,11 @@ class RemotePanelState extends State<RemotePanel> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // TODO: separate this to a different widget
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        // TODO: detect proper height or move text to MoveWindow
-                        height: 36,
-                        child: MoveWindow(
-                          onDoubleTap: () => {},
-                        ),
-                      ),
-                    ),
-                    _isMac ? Container() : const WindowButtons(),
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
-                          color: Color.fromRGBO(255, 255, 255, 1),
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        modelName,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color.fromRGBO(255, 255, 255, 1),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 120,
-                  child: RemoteApps(
-                    apps: apps,
-                    onAppCallback: onAppCallback,
-                  ),
+                WindowTitleBar(isMac: _isMac),
+                RemoteTvName(name: name, modelName: modelName),
+                RemoteApps(
+                  apps: apps,
+                  onAppCallback: onAppCallback,
                 ),
               ],
             ),
