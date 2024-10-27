@@ -2,16 +2,26 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/services/commander.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
 import 'package:remote/types/tv_app.dart';
+import 'package:remote/ui/remote_apps.dart';
 import 'package:remote/ui/remote_sheet.dart';
 import 'package:sheet/route.dart';
 import 'ui/window_buttons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+class MyCustomScrollBehavior extends ScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +54,7 @@ class RemoteControllerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(), // Apply globally
       debugShowCheckedModeBanner: false,
       title: 'Remote',
       onGenerateRoute: (RouteSettings settings) {
@@ -73,7 +84,6 @@ class RemotePanelState extends State<RemotePanel> {
   static final bool _isMac = Platform.isMacOS;
   final appName = 'TV Remote';
   final appsConfig = 'assets/apps.json';
-  final appIconsPath = 'assets/icons';
   late Commander commander;
   SharedPreferences? prefs;
   String name = '';
@@ -137,7 +147,7 @@ class RemotePanelState extends State<RemotePanel> {
     prefs?.setString('mac', mac ?? '');
   }
 
-  onKeyCallback(KeyCode keyCode) {
+  void onKeyCallback(KeyCode keyCode) {
     commander.sendKey(keyCode);
   }
 
@@ -201,57 +211,9 @@ class RemotePanelState extends State<RemotePanel> {
                 ),
                 SizedBox(
                   height: 120,
-                  child: ReorderableList(
-                    onReorder: (oldIndex, newIndex) {
-                      if (oldIndex < newIndex) {
-                        newIndex -= 1;
-                      }
-
-                      setState(() {
-                        // TODO: store positions in settings
-                        final app = apps.removeAt(oldIndex);
-                        apps.insert(newIndex, app);
-                      });
-                    },
-                    scrollDirection: Axis.horizontal,
-                    itemCount: apps.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final app = apps[index];
-                      final id = app.orgs[0];
-                      final icon = app.icon;
-                      final path = '$appIconsPath/$icon';
-                      final isLastItem = index == apps.length - 1;
-                      EdgeInsets itemMargin = EdgeInsets.fromLTRB(
-                        16,
-                        0,
-                        isLastItem ? 16 : 0,
-                        0,
-                      );
-
-                      return ReorderableDragStartListener(
-                        index: index,
-                        key: ValueKey(app),
-                        child: GestureDetector(
-                          // TODO: scale on hover and on tap
-                          onTap: () {
-                            log('App launch: $id');
-                            onAppCallback(id);
-                          },
-                          child: Container(
-                            width: 120,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            margin: itemMargin,
-                            child: Image.asset(
-                              path,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                  child: RemoteApps(
+                    apps: apps,
+                    onAppCallback: onAppCallback,
                   ),
                 ),
               ],
