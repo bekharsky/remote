@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'dart:developer';
 import '../types/tv_app.dart';
 
@@ -58,26 +58,45 @@ class _RemoteAppsState extends State<RemoteApps> {
             0,
           );
 
-          return ReorderableDragStartListener(
+          return GestureDetector(
             key: ValueKey(app),
-            index: index,
-            enabled: false,
-            child: GestureDetector(
-              onTap: () {
-                log('App launch: $id');
-                onAppCallback(id);
-              },
-              child: Container(
-                width: 120,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                clipBehavior: Clip.antiAlias,
-                margin: itemMargin,
-                child: Image.asset(
-                  path,
-                  fit: BoxFit.cover,
-                ),
+            onTap: () {
+              log('App launch: $id');
+              onAppCallback(id);
+            },
+            child: Container(
+              width: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              clipBehavior: Clip.antiAlias,
+              margin: itemMargin,
+              child: Stack(
+                children: [
+                  Image.asset(
+                    path,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: ReorderableDragStartListener(
+                      index: index,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.black54, // Semi-transparent background
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.drag_handle, // Standard drag handle icon
+                          size: 16,
+                          color: Colors.white, // White color for visibility
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           );
