@@ -112,7 +112,6 @@ class RemotePanelState extends State<RemotePanel> {
       mac = prefs?.getString('mac') ?? '';
     });
 
-    // TODO: state?
     commander = Commander(name: appName, host: host, token: token);
   }
 
@@ -170,7 +169,6 @@ class RemotePanelState extends State<RemotePanel> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // TODO: separate this to a different widget
                 WindowTitleBar(isMac: _isMac),
                 RemoteTvName(name: name, modelName: modelName),
                 RemoteApps(
@@ -187,11 +185,5 @@ class RemotePanelState extends State<RemotePanel> {
         ],
       ),
     );
-    // return Container(
-    //   color: const Color.fromRGBO(46, 46, 46, 1),
-    //   child: const SafeArea(
-    //     child: Remote(),
-    //   ),
-    // );
   }
 }
