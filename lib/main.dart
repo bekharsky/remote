@@ -57,7 +57,6 @@ class RemoteControllerApp extends StatelessWidget {
     return ScrollConfiguration(
       behavior: MyCustomScrollBehavior(),
       child: WidgetsApp(
-        // scrollBehavior: MyCustomScrollBehavior(), // Apply globally
         debugShowCheckedModeBanner: false,
         color: Colors.transparent,
         title: 'TV Remote',
