@@ -54,21 +54,25 @@ class RemoteControllerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      scrollBehavior: MyCustomScrollBehavior(), // Apply globally
-      debugShowCheckedModeBanner: false,
-      title: 'Remote',
-      onGenerateRoute: (RouteSettings settings) {
-        if (settings.name == '/') {
-          return MaterialExtendedPageRoute<void>(
-            builder: (BuildContext context) {
-              return const RemotePanel();
-            },
-          );
-        }
+    return ScrollConfiguration(
+      behavior: MyCustomScrollBehavior(),
+      child: WidgetsApp(
+        // scrollBehavior: MyCustomScrollBehavior(), // Apply globally
+        debugShowCheckedModeBanner: false,
+        color: Colors.transparent,
+        title: 'TV Remote',
+        onGenerateRoute: (RouteSettings settings) {
+          if (settings.name == '/') {
+            return MaterialExtendedPageRoute<void>(
+              builder: (BuildContext context) {
+                return const RemotePanel();
+              },
+            );
+          }
 
-        return null;
-      },
+          return null;
+        },
+      ),
     );
   }
 }
@@ -171,9 +175,13 @@ class RemotePanelState extends State<RemotePanel> {
               children: [
                 WindowTitleBar(isMac: _isMac),
                 RemoteTvName(name: name, modelName: modelName),
-                RemoteApps(
-                  apps: apps,
-                  onAppCallback: onAppCallback,
+                // TODO: moving that sized box inside apps make apps disappear
+                SizedBox(
+                  height: 120,
+                  child: RemoteApps(
+                    apps: apps,
+                    onAppCallback: onAppCallback,
+                  ),
                 ),
               ],
             ),
