@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../types/tv_app.dart';
 
@@ -15,20 +16,40 @@ class RemoteApps extends StatefulWidget {
   State<RemoteApps> createState() => _RemoteAppsState();
 }
 
-class _RemoteAppsState extends State<RemoteApps> {
+class _RemoteAppsState extends State<RemoteApps>
+    with SingleTickerProviderStateMixin {
   late final List<TvApp> apps = widget.apps;
   late final Function(String) onAppCallback = widget.onAppCallback;
   bool showRemoveButton = false;
+  late final AnimationController _shakeController;
+  late final Animation<double> _shakeAnimation;
 
   @override
   void initState() {
     super.initState();
+
+    _shakeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+    );
+
+    _shakeAnimation = Tween(begin: -0.02, end: 0.02).animate(CurvedAnimation(
+      parent: _shakeController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _shakeController.dispose();
+    super.dispose();
   }
 
   void onRemoveHandler(int index) {
-    return setState(() {
-      apps.removeAt(index); // Remove the app from the list
-      showRemoveButton = false; // Exit remove mode
+    setState(() {
+      apps.removeAt(index);
+      showRemoveButton = false;
+      _shakeController.stop();
     });
   }
 
@@ -47,52 +68,62 @@ class _RemoteAppsState extends State<RemoteApps> {
             right: 12,
           );
 
-          return Container(
+          return GestureDetector(
             key: ValueKey(app),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            clipBehavior: Clip.antiAlias,
-            margin: itemMargin,
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    if (!showRemoveButton) {
-                      onAppCallback(id);
-                    }
-                  },
-                  onLongPress: () {
-                    setState(() {
-                      showRemoveButton = !showRemoveButton;
-                    });
-                  },
-                  child: Thumb(app: app),
-                ),
-                DragHandle(index: index),
-                if (showRemoveButton) ...[
-                  Positioned(
-                    top: 8,
-                    left: 8,
-                    child: GestureDetector(
-                      onTap: () {
-                        onRemoveHandler(index);
-                      },
-                      child: const RemoveIcon(),
+            onLongPress: () {
+              setState(() {
+                showRemoveButton = !showRemoveButton;
+
+                if (showRemoveButton) {
+                  _shakeController.repeat(reverse: true);
+                } else {
+                  _shakeController.stop();
+                }
+              });
+            },
+            onTap: () {
+              if (!showRemoveButton) {
+                onAppCallback(id);
+              }
+            },
+            child: AnimatedBuilder(
+              animation: _shakeAnimation,
+              builder: (context, child) {
+                return Transform.rotate(
+                  angle: showRemoveButton ? _shakeAnimation.value : 0,
+                  child: Container(
+                    margin: itemMargin,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Stack(
+                      children: [
+                        Thumb(app: app),
+                        DragHandle(index: index),
+                        if (showRemoveButton)
+                          Positioned(
+                            top: 8,
+                            left: 8,
+                            child: GestureDetector(
+                              onTap: () {
+                                onRemoveHandler(index);
+                              },
+                              child: const RemoveIcon(),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-                ],
-              ],
+                );
+              },
             ),
           );
         },
         onReorder: (oldIndex, newIndex) {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
+          if (oldIndex < newIndex) newIndex -= 1;
 
           setState(() {
-            // TODO: store positions in settings
             final app = apps.removeAt(oldIndex);
             apps.insert(newIndex, app);
           });
