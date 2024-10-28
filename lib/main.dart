@@ -155,6 +155,7 @@ class RemotePanelState extends State<RemotePanel> {
   }
 
   onAppCallback(String appId) {
+    log('App launch: $appId');
     commander.launchApp(appId);
   }
 
@@ -174,14 +175,12 @@ class RemotePanelState extends State<RemotePanel> {
               children: [
                 WindowTitleBar(isMac: _isMac),
                 RemoteTvName(name: name, modelName: modelName),
-                // TODO: moving that sized box inside apps make apps disappear
-                SizedBox(
-                  height: 120,
-                  child: RemoteApps(
+                if (apps.isNotEmpty) ...[
+                  RemoteApps(
                     apps: apps,
                     onAppCallback: onAppCallback,
-                  ),
-                ),
+                  )
+                ],
               ],
             ),
           ),

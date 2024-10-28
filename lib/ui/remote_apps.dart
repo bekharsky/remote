@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:developer';
 import '../types/tv_app.dart';
 
 class RemoteApps extends StatefulWidget {
@@ -17,7 +16,6 @@ class RemoteApps extends StatefulWidget {
 }
 
 class _RemoteAppsState extends State<RemoteApps> {
-  final appIconsPath = 'assets/icons';
   late final List<TvApp> apps = widget.apps;
   late final Function(String) onAppCallback = widget.onAppCallback;
 
@@ -28,42 +26,21 @@ class _RemoteAppsState extends State<RemoteApps> {
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableList(
-      onReorder: (oldIndex, newIndex) {
-        if (oldIndex < newIndex) {
-          newIndex -= 1;
-        }
+    return SizedBox(
+      height: 120,
+      child: ReorderableList(
+        scrollDirection: Axis.horizontal,
+        itemCount: apps.length,
+        itemBuilder: (BuildContext context, int index) {
+          final app = apps[index];
+          final id = app.orgs[0];
+          final itemMargin = EdgeInsets.only(
+            left: index == 0 ? 12 : 0,
+            right: 12,
+          );
 
-        setState(() {
-          // TODO: store positions in settings
-          final app = apps.removeAt(oldIndex);
-          apps.insert(newIndex, app);
-        });
-      },
-      scrollDirection: Axis.horizontal,
-      itemCount: apps.length,
-      itemBuilder: (BuildContext context, int index) {
-        final app = apps[index];
-        final id = app.orgs[0];
-        final icon = app.icon;
-        final path = '$appIconsPath/$icon';
-        final isLastItem = index == apps.length - 1;
-
-        EdgeInsets itemMargin = EdgeInsets.fromLTRB(
-          16,
-          0,
-          isLastItem ? 16 : 0,
-          0,
-        );
-
-        return GestureDetector(
-          key: ValueKey(app),
-          onTap: () {
-            log('App launch: $id');
-            onAppCallback(id);
-          },
-          child: Container(
-            width: 120,
+          return Container(
+            key: ValueKey(app),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -71,33 +48,91 @@ class _RemoteAppsState extends State<RemoteApps> {
             margin: itemMargin,
             child: Stack(
               children: [
-                Image.asset(
-                  path,
-                  fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    onAppCallback(id);
+                  },
+                  child: Thumb(app: app),
                 ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: ReorderableDragStartListener(
-                    index: index,
-                    child: const ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Colors.white38,
-                        BlendMode.srcATop,
-                      ),
-                      child: Icon(
-                        Icons.drag_indicator,
-                        size: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
+                DragHandle(index: index),
               ],
             ),
-          ),
-        );
-      },
+          );
+        },
+        onReorder: (oldIndex, newIndex) {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+
+          setState(() {
+            // TODO: store positions in settings
+            final app = apps.removeAt(oldIndex);
+            apps.insert(newIndex, app);
+          });
+        },
+      ),
+    );
+  }
+}
+
+class DragHandle extends StatelessWidget {
+  const DragHandle({super.key, required this.index});
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 8,
+      right: 8,
+      child: ReorderableDragStartListener(
+        index: index,
+        child: const DragIcon(),
+      ),
+    );
+  }
+}
+
+class Thumb extends StatelessWidget {
+  const Thumb({
+    super.key,
+    required this.app,
+  });
+
+  final TvApp app;
+  final appIconsPath = 'assets/icons';
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = app.icon;
+    final path = '$appIconsPath/$icon';
+
+    return Image.asset(
+      width: 120,
+      height: 120,
+      path,
+      fit: BoxFit.cover,
+    );
+  }
+}
+
+class DragIcon extends StatelessWidget {
+  const DragIcon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        Colors.white38,
+        BlendMode.srcATop,
+      ),
+      child: Icon(
+        Icons.drag_indicator,
+        size: 16,
+        color: Colors.black,
+      ),
     );
   }
 }
