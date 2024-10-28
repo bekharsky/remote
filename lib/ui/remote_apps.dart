@@ -58,17 +58,13 @@ class _RemoteAppsState extends State<RemoteApps> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    if (showRemoveButton) {
-                      setState(() {
-                        showRemoveButton = false;
-                      });
-                    } else {
+                    if (!showRemoveButton) {
                       onAppCallback(id);
                     }
                   },
                   onLongPress: () {
                     setState(() {
-                      showRemoveButton = true;
+                      showRemoveButton = !showRemoveButton;
                     });
                   },
                   child: Thumb(app: app),
