@@ -18,10 +18,18 @@ class RemoteApps extends StatefulWidget {
 class _RemoteAppsState extends State<RemoteApps> {
   late final List<TvApp> apps = widget.apps;
   late final Function(String) onAppCallback = widget.onAppCallback;
+  bool showRemoveButton = false;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void onRemoveHandler(int index) {
+    return setState(() {
+      apps.removeAt(index); // Remove the app from the list
+      showRemoveButton = false; // Exit remove mode
+    });
   }
 
   @override
@@ -50,11 +58,34 @@ class _RemoteAppsState extends State<RemoteApps> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    onAppCallback(id);
+                    if (showRemoveButton) {
+                      setState(() {
+                        showRemoveButton = false;
+                      });
+                    } else {
+                      onAppCallback(id);
+                    }
+                  },
+                  onLongPress: () {
+                    setState(() {
+                      showRemoveButton = true;
+                    });
                   },
                   child: Thumb(app: app),
                 ),
                 DragHandle(index: index),
+                if (showRemoveButton) ...[
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: GestureDetector(
+                      onTap: () {
+                        onRemoveHandler(index);
+                      },
+                      child: const RemoveIcon(),
+                    ),
+                  ),
+                ],
               ],
             ),
           );
@@ -70,6 +101,27 @@ class _RemoteAppsState extends State<RemoteApps> {
             apps.insert(newIndex, app);
           });
         },
+      ),
+    );
+  }
+}
+
+class RemoveIcon extends StatelessWidget {
+  const RemoveIcon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        Colors.white38,
+        BlendMode.srcATop,
+      ),
+      child: Icon(
+        Icons.close,
+        size: 16,
+        color: Colors.black,
       ),
     );
   }
