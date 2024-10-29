@@ -56,7 +56,7 @@ class RemoteControllerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
-      behavior: MyCustomScrollBehavior(),
+      behavior: MyCustomScrollBehavior().copyWith(scrollbars: false),
       child: WidgetsApp(
         debugShowCheckedModeBanner: false,
         color: Colors.transparent,

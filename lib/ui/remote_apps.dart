@@ -48,8 +48,6 @@ class _RemoteAppsState extends State<RemoteApps>
   void onRemoveHandler(int index) {
     setState(() {
       apps.removeAt(index);
-      showControls = false;
-      _shakeController.stop();
     });
   }
 
