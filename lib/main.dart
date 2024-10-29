@@ -21,6 +21,7 @@ class MyCustomScrollBehavior extends ScrollBehavior {
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,
         PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
       };
 }
 

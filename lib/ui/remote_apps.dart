@@ -20,7 +20,7 @@ class _RemoteAppsState extends State<RemoteApps>
     with SingleTickerProviderStateMixin {
   late final List<TvApp> apps = widget.apps;
   late final Function(String) onAppCallback = widget.onAppCallback;
-  bool showRemoveButton = false;
+  bool showControls = false;
   late final AnimationController _shakeController;
   late final Animation<double> _shakeAnimation;
 
@@ -48,7 +48,7 @@ class _RemoteAppsState extends State<RemoteApps>
   void onRemoveHandler(int index) {
     setState(() {
       apps.removeAt(index);
-      showRemoveButton = false;
+      showControls = false;
       _shakeController.stop();
     });
   }
@@ -63,6 +63,7 @@ class _RemoteAppsState extends State<RemoteApps>
         itemBuilder: (BuildContext context, int index) {
           final app = apps[index];
           final id = app.orgs[0];
+          final isEven = index % 2 == 0;
           final itemMargin = EdgeInsets.only(
             left: index == 0 ? 12 : 0,
             right: 12,
@@ -72,9 +73,9 @@ class _RemoteAppsState extends State<RemoteApps>
             key: ValueKey(app),
             onLongPress: () {
               setState(() {
-                showRemoveButton = !showRemoveButton;
+                showControls = !showControls;
 
-                if (showRemoveButton) {
+                if (showControls) {
                   _shakeController.repeat(reverse: true);
                 } else {
                   _shakeController.stop();
@@ -82,7 +83,7 @@ class _RemoteAppsState extends State<RemoteApps>
               });
             },
             onTap: () {
-              if (!showRemoveButton) {
+              if (!showControls) {
                 onAppCallback(id);
               }
             },
@@ -90,7 +91,11 @@ class _RemoteAppsState extends State<RemoteApps>
               animation: _shakeAnimation,
               builder: (context, child) {
                 return Transform.rotate(
-                  angle: showRemoveButton ? _shakeAnimation.value : 0,
+                  angle: showControls
+                      ? isEven
+                          ? -_shakeAnimation.value
+                          : _shakeAnimation.value
+                      : 0,
                   child: Container(
                     margin: itemMargin,
                     decoration: BoxDecoration(
@@ -100,8 +105,8 @@ class _RemoteAppsState extends State<RemoteApps>
                     child: Stack(
                       children: [
                         Thumb(app: app),
-                        DragHandle(index: index),
-                        if (showRemoveButton)
+                        if (showControls) ...[
+                          DragHandle(index: index),
                           Positioned(
                             top: 8,
                             left: 8,
@@ -112,6 +117,7 @@ class _RemoteAppsState extends State<RemoteApps>
                               child: const RemoveIcon(),
                             ),
                           ),
+                        ],
                       ],
                     ),
                   ),
