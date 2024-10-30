@@ -160,6 +160,10 @@ class RemotePanelState extends State<RemotePanel> {
     commander.launchApp(appId);
   }
 
+  onSheetShiftCallback(double offset) {
+    log('Sheet shift: $offset');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,6 +192,7 @@ class RemotePanelState extends State<RemotePanel> {
           RemoteSheet(
             onTvSelectCallback: onTvSelectCallback,
             onPressedCallback: onKeyCallback,
+            onSheetShiftCallback: onSheetShiftCallback,
           ),
         ],
       ),

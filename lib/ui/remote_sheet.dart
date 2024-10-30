@@ -21,10 +21,13 @@ import 'package:remote/types/tv.dart';
 class RemoteSheet extends StatefulWidget {
   final void Function(ConnectedTv) onTvSelectCallback;
   final void Function(KeyCode) onPressedCallback;
+  final void Function(double) onSheetShiftCallback;
+
   const RemoteSheet({
     Key? key,
     required this.onTvSelectCallback,
     required this.onPressedCallback,
+    required this.onSheetShiftCallback,
   }) : super(key: key);
 
   @override
@@ -48,6 +51,9 @@ class RemoteSheetState extends State<RemoteSheet> {
 
     controller.addListener(() {
       double offset = controller.offset;
+
+      widget.onSheetShiftCallback(offset);
+
       Color color = offset >= 570
           ? const Color.fromRGBO(73, 73, 73, 1)
           : Colors.transparent;
