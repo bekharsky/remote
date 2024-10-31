@@ -149,7 +149,6 @@ class RemotePanelState extends State<RemotePanel> {
     commander = Commander(name: appName, host: host);
     token = await commander.fetchToken();
 
-    // TODO: use SQLite
     prefs?.setString('name', tv.name);
     prefs?.setString('modelName', tv.modelName);
     prefs?.setString('host', tv.ip);
