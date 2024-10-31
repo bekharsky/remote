@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:remote/services/commander.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
@@ -87,8 +89,12 @@ class RemotePanel extends StatefulWidget {
 class RemotePanelState extends State<RemotePanel> {
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
   static final bool _isMac = Platform.isMacOS;
-  final appName = 'TV Remote';
-  final appsConfig = 'assets/apps.json';
+  static const appName = 'TV Remote';
+  static const appsConfig = 'assets/apps.json';
+  // TODO: why passing this fails on invalid const in the sheet?
+  static const List<double> sheetStops = [570, 430];
+  EdgeInsets appsListShift = const EdgeInsets.only(top: 16);
+  double shift = 0;
   late Commander commander;
   SharedPreferences? prefs;
   String name = '';
@@ -161,7 +167,13 @@ class RemotePanelState extends State<RemotePanel> {
   }
 
   onSheetShiftCallback(double offset) {
-    log('Sheet shift: $offset');
+    final range = sheetStops[0] - sheetStops[1];
+    final diff = offset - sheetStops[1];
+
+    setState(() {
+      shift = (diff / range).clamp(0, 1);
+      appsListShift = EdgeInsets.only(top: shift * 24);
+    });
   }
 
   @override
@@ -181,9 +193,15 @@ class RemotePanelState extends State<RemotePanel> {
                 WindowTitleBar(isMac: _isMac),
                 RemoteTvName(name: name, modelName: modelName),
                 if (apps.isNotEmpty) ...[
-                  RemoteApps(
-                    apps: apps,
-                    onAppCallback: onAppCallback,
+                  Container(
+                    padding: appsListShift,
+                    child: Opacity(
+                      opacity: 1 - shift,
+                      child: RemoteApps(
+                        apps: apps,
+                        onAppCallback: onAppCallback,
+                      ),
+                    ),
                   )
                 ],
               ],
