@@ -72,9 +72,9 @@ class _DPadWidgetState extends State<DPadWidget> {
     // Check if the tap is within the clickable area of the slices
     if (distanceSquare > innerRadius * innerRadius &&
         distanceSquare < outerRadius * outerRadius) {
-      final angle = atan2(dy, dx);
-      final adjustedAngle =
-          angle < 0 ? angle + 2 * pi : angle; // Normalize angle to [0, 2π]
+      final angle = atan2(dy, dx); // Calculate the angle
+      final adjustedAngle = (angle + pi / 4) %
+          (2 * pi); // Adjust angle to align the first arc with the top
 
       // Determine which slice was clicked
       final sliceIndex =
@@ -128,8 +128,9 @@ class _DPadPainter extends CustomPainter {
     for (int i = 0; i < slices; i++) {
       // Draw the arc
       paint.color = highlightedSlice == i
-          ? Colors.yellow
-          : colors[i % colors.length]; // Highlight clicked slice
+          ? Colors.yellow // Highlighted color
+          : colors[i % colors.length]; // Regular slice color
+      paint.style = PaintingStyle.fill; // Fill style for arcs
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: outerRadius),
         startAngle,
