@@ -4,6 +4,7 @@ import 'package:remote/services/soap_upnp.dart';
 import 'package:remote/services/wake_on_lan.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
+import 'package:remote/ui/remote_dpad.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'dart:developer';
@@ -181,57 +182,66 @@ class RemoteSheetState extends State<RemoteSheet> {
                   SizedBox(
                     height: _powerButtonSize * (_isMobile ? 2 : 1),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RemoteButton(
-                        size: _buttonSize,
-                        onPressed: () {
-                          log('Play button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_PLAY);
-                        },
-                        child: RemoteIcons.play,
-                      ),
-                      RemoteButton(
-                        size: _buttonSize,
-                        onPressed: () {
-                          log('Pause button pressed');
-                          // TODO: detect play state
-                          widget.onPressedCallback(KeyCode.KEY_PAUSE);
-                        },
-                        child: RemoteIcons.pause,
-                      ),
-                    ],
+                  DPadWidget(
+                    size: 200.0,
+                    onSliceClick: (index) {
+                      print('Slice clicked: $index');
+                    },
+                    onCenterClick: () {
+                      print('Center clicked!');
+                    },
                   ),
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RemoteRing(
-                        size: _ringSize,
-                        onPressedUp: () {
-                          log('Up button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_UP);
-                        },
-                        onPressedRight: () {
-                          log('Right button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_RIGHT);
-                        },
-                        onPressedDown: () {
-                          log('Down button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_DOWN);
-                        },
-                        onPressedLeft: () {
-                          log('Left button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_LEFT);
-                        },
-                        onPressedCenter: () {
-                          log('Center aka enter button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_ENTER);
-                        },
-                      )
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     RemoteButton(
+                  //       size: _buttonSize,
+                  //       onPressed: () {
+                  //         log('Play button pressed');
+                  //         widget.onPressedCallback(KeyCode.KEY_PLAY);
+                  //       },
+                  //       child: RemoteIcons.play,
+                  //     ),
+                  //     RemoteButton(
+                  //       size: _buttonSize,
+                  //       onPressed: () {
+                  //         log('Pause button pressed');
+                  //         // TODO: detect play state
+                  //         widget.onPressedCallback(KeyCode.KEY_PAUSE);
+                  //       },
+                  //       child: RemoteIcons.pause,
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 4),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     RemoteRing(
+                  //       size: _ringSize,
+                  //       onPressedUp: () {
+                  //         log('Up button pressed');
+                  //         widget.onPressedCallback(KeyCode.KEY_UP);
+                  //       },
+                  //       onPressedRight: () {
+                  //         log('Right button pressed');
+                  //         widget.onPressedCallback(KeyCode.KEY_RIGHT);
+                  //       },
+                  //       onPressedDown: () {
+                  //         log('Down button pressed');
+                  //         widget.onPressedCallback(KeyCode.KEY_DOWN);
+                  //       },
+                  //       onPressedLeft: () {
+                  //         log('Left button pressed');
+                  //         widget.onPressedCallback(KeyCode.KEY_LEFT);
+                  //       },
+                  //       onPressedCenter: () {
+                  //         log('Center aka enter button pressed');
+                  //         widget.onPressedCallback(KeyCode.KEY_ENTER);
+                  //       },
+                  //     )
+                  //   ],
+                  // ),
                   const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
