@@ -16,6 +16,10 @@ class DPadWidget extends StatefulWidget {
       Colors.grey,
       Colors.blue,
       Colors.red,
+      Colors.green,
+      Colors.grey,
+      Colors.blue,
+      Colors.red,
     ],
     this.size = 200.0, // Default size of 200
     this.onSliceClick,

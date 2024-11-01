@@ -182,8 +182,31 @@ class RemoteSheetState extends State<RemoteSheet> {
                   SizedBox(
                     height: _powerButtonSize * (_isMobile ? 2 : 1),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RemoteButton(
+                        size: _buttonSize,
+                        onPressed: () {
+                          log('Play button pressed');
+                          widget.onPressedCallback(KeyCode.KEY_PLAY);
+                        },
+                        child: RemoteIcons.play,
+                      ),
+                      RemoteButton(
+                        size: _buttonSize,
+                        onPressed: () {
+                          log('Pause button pressed');
+                          // TODO: detect play state
+                          widget.onPressedCallback(KeyCode.KEY_PAUSE);
+                        },
+                        child: RemoteIcons.pause,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
                   DPadWidget(
-                    size: 200.0,
+                    size: 180.0,
                     onSliceClick: (index) {
                       print('Slice clicked: $index');
                     },
@@ -191,29 +214,6 @@ class RemoteSheetState extends State<RemoteSheet> {
                       print('Center clicked!');
                     },
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     RemoteButton(
-                  //       size: _buttonSize,
-                  //       onPressed: () {
-                  //         log('Play button pressed');
-                  //         widget.onPressedCallback(KeyCode.KEY_PLAY);
-                  //       },
-                  //       child: RemoteIcons.play,
-                  //     ),
-                  //     RemoteButton(
-                  //       size: _buttonSize,
-                  //       onPressed: () {
-                  //         log('Pause button pressed');
-                  //         // TODO: detect play state
-                  //         widget.onPressedCallback(KeyCode.KEY_PAUSE);
-                  //       },
-                  //       child: RemoteIcons.pause,
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 4),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   //   children: [
