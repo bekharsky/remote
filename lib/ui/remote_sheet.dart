@@ -111,7 +111,6 @@ class RemoteSheetState extends State<RemoteSheet> {
             Padding(
               padding: EdgeInsets.fromLTRB(_hPad, _vPad, _hPad, _vPad),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +205,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                   ),
                   const SizedBox(height: 4),
                   DPadWidget(
-                    size: 180.0,
+                    size: 200.0,
                     onSliceClick: (index) {
                       print('Slice clicked: $index');
                     },
