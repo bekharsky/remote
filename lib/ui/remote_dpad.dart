@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class DPadWidget extends StatefulWidget {
   final int slices;
   final List<Color> colors;
-  final double size; // Static size parameter
-  final Function(int)? onSliceClick; // Callback for slice clicks
-  final Function()? onCenterClick; // Callback for center circle clicks
+  final double size;
+  final Function(int)? onSliceClick;
+  final Function()? onCenterClick;
 
   DPadWidget({
     Key? key,
