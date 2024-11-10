@@ -7,11 +7,13 @@ class DPadWidget extends StatefulWidget {
   final double size;
   final Function(int)? onSliceClick;
   final Function()? onCenterClick;
+  final Color activeColor;
 
   const DPadWidget({
     Key? key,
     this.slices = 4,
     required this.colors,
+    this.activeColor = const Color.fromRGBO(255, 152, 0, 1),
     this.size = 200.0,
     this.onSliceClick,
     this.onCenterClick,
@@ -38,10 +40,9 @@ class _DPadWidgetState extends State<DPadWidget>
       duration: const Duration(milliseconds: 300),
     );
 
-    // Initialize animation with ColorTween transitioning to the first color in `colors` instead of null.
     _highlightAnimation = ColorTween(
-      begin: Colors.yellow,
-      end: widget.colors[0], // Transition back to default color
+      begin: widget.activeColor,
+      end: widget.colors[0],
     ).animate(_animationController);
 
     _highlightAnimation.addListener(() {
@@ -53,10 +54,9 @@ class _DPadWidgetState extends State<DPadWidget>
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
-          highlightedSlice =
-              null; // Clear slice highlight after animation completes
+          highlightedSlice = null;
           centerHighlighted = false;
-          _currentHighlightColor = widget.colors[0]; // Reset color to default
+          _currentHighlightColor = widget.colors[0];
         });
       }
     });
@@ -82,7 +82,7 @@ class _DPadWidgetState extends State<DPadWidget>
           size: widget.size,
           highlightedSlice: highlightedSlice,
           centerHighlighted: centerHighlighted,
-          highlightColor: _currentHighlightColor ?? Colors.yellow,
+          highlightColor: _currentHighlightColor ?? widget.activeColor,
         ),
       ),
     );
@@ -98,8 +98,8 @@ class _DPadWidgetState extends State<DPadWidget>
     final outerRadius = widget.size * 0.5;
     final innerRadius = outerRadius * 0.5;
 
-    _animationController.stop(); // Stop any ongoing animation
-    _currentHighlightColor = Colors.yellow; // Set highlight color immediately
+    _animationController.stop();
+    _currentHighlightColor = widget.activeColor;
 
     if (distanceSquare < innerRadius * innerRadius) {
       setState(() {
@@ -124,7 +124,6 @@ class _DPadWidgetState extends State<DPadWidget>
   }
 
   void _handleTapUp(TapUpDetails details) {
-    // Start the animation back to default color on tap up
     _animationController.forward(from: 0);
   }
 
@@ -132,8 +131,7 @@ class _DPadWidgetState extends State<DPadWidget>
     setState(() {
       highlightedSlice = null;
       centerHighlighted = false;
-      _currentHighlightColor =
-          widget.colors[0]; // Reset highlight color to default
+      _currentHighlightColor = widget.colors[0];
     });
   }
 }

@@ -7,7 +7,7 @@ class RemoteTap extends StatefulWidget {
   final void Function() onPressed;
   final BoxDecoration style;
   final Color startColor = const Color.fromRGBO(73, 73, 73, 1);
-  final Color endColor = const Color.fromRGBO(255, 152, 0, 1);
+  final Color activeColor = const Color.fromRGBO(255, 152, 0, 1);
   final Widget child;
 
   const RemoteTap({
@@ -37,7 +37,7 @@ class _RemoteTapState extends State<RemoteTap>
     );
 
     final startColor = widget.style.color ?? widget.startColor;
-    final endColor = widget.style.color ?? widget.endColor;
+    final endColor = widget.style.color ?? widget.activeColor;
 
     _colorTween = ColorTween(
       begin: startColor,
