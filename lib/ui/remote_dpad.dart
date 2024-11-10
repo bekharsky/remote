@@ -74,16 +74,54 @@ class _DPadWidgetState extends State<DPadWidget>
       onTapDown: _handleTapDown,
       onTapUp: _handleTapUp,
       onTapCancel: _resetHighlight,
-      child: CustomPaint(
-        size: Size(widget.size, widget.size),
-        painter: _DPadPainter(
-          slices: widget.slices,
-          colors: widget.colors,
-          size: widget.size,
-          highlightedSlice: highlightedSlice,
-          centerHighlighted: centerHighlighted,
-          highlightColor: _currentHighlightColor ?? widget.activeColor,
-        ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          CustomPaint(
+            size: Size(widget.size, widget.size),
+            painter: _DPadPainter(
+              slices: widget.slices,
+              colors: widget.colors,
+              size: widget.size,
+              highlightedSlice: highlightedSlice,
+              centerHighlighted: centerHighlighted,
+              highlightColor: _currentHighlightColor ?? widget.activeColor,
+            ),
+          ),
+          // Position icons in each segment
+          Positioned(
+            top: widget.size * 0.0675,
+            child: const Icon(
+              Icons.keyboard_arrow_up,
+              size: 30,
+              color: Colors.white60,
+            ),
+          ),
+          Positioned(
+            right: widget.size * 0.0675,
+            child: const Icon(
+              Icons.keyboard_arrow_right,
+              size: 30,
+              color: Colors.white60,
+            ),
+          ),
+          Positioned(
+            bottom: widget.size * 0.0675,
+            child: const Icon(
+              Icons.keyboard_arrow_down,
+              size: 30,
+              color: Colors.white60,
+            ),
+          ),
+          Positioned(
+            left: widget.size * 0.0675,
+            child: const Icon(
+              Icons.keyboard_arrow_left,
+              size: 30,
+              color: Colors.white60,
+            ),
+          ),
+        ],
       ),
     );
   }
