@@ -8,15 +8,10 @@ class DPadWidget extends StatefulWidget {
   final Function(int)? onSliceClick;
   final Function()? onCenterClick;
 
-  DPadWidget({
+  const DPadWidget({
     Key? key,
     this.slices = 4,
-    this.colors = const [
-      Colors.green,
-      Colors.grey,
-      Colors.blue,
-      Colors.red,
-    ],
+    required this.colors,
     this.size = 200.0,
     this.onSliceClick,
     this.onCenterClick,
@@ -131,7 +126,7 @@ class _DPadPainter extends CustomPainter {
         paint,
       );
 
-      paint.color = Colors.white;
+      paint.color = const Color(0XFF2e2e2e);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
@@ -147,11 +142,11 @@ class _DPadPainter extends CustomPainter {
     }
 
     paint.style = PaintingStyle.fill;
-    paint.color = centerHighlighted ? Colors.yellow : Colors.black;
+    paint.color = centerHighlighted ? Colors.yellow : colors[0];
     canvas.drawCircle(center, innerRadius, paint);
 
     paint.style = PaintingStyle.stroke;
-    paint.color = Colors.white;
+    paint.color = const Color(0XFF2e2e2e);
     paint.strokeWidth = 2;
     canvas.drawCircle(center, innerRadius, paint);
   }

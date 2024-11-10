@@ -206,6 +206,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                   const SizedBox(height: 4),
                   DPadWidget(
                     size: 200.0,
+                    colors: List.filled(4, const Color.fromRGBO(73, 73, 73, 1)),
                     onSliceClick: (index) {
                       print('Slice clicked: $index');
                     },
