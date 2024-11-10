@@ -21,15 +21,59 @@ class DPadWidget extends StatefulWidget {
   _DPadWidgetState createState() => _DPadWidgetState();
 }
 
-class _DPadWidgetState extends State<DPadWidget> {
+class _DPadWidgetState extends State<DPadWidget>
+    with SingleTickerProviderStateMixin {
   int? highlightedSlice;
   bool centerHighlighted = false;
+
+  late AnimationController _animationController;
+  late Animation<Color?> _highlightAnimation;
+  Color? _currentHighlightColor;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    // Initialize animation with ColorTween transitioning to the first color in `colors` instead of null.
+    _highlightAnimation = ColorTween(
+      begin: Colors.yellow,
+      end: widget.colors[0], // Transition back to default color
+    ).animate(_animationController);
+
+    _highlightAnimation.addListener(() {
+      setState(() {
+        _currentHighlightColor = _highlightAnimation.value;
+      });
+    });
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          highlightedSlice =
+              null; // Clear slice highlight after animation completes
+          centerHighlighted = false;
+          _currentHighlightColor = widget.colors[0]; // Reset color to default
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapUp: _handleTap,
-      onTapCancel: _resetHighlight, // Reset highlights on tap cancel
+      onTapDown: _handleTapDown,
+      onTapUp: _handleTapUp,
+      onTapCancel: _resetHighlight,
       child: CustomPaint(
         size: Size(widget.size, widget.size),
         painter: _DPadPainter(
@@ -38,12 +82,13 @@ class _DPadWidgetState extends State<DPadWidget> {
           size: widget.size,
           highlightedSlice: highlightedSlice,
           centerHighlighted: centerHighlighted,
+          highlightColor: _currentHighlightColor ?? Colors.yellow,
         ),
       ),
     );
   }
 
-  void _handleTap(TapUpDetails details) {
+  void _handleTapDown(TapDownDetails details) {
     final center = Offset(widget.size / 2, widget.size / 2);
     final touchPosition = details.localPosition;
     final dx = touchPosition.dx - center.dx;
@@ -53,20 +98,19 @@ class _DPadWidgetState extends State<DPadWidget> {
     final outerRadius = widget.size * 0.5;
     final innerRadius = outerRadius * 0.5;
 
+    _animationController.stop(); // Stop any ongoing animation
+    _currentHighlightColor = Colors.yellow; // Set highlight color immediately
+
     if (distanceSquare < innerRadius * innerRadius) {
       setState(() {
         centerHighlighted = true;
         highlightedSlice = null;
       });
       widget.onCenterClick?.call();
-      return;
-    }
-
-    if (distanceSquare > innerRadius * innerRadius &&
+    } else if (distanceSquare > innerRadius * innerRadius &&
         distanceSquare < outerRadius * outerRadius) {
       final angle = atan2(dy, dx);
       final adjustedAngle = (angle + pi / 4) % (2 * pi);
-
       final sliceIndex =
           (adjustedAngle / (2 * pi) * widget.slices).floor() % widget.slices;
 
@@ -79,10 +123,17 @@ class _DPadWidgetState extends State<DPadWidget> {
     }
   }
 
+  void _handleTapUp(TapUpDetails details) {
+    // Start the animation back to default color on tap up
+    _animationController.forward(from: 0);
+  }
+
   void _resetHighlight() {
     setState(() {
       highlightedSlice = null;
       centerHighlighted = false;
+      _currentHighlightColor =
+          widget.colors[0]; // Reset highlight color to default
     });
   }
 }
@@ -93,6 +144,7 @@ class _DPadPainter extends CustomPainter {
   final double size;
   final int? highlightedSlice;
   final bool centerHighlighted;
+  final Color highlightColor;
 
   _DPadPainter({
     required this.slices,
@@ -100,6 +152,7 @@ class _DPadPainter extends CustomPainter {
     required this.size,
     this.highlightedSlice,
     this.centerHighlighted = false,
+    required this.highlightColor,
   }) : super();
 
   @override
@@ -109,13 +162,12 @@ class _DPadPainter extends CustomPainter {
     final innerRadius = outerRadius * 0.5;
     final paint = Paint();
 
-    // Draw slices
     double startAngle = -pi / 4;
     double sweepAngle = 2 * pi / slices;
 
     for (int i = 0; i < slices; i++) {
       paint.color =
-          highlightedSlice == i ? Colors.yellow : colors[i % colors.length];
+          highlightedSlice == i ? highlightColor : colors[i % colors.length];
       paint.style = PaintingStyle.fill;
 
       canvas.drawArc(
@@ -142,7 +194,7 @@ class _DPadPainter extends CustomPainter {
     }
 
     paint.style = PaintingStyle.fill;
-    paint.color = centerHighlighted ? Colors.yellow : colors[0];
+    paint.color = centerHighlighted ? highlightColor : colors[0];
     canvas.drawCircle(center, innerRadius, paint);
 
     paint.style = PaintingStyle.stroke;
@@ -153,6 +205,8 @@ class _DPadPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_DPadPainter oldDelegate) {
-    return true;
+    return oldDelegate.highlightedSlice != highlightedSlice ||
+        oldDelegate.centerHighlighted != centerHighlighted ||
+        oldDelegate.highlightColor != highlightColor;
   }
 }
