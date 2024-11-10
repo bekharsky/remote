@@ -151,9 +151,8 @@ class RemoteSheetState extends State<RemoteSheet> {
                         child: RemoteTap(
                           width: _powerButtonSize,
                           height: _powerButtonSize,
-                          style: const BoxDecoration(
-                            color: Colors.transparent,
-                          ),
+                          startColor: Colors.transparent,
+                          activeColor: Colors.transparent,
                           onPressed: () {
                             // TODO: move that to the main section/window frame
                             log('TV list button pressed');

@@ -5,8 +5,8 @@ class RemoteTap extends StatefulWidget {
   final double height;
   final void Function() onPressed;
   final BoxDecoration style;
-  final Color startColor = const Color.fromRGBO(73, 73, 73, 1);
-  final Color activeColor = const Color.fromRGBO(255, 152, 0, 1);
+  final Color startColor;
+  final Color activeColor;
   final Widget child;
 
   const RemoteTap({
@@ -14,6 +14,8 @@ class RemoteTap extends StatefulWidget {
     required this.width,
     required this.height,
     required this.onPressed,
+    this.startColor = const Color.fromRGBO(73, 73, 73, 1),
+    this.activeColor = const Color.fromRGBO(255, 152, 0, 1),
     this.style = const BoxDecoration(),
     this.child = const SizedBox.shrink(),
   }) : super(key: key);
@@ -26,12 +28,15 @@ class _RemoteTapState extends State<RemoteTap>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Color?> _colorTween;
-  Color _currentColor = const Color.fromRGBO(73, 73, 73, 1);
+  late Color _currentColor;
   bool _isTapped = false;
 
   @override
   void initState() {
     super.initState();
+
+    _currentColor = widget.startColor;
+
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
