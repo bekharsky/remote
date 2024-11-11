@@ -12,7 +12,6 @@ import 'package:sheet/route.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_button.dart';
 // import 'package:remote/ui/remote_level.dart';
-import 'package:remote/ui/remote_ring.dart';
 import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tap.dart';
@@ -203,44 +202,31 @@ class RemoteSheetState extends State<RemoteSheet> {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  DPadWidget(
+                  RemoteDPad(
                     size: 200.0,
                     colors: List.filled(4, const Color.fromRGBO(73, 73, 73, 1)),
                     onSliceClick: (index) {
-                      print('Slice clicked: $index');
+                      log('Slice clicked: $index');
+
+                      const keyCodeMap = {
+                        0: KeyCode.KEY_RIGHT,
+                        1: KeyCode.KEY_DOWN,
+                        2: KeyCode.KEY_LEFT,
+                        3: KeyCode.KEY_UP,
+                      };
+
+                      final keyCode = keyCodeMap[index];
+
+                      if (keyCode != null) {
+                        log('${keyCode.name} button pressed');
+                        widget.onPressedCallback(keyCode);
+                      }
                     },
                     onCenterClick: () {
-                      print('Center clicked!');
+                      log('${KeyCode.KEY_ENTER.name} button pressed');
+                      widget.onPressedCallback(KeyCode.KEY_ENTER);
                     },
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     RemoteRing(
-                  //       size: _ringSize,
-                  //       onPressedUp: () {
-                  //         log('Up button pressed');
-                  //         widget.onPressedCallback(KeyCode.KEY_UP);
-                  //       },
-                  //       onPressedRight: () {
-                  //         log('Right button pressed');
-                  //         widget.onPressedCallback(KeyCode.KEY_RIGHT);
-                  //       },
-                  //       onPressedDown: () {
-                  //         log('Down button pressed');
-                  //         widget.onPressedCallback(KeyCode.KEY_DOWN);
-                  //       },
-                  //       onPressedLeft: () {
-                  //         log('Left button pressed');
-                  //         widget.onPressedCallback(KeyCode.KEY_LEFT);
-                  //       },
-                  //       onPressedCenter: () {
-                  //         log('Center aka enter button pressed');
-                  //         widget.onPressedCallback(KeyCode.KEY_ENTER);
-                  //       },
-                  //     )
-                  //   ],
-                  // ),
                   const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

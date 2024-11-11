@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-class DPadWidget extends StatefulWidget {
+class RemoteDPad extends StatefulWidget {
   final int slices;
   final List<Color> colors;
   final double size;
@@ -9,7 +9,7 @@ class DPadWidget extends StatefulWidget {
   final Function()? onCenterClick;
   final Color activeColor;
 
-  const DPadWidget({
+  const RemoteDPad({
     Key? key,
     this.slices = 4,
     required this.colors,
@@ -20,10 +20,10 @@ class DPadWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DPadWidgetState createState() => _DPadWidgetState();
+  _RemoteDPadState createState() => _RemoteDPadState();
 }
 
-class _DPadWidgetState extends State<DPadWidget>
+class _RemoteDPadState extends State<RemoteDPad>
     with SingleTickerProviderStateMixin {
   int? highlightedSlice;
   bool centerHighlighted = false;
