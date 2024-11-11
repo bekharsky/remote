@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 class RemoteTap extends StatefulWidget {
@@ -6,8 +5,8 @@ class RemoteTap extends StatefulWidget {
   final double height;
   final void Function() onPressed;
   final BoxDecoration style;
-  final Color startColor = const Color.fromRGBO(73, 73, 73, 1);
-  final Color endColor = const Color.fromRGBO(255, 152, 0, 1);
+  final Color startColor;
+  final Color activeColor;
   final Widget child;
 
   const RemoteTap({
@@ -15,6 +14,8 @@ class RemoteTap extends StatefulWidget {
     required this.width,
     required this.height,
     required this.onPressed,
+    this.startColor = const Color.fromRGBO(73, 73, 73, 1),
+    this.activeColor = const Color.fromRGBO(255, 152, 0, 1),
     this.style = const BoxDecoration(),
     this.child = const SizedBox.shrink(),
   }) : super(key: key);
@@ -27,40 +28,59 @@ class _RemoteTapState extends State<RemoteTap>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Color?> _colorTween;
+  late Color _currentColor;
+  bool _isTapped = false;
 
   @override
   void initState() {
     super.initState();
+
+    _currentColor = widget.startColor;
+
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 0),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
-    final startColor = widget.style.color ?? widget.startColor;
-    final endColor = widget.style.color ?? widget.endColor;
-
     _colorTween = ColorTween(
-      begin: startColor,
-      end: endColor,
+      begin: widget.activeColor,
+      end: widget.startColor,
     ).animate(_controller);
+
+    _colorTween.addListener(() {
+      setState(() {
+        _currentColor = _colorTween.value!;
+      });
+    });
+
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _currentColor = widget.startColor;
+        });
+      }
+    });
   }
 
   void _handleTapDown(TapDownDetails details) {
-    _controller.duration = const Duration(milliseconds: 20);
     _controller.stop();
-    _controller.forward();
 
-    // TODO: settings
-    HapticFeedback.mediumImpact();
+    setState(() {
+      _currentColor = widget.activeColor;
+      _isTapped = true;
+    });
 
     widget.onPressed();
   }
 
   void _handleTapUp(TapUpDetails details) {
-    Future.delayed(const Duration(milliseconds: 20), () {
-      _controller.duration = const Duration(milliseconds: 480);
-      _controller.stop();
-      _controller.reverse();
+    _controller.forward(from: 0);
+  }
+
+  void _resetHighlight() {
+    setState(() {
+      _currentColor = widget.startColor;
+      _isTapped = false;
     });
   }
 
@@ -69,18 +89,30 @@ class _RemoteTapState extends State<RemoteTap>
     return GestureDetector(
       onTapDown: _handleTapDown,
       onTapUp: _handleTapUp,
+      onTapCancel: _resetHighlight,
       child: AnimatedBuilder(
-          animation: _colorTween,
-          builder: (context, child) {
-            return Container(
-              width: widget.width,
-              height: widget.height,
-              decoration: widget.style.copyWith(
-                color: _colorTween.value,
-              ),
-              child: widget.child,
-            );
-          }),
+        animation: _controller,
+        builder: (context, child) {
+          return Container(
+            width: widget.width,
+            height: widget.height,
+            decoration: widget.style.copyWith(
+              color: _isTapped
+                  ? _currentColor
+                  : _controller.isAnimating
+                      ? _colorTween.value
+                      : _currentColor,
+            ),
+            child: widget.child,
+          );
+        },
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

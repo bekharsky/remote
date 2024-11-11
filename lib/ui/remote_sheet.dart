@@ -4,6 +4,7 @@ import 'package:remote/services/soap_upnp.dart';
 import 'package:remote/services/wake_on_lan.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
+import 'package:remote/ui/remote_dpad.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'dart:developer';
@@ -11,7 +12,6 @@ import 'package:sheet/route.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_button.dart';
 // import 'package:remote/ui/remote_level.dart';
-import 'package:remote/ui/remote_ring.dart';
 import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tap.dart';
@@ -110,7 +110,6 @@ class RemoteSheetState extends State<RemoteSheet> {
             Padding(
               padding: EdgeInsets.fromLTRB(_hPad, _vPad, _hPad, _vPad),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,9 +150,8 @@ class RemoteSheetState extends State<RemoteSheet> {
                         child: RemoteTap(
                           width: _powerButtonSize,
                           height: _powerButtonSize,
-                          style: const BoxDecoration(
-                            color: Colors.transparent,
-                          ),
+                          startColor: Colors.transparent,
+                          activeColor: Colors.transparent,
                           onPressed: () {
                             // TODO: move that to the main section/window frame
                             log('TV list button pressed');
@@ -204,33 +202,30 @@ class RemoteSheetState extends State<RemoteSheet> {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RemoteRing(
-                        size: _ringSize,
-                        onPressedUp: () {
-                          log('Up button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_UP);
-                        },
-                        onPressedRight: () {
-                          log('Right button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_RIGHT);
-                        },
-                        onPressedDown: () {
-                          log('Down button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_DOWN);
-                        },
-                        onPressedLeft: () {
-                          log('Left button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_LEFT);
-                        },
-                        onPressedCenter: () {
-                          log('Center aka enter button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_ENTER);
-                        },
-                      )
-                    ],
+                  RemoteDPad(
+                    size: 200.0,
+                    colors: List.filled(4, const Color.fromRGBO(73, 73, 73, 1)),
+                    onSliceClick: (index) {
+                      log('Slice clicked: $index');
+
+                      const keyCodeMap = {
+                        0: KeyCode.KEY_RIGHT,
+                        1: KeyCode.KEY_DOWN,
+                        2: KeyCode.KEY_LEFT,
+                        3: KeyCode.KEY_UP,
+                      };
+
+                      final keyCode = keyCodeMap[index];
+
+                      if (keyCode != null) {
+                        log('${keyCode.name} button pressed');
+                        widget.onPressedCallback(keyCode);
+                      }
+                    },
+                    onCenterClick: () {
+                      log('${KeyCode.KEY_ENTER.name} button pressed');
+                      widget.onPressedCallback(KeyCode.KEY_ENTER);
+                    },
                   ),
                   const SizedBox(height: 4),
                   Row(
