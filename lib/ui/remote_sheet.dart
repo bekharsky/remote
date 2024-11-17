@@ -51,7 +51,6 @@ class RemoteSheetState extends State<RemoteSheet> {
 
     controller.addListener(() {
       double offset = controller.offset;
-
       widget.onSheetShiftCallback(offset);
     });
 
