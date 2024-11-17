@@ -84,6 +84,7 @@ class RemoteSheetState extends State<RemoteSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+    final iconColor = theme.colors.secondary;
 
     return Sheet(
       physics: const SnapSheetPhysics(
@@ -219,6 +220,12 @@ class RemoteSheetState extends State<RemoteSheet> {
                   RemoteDPad(
                     size: 200.0,
                     colors: List.filled(4, theme.colors.primary),
+                    icons: [
+                      RemoteIcons.arrowRight(iconColor),
+                      RemoteIcons.arrowBottom(iconColor),
+                      RemoteIcons.arrowLeft(iconColor),
+                      RemoteIcons.arrowUp(iconColor),
+                    ],
                     activeColor: theme.colors.active,
                     onSliceClick: (index) {
                       log('Slice clicked: $index');

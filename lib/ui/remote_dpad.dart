@@ -1,10 +1,11 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class RemoteDPad extends StatefulWidget {
   final int slices;
   final List<Color> colors;
   final Color activeColor;
+  final List<Icon> icons;
   final double size;
   final Function(int)? onSliceClick;
   final Function()? onCenterClick;
@@ -14,6 +15,7 @@ class RemoteDPad extends StatefulWidget {
     this.slices = 4,
     required this.colors,
     required this.activeColor,
+    required this.icons,
     this.size = 200.0,
     this.onSliceClick,
     this.onCenterClick,
@@ -90,36 +92,20 @@ class _RemoteDPadState extends State<RemoteDPad>
           ),
           // Position icons in each segment
           Positioned(
-            top: widget.size * 0.0675,
-            child: const Icon(
-              Icons.keyboard_arrow_up,
-              size: 30,
-              color: Colors.white60,
-            ),
-          ),
-          Positioned(
             right: widget.size * 0.0675,
-            child: const Icon(
-              Icons.keyboard_arrow_right,
-              size: 30,
-              color: Colors.white60,
-            ),
+            child: widget.icons[0],
           ),
           Positioned(
             bottom: widget.size * 0.0675,
-            child: const Icon(
-              Icons.keyboard_arrow_down,
-              size: 30,
-              color: Colors.white60,
-            ),
+            child: widget.icons[1],
           ),
           Positioned(
             left: widget.size * 0.0675,
-            child: const Icon(
-              Icons.keyboard_arrow_left,
-              size: 30,
-              color: Colors.white60,
-            ),
+            child: widget.icons[2],
+          ),
+          Positioned(
+            top: widget.size * 0.0675,
+            child: widget.icons[3],
           ),
         ],
       ),
