@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:remote/services/soap_upnp.dart';
 import 'package:remote/services/wake_on_lan.dart';
 // import 'package:flutter/widgets.dart';
@@ -92,23 +93,36 @@ class RemoteSheetState extends State<RemoteSheet> {
         child: Column(
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 8,
-                  bottom: 8,
-                ),
+              GestureDetector(
+                onTap: () {
+                  controller.animateTo(
+                    controller.offset == 430 ? 570 : 430,
+                    duration: const Duration(
+                      milliseconds: 300,
+                    ),
+                    curve: Curves.easeOut,
+                  );
+                },
                 child: Container(
-                  height: 4,
-                  width: 56,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(73, 73, 73, 1),
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                  child: Container(
+                    height: 4,
+                    width: 56,
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(73, 73, 73, 1),
+                      borderRadius: BorderRadius.all(Radius.circular(2)),
+                    ),
                   ),
                 ),
               ),
             ]),
             Padding(
-              padding: EdgeInsets.fromLTRB(_hPad, _vPad, _hPad, _vPad),
+              padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
               child: Column(
                 children: [
                   Row(
