@@ -66,6 +66,16 @@ class RemoteSheetState extends State<RemoteSheet> {
     );
   }
 
+  void toggleSheet() {
+    controller.animateTo(
+      controller.offset == 430 ? 570 : 430,
+      duration: const Duration(
+        milliseconds: 400,
+      ),
+      curve: Curves.easeOut,
+    );
+  }
+
   @override
   void dispose() {
     controller.dispose();
@@ -94,15 +104,7 @@ class RemoteSheetState extends State<RemoteSheet> {
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               GestureDetector(
-                onTap: () {
-                  controller.animateTo(
-                    controller.offset == 430 ? 570 : 430,
-                    duration: const Duration(
-                      milliseconds: 300,
-                    ),
-                    curve: Curves.easeOut,
-                  );
-                },
+                onTap: toggleSheet,
                 behavior: HitTestBehavior.opaque,
                 child: Container(
                   padding: const EdgeInsets.all(12),
