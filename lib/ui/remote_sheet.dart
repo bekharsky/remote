@@ -47,7 +47,7 @@ class RemoteSheetState extends State<RemoteSheet> {
 
   @override
   void initState() {
-    Future<void>.delayed(const Duration(milliseconds: 400), animateSheet);
+    delayAppsHide();
 
     controller.addListener(() {
       double offset = controller.offset;
@@ -58,11 +58,10 @@ class RemoteSheetState extends State<RemoteSheet> {
     super.initState();
   }
 
-  void animateSheet() {
-    controller.animateTo(
-      570,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeOut,
+  Future<void> delayAppsHide() {
+    return Future<void>.delayed(
+      const Duration(milliseconds: 1000),
+      toggleSheet,
     );
   }
 
