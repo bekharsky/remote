@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:remote/theme/app_theme.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_tap.dart';
 
@@ -26,6 +27,9 @@ class _RemoteRockerState extends State<RemoteRocker> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+    final iconColor = theme.colors.secondary;
+
     return SizedBox(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +44,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
                 bottomLeft: Radius.circular(9999),
               ),
             ),
-            child: RemoteIcons.lower,
+            child: RemoteIcons.lower(iconColor),
           ),
           RemoteTap(
             onPressed: widget.onPressedHigher,
@@ -52,7 +56,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
                 bottomRight: Radius.circular(9999),
               ),
             ),
-            child: RemoteIcons.higher,
+            child: RemoteIcons.higher(iconColor),
           ),
         ],
       ),

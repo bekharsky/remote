@@ -154,7 +154,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                               widget.onPressedCallback(KeyCode.KEY_POWER);
                             }
                           },
-                          child: RemoteIcons.power,
+                          child: RemoteIcons.power(),
                         ),
                       ),
                       Padding(
@@ -186,7 +186,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                               ),
                             );
                           },
-                          child: RemoteIcons.tv,
+                          child: RemoteIcons.tv(),
                         ),
                       ),
                     ],
@@ -203,7 +203,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                           log('Play button pressed');
                           widget.onPressedCallback(KeyCode.KEY_PLAY);
                         },
-                        child: RemoteIcons.play,
+                        child: RemoteIcons.play(iconColor),
                       ),
                       RemoteButton(
                         size: _buttonSize,
@@ -212,7 +212,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                           // TODO: detect play state
                           widget.onPressedCallback(KeyCode.KEY_PAUSE);
                         },
-                        child: RemoteIcons.pause,
+                        child: RemoteIcons.pause(iconColor),
                       ),
                     ],
                   ),
@@ -259,15 +259,15 @@ class RemoteSheetState extends State<RemoteSheet> {
                           log('Back aka return button pressed');
                           widget.onPressedCallback(KeyCode.KEY_RETURN);
                         },
-                        child: RemoteIcons.back,
+                        child: RemoteIcons.back(iconColor),
                       ),
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
                           log('123 button pressed');
-                          // widget.onPressedCallback(KeyCode.KEY_PLAY);
+                          widget.onPressedCallback(KeyCode.KEY_DYNAMIC);
                         },
-                        child: RemoteIcons.num,
+                        child: RemoteIcons.num(iconColor),
                       ),
                     ],
                   ),
@@ -280,7 +280,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         onPressed: () {
                           widget.onPressedCallback(KeyCode.KEY_HOME);
                         },
-                        child: RemoteIcons.home,
+                        child: RemoteIcons.home(iconColor),
                       ),
                     ],
                   ),
