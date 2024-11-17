@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:developer';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/services/commander.dart';
 import 'package:remote/theme/app_colors.dart';
@@ -184,42 +184,39 @@ class RemotePanelState extends State<RemotePanel> {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.colors.primary,
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                WindowTitleBar(isMac: _isMac),
-                RemoteTvName(name: name, model: modelName),
-                if (apps.isNotEmpty) ...[
-                  Container(
-                    padding: appsListShift,
-                    child: Opacity(
-                      opacity: 1 - shift,
-                      child: RemoteApps(
-                        apps: apps,
-                        onAppCallback: onAppCallback,
-                      ),
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: double.infinity,
+          width: double.infinity,
+          alignment: Alignment.center,
+          color: theme.colors.surface,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              WindowTitleBar(isMac: _isMac),
+              RemoteTvName(name: name, model: modelName),
+              if (apps.isNotEmpty) ...[
+                Container(
+                  padding: appsListShift,
+                  child: Opacity(
+                    opacity: 1 - shift,
+                    child: RemoteApps(
+                      apps: apps,
+                      onAppCallback: onAppCallback,
                     ),
-                  )
-                ],
+                  ),
+                )
               ],
-            ),
+            ],
           ),
-          RemoteSheet(
-            onTvSelectCallback: onTvSelectCallback,
-            onPressedCallback: onKeyCallback,
-            onSheetShiftCallback: onSheetShiftCallback,
-          ),
-        ],
-      ),
+        ),
+        RemoteSheet(
+          onTvSelectCallback: onTvSelectCallback,
+          onPressedCallback: onKeyCallback,
+          onSheetShiftCallback: onSheetShiftCallback,
+        ),
+      ],
     );
   }
 }
