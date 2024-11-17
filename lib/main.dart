@@ -6,6 +6,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/services/commander.dart';
+import 'package:remote/theme/app_colors.dart';
+import 'package:remote/theme/app_text_styles.dart';
+import 'package:remote/theme/app_theme.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
 import 'package:remote/types/tv_app.dart';
@@ -55,23 +58,27 @@ class RemoteControllerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
-      behavior: MyCustomScrollBehavior().copyWith(scrollbars: false),
-      child: WidgetsApp(
-        debugShowCheckedModeBanner: false,
-        color: Colors.transparent,
-        title: 'TV Remote',
-        onGenerateRoute: (RouteSettings settings) {
-          if (settings.name == '/') {
-            return MaterialExtendedPageRoute<void>(
-              builder: (BuildContext context) {
-                return const RemotePanel();
-              },
-            );
-          }
+    return AppTheme(
+      colors: remoteColors,
+      textStyles: remoteTextStyles,
+      child: ScrollConfiguration(
+        behavior: MyCustomScrollBehavior().copyWith(scrollbars: false),
+        child: WidgetsApp(
+          debugShowCheckedModeBanner: false,
+          color: remoteColors.primary,
+          title: 'TV Remote',
+          onGenerateRoute: (RouteSettings settings) {
+            if (settings.name == '/') {
+              return MaterialExtendedPageRoute<void>(
+                builder: (BuildContext context) {
+                  return const RemotePanel();
+                },
+              );
+            }
 
-          return null;
-        },
+            return null;
+          },
+        ),
       ),
     );
   }
@@ -175,9 +182,11 @@ class RemotePanelState extends State<RemotePanel> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromRGBO(73, 73, 73, 1),
+      backgroundColor: theme.colors.primary,
       body: Stack(
         children: <Widget>[
           Container(
@@ -188,7 +197,7 @@ class RemotePanelState extends State<RemotePanel> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 WindowTitleBar(isMac: _isMac),
-                RemoteTvName(name: name, modelName: modelName),
+                RemoteTvName(name: name, model: modelName),
                 if (apps.isNotEmpty) ...[
                   Container(
                     padding: appsListShift,

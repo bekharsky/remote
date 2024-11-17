@@ -1,17 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:remote/theme/app_theme.dart';
 
 class RemoteTvName extends StatelessWidget {
   const RemoteTvName({
     super.key,
     required this.name,
-    required this.modelName,
+    required this.model,
   });
 
   final String name;
-  final String modelName;
+  final String model;
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
       child: Column(
@@ -19,19 +22,12 @@ class RemoteTvName extends StatelessWidget {
         children: [
           Text(
             name,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w500,
-              color: Color.fromRGBO(255, 255, 255, 1),
-            ),
+            style: theme.textStyles.name,
             overflow: TextOverflow.ellipsis,
           ),
           Text(
-            modelName,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Color.fromRGBO(255, 255, 255, 1),
-            ),
+            model,
+            style: theme.textStyles.model,
           ),
         ],
       ),

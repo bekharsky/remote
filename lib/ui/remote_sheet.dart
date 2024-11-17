@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:remote/services/soap_upnp.dart';
 import 'package:remote/services/wake_on_lan.dart';
+import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_dpad.dart';
@@ -58,13 +59,15 @@ class RemoteSheetState extends State<RemoteSheet> {
   Future<void> delayAppsHide() {
     return Future<void>.delayed(
       const Duration(milliseconds: 1000),
-      toggleSheet,
+      () => toggleSheet(true),
     );
   }
 
-  void toggleSheet() {
+  void toggleSheet([bool force = false]) {
+    log('${controller.offset}');
+
     controller.animateTo(
-      controller.offset == 430 ? 570 : 430,
+      controller.offset == 430 || force ? 570 : 430,
       duration: const Duration(
         milliseconds: 400,
       ),
@@ -80,6 +83,8 @@ class RemoteSheetState extends State<RemoteSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+
     return Sheet(
       physics: const SnapSheetPhysics(
         relative: false,
@@ -89,9 +94,9 @@ class RemoteSheetState extends State<RemoteSheet> {
       controller: controller,
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       child: Container(
-        decoration: const BoxDecoration(
-          color: Color(0XFF2e2e2e),
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: theme.colors.background,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(24),
             topRight: Radius.circular(24),
           ),
@@ -158,6 +163,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         child: RemoteTap(
                           width: _powerButtonSize,
                           height: _powerButtonSize,
+                          // TODO: how to override theme colors still?
                           startColor: Colors.transparent,
                           activeColor: Colors.transparent,
                           onPressed: () {
@@ -212,7 +218,8 @@ class RemoteSheetState extends State<RemoteSheet> {
                   const SizedBox(height: 4),
                   RemoteDPad(
                     size: 200.0,
-                    colors: List.filled(4, const Color.fromRGBO(73, 73, 73, 1)),
+                    colors: List.filled(4, theme.colors.primary),
+                    activeColor: theme.colors.active,
                     onSliceClick: (index) {
                       log('Slice clicked: $index');
 

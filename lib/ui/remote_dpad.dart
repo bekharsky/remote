@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 class RemoteDPad extends StatefulWidget {
   final int slices;
   final List<Color> colors;
+  final Color activeColor;
   final double size;
   final Function(int)? onSliceClick;
   final Function()? onCenterClick;
-  final Color activeColor;
 
   const RemoteDPad({
     Key? key,
     this.slices = 4,
     required this.colors,
-    this.activeColor = const Color.fromRGBO(255, 152, 0, 1),
+    required this.activeColor,
     this.size = 200.0,
     this.onSliceClick,
     this.onCenterClick,
