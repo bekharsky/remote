@@ -3,9 +3,12 @@ import 'dart:io';
 import 'dart:developer';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/services/commander.dart';
+import 'package:remote/theme/app_colors.dart';
+import 'package:remote/theme/app_text_styles.dart';
+import 'package:remote/theme/app_theme.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
 import 'package:remote/types/tv_app.dart';
@@ -55,23 +58,27 @@ class RemoteControllerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
-      behavior: MyCustomScrollBehavior().copyWith(scrollbars: false),
-      child: WidgetsApp(
-        debugShowCheckedModeBanner: false,
-        color: Colors.transparent,
-        title: 'TV Remote',
-        onGenerateRoute: (RouteSettings settings) {
-          if (settings.name == '/') {
-            return MaterialExtendedPageRoute<void>(
-              builder: (BuildContext context) {
-                return const RemotePanel();
-              },
-            );
-          }
+    return AppTheme(
+      colors: remoteColors,
+      textStyles: remoteTextStyles,
+      child: ScrollConfiguration(
+        behavior: MyCustomScrollBehavior().copyWith(scrollbars: false),
+        child: WidgetsApp(
+          debugShowCheckedModeBanner: false,
+          color: remoteColors.primary,
+          title: 'TV Remote',
+          onGenerateRoute: (RouteSettings settings) {
+            if (settings.name == '/') {
+              return MaterialExtendedPageRoute<void>(
+                builder: (BuildContext context) {
+                  return const RemotePanel();
+                },
+              );
+            }
 
-          return null;
-        },
+            return null;
+          },
+        ),
       ),
     );
   }
@@ -175,42 +182,41 @@ class RemotePanelState extends State<RemotePanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromRGBO(73, 73, 73, 1),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                WindowTitleBar(isMac: _isMac),
-                RemoteTvName(name: name, modelName: modelName),
-                if (apps.isNotEmpty) ...[
-                  Container(
-                    padding: appsListShift,
-                    child: Opacity(
-                      opacity: 1 - shift,
-                      child: RemoteApps(
-                        apps: apps,
-                        onAppCallback: onAppCallback,
-                      ),
+    final theme = AppTheme.of(context);
+
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: double.infinity,
+          width: double.infinity,
+          alignment: Alignment.center,
+          color: theme.colors.surface,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              WindowTitleBar(isMac: _isMac),
+              RemoteTvName(name: name, model: modelName),
+              if (apps.isNotEmpty) ...[
+                Container(
+                  padding: appsListShift,
+                  child: Opacity(
+                    opacity: 1 - shift,
+                    child: RemoteApps(
+                      apps: apps,
+                      onAppCallback: onAppCallback,
                     ),
-                  )
-                ],
+                  ),
+                )
               ],
-            ),
+            ],
           ),
-          RemoteSheet(
-            onTvSelectCallback: onTvSelectCallback,
-            onPressedCallback: onKeyCallback,
-            onSheetShiftCallback: onSheetShiftCallback,
-          ),
-        ],
-      ),
+        ),
+        RemoteSheet(
+          onTvSelectCallback: onTvSelectCallback,
+          onPressedCallback: onKeyCallback,
+          onSheetShiftCallback: onSheetShiftCallback,
+        ),
+      ],
     );
   }
 }

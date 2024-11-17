@@ -33,7 +33,7 @@ class WakeOnLan {
   }
 
   void wake() async {
-    // TODO: use not 255.255.255.255, but actual gateway aka 192.168.3.255
+    // TODO: identify the actual gateway address
     var destAddr = InternetAddress('192.168.3.255');
 
     await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0)

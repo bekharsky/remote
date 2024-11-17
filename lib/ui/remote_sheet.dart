@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:remote/services/soap_upnp.dart';
 import 'package:remote/services/wake_on_lan.dart';
+import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_dpad.dart';
@@ -12,7 +12,6 @@ import 'dart:developer';
 import 'package:sheet/route.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_button.dart';
-// import 'package:remote/ui/remote_level.dart';
 import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tap.dart';
@@ -60,13 +59,15 @@ class RemoteSheetState extends State<RemoteSheet> {
   Future<void> delayAppsHide() {
     return Future<void>.delayed(
       const Duration(milliseconds: 1000),
-      toggleSheet,
+      () => toggleSheet(true),
     );
   }
 
-  void toggleSheet() {
+  void toggleSheet([bool force = false]) {
+    log('${controller.offset}');
+
     controller.animateTo(
-      controller.offset == 430 ? 570 : 430,
+      controller.offset == 430 || force ? 570 : 430,
       duration: const Duration(
         milliseconds: 400,
       ),
@@ -82,6 +83,9 @@ class RemoteSheetState extends State<RemoteSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
+    final iconColor = theme.colors.onPrimary;
+
     return Sheet(
       physics: const SnapSheetPhysics(
         relative: false,
@@ -91,9 +95,9 @@ class RemoteSheetState extends State<RemoteSheet> {
       controller: controller,
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       child: Container(
-        decoration: const BoxDecoration(
-          color: Color(0XFF2e2e2e),
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: theme.colors.background,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(24),
             topRight: Radius.circular(24),
           ),
@@ -150,7 +154,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                               widget.onPressedCallback(KeyCode.KEY_POWER);
                             }
                           },
-                          child: RemoteIcons.power,
+                          child: RemoteIcons.power(),
                         ),
                       ),
                       Padding(
@@ -160,6 +164,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         child: RemoteTap(
                           width: _powerButtonSize,
                           height: _powerButtonSize,
+                          // TODO: how to override theme colors still?
                           startColor: Colors.transparent,
                           activeColor: Colors.transparent,
                           onPressed: () {
@@ -181,7 +186,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                               ),
                             );
                           },
-                          child: RemoteIcons.tv,
+                          child: RemoteIcons.tv(),
                         ),
                       ),
                     ],
@@ -198,7 +203,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                           log('Play button pressed');
                           widget.onPressedCallback(KeyCode.KEY_PLAY);
                         },
-                        child: RemoteIcons.play,
+                        child: RemoteIcons.play(iconColor),
                       ),
                       RemoteButton(
                         size: _buttonSize,
@@ -207,14 +212,21 @@ class RemoteSheetState extends State<RemoteSheet> {
                           // TODO: detect play state
                           widget.onPressedCallback(KeyCode.KEY_PAUSE);
                         },
-                        child: RemoteIcons.pause,
+                        child: RemoteIcons.pause(iconColor),
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
                   RemoteDPad(
                     size: 200.0,
-                    colors: List.filled(4, const Color.fromRGBO(73, 73, 73, 1)),
+                    colors: List.filled(4, theme.colors.primary),
+                    icons: [
+                      RemoteIcons.arrowRight(iconColor),
+                      RemoteIcons.arrowBottom(iconColor),
+                      RemoteIcons.arrowLeft(iconColor),
+                      RemoteIcons.arrowUp(iconColor),
+                    ],
+                    activeColor: theme.colors.active,
                     onSliceClick: (index) {
                       log('Slice clicked: $index');
 
@@ -247,15 +259,15 @@ class RemoteSheetState extends State<RemoteSheet> {
                           log('Back aka return button pressed');
                           widget.onPressedCallback(KeyCode.KEY_RETURN);
                         },
-                        child: RemoteIcons.back,
+                        child: RemoteIcons.back(iconColor),
                       ),
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
                           log('123 button pressed');
-                          // widget.onPressedCallback(KeyCode.KEY_PLAY);
+                          widget.onPressedCallback(KeyCode.KEY_DYNAMIC);
                         },
-                        child: RemoteIcons.num,
+                        child: RemoteIcons.num(iconColor),
                       ),
                     ],
                   ),
@@ -268,7 +280,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         onPressed: () {
                           widget.onPressedCallback(KeyCode.KEY_HOME);
                         },
-                        child: RemoteIcons.home,
+                        child: RemoteIcons.home(iconColor),
                       ),
                     ],
                   ),
