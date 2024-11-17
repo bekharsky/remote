@@ -103,13 +103,9 @@ class RemoteSheetState extends State<RemoteSheet> {
                     curve: Curves.easeOut,
                   );
                 },
+                behavior: HitTestBehavior.opaque,
                 child: Container(
                   padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
                   child: Container(
                     height: 4,
                     width: 56,
