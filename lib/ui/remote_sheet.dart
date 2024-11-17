@@ -84,7 +84,7 @@ class RemoteSheetState extends State<RemoteSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final iconColor = theme.colors.secondary;
+    final iconColor = theme.colors.onPrimary;
 
     return Sheet(
       physics: const SnapSheetPhysics(
