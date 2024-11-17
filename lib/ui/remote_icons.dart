@@ -11,19 +11,19 @@ class RemoteIcons {
   static Icon power([Color? color]) => Icon(
         Icons.power_settings_new_rounded,
         size: _size,
-        color: const Color.fromRGBO(183, 28, 28, 1),
+        color: color ?? const Color.fromRGBO(183, 28, 28, 1),
       );
 
   static Icon settings([Color? color]) => Icon(
         Icons.settings,
         size: _size,
-        color: const Color.fromRGBO(255, 255, 255, 0.102),
+        color: color ?? const Color.fromRGBO(255, 255, 255, 0.102),
       );
 
   static Icon tv([Color? color]) => Icon(
         Icons.tv,
         size: _size,
-        color: const Color.fromRGBO(255, 255, 255, 0.102),
+        color: color ?? const Color.fromRGBO(255, 255, 255, 0.102),
       );
 
   static Icon home([Color? color]) => Icon(
