@@ -28,6 +28,18 @@ class _RemoteVolumeState extends State<RemoteVolume> {
   late final double _height = widget.size / 4;
   // TODO: set muted from real TV state
   bool _isMuted = false;
+  final _downStyle = const BoxDecoration(
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(9999),
+      bottomLeft: Radius.circular(9999),
+    ),
+  );
+  final _upStyle = const BoxDecoration(
+    borderRadius: BorderRadius.only(
+      topRight: Radius.circular(9999),
+      bottomRight: Radius.circular(9999),
+    ),
+  );
 
   @override
   void initState() {
@@ -55,12 +67,7 @@ class _RemoteVolumeState extends State<RemoteVolume> {
             },
             width: _width,
             height: _height,
-            style: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(9999),
-                bottomLeft: Radius.circular(9999),
-              ),
-            ),
+            style: _downStyle,
             child: RemoteIcons.lower(iconColor),
           ),
           RemoteTap(
@@ -89,12 +96,7 @@ class _RemoteVolumeState extends State<RemoteVolume> {
             },
             width: _width,
             height: _height,
-            style: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(9999),
-                bottomRight: Radius.circular(9999),
-              ),
-            ),
+            style: _upStyle,
             child: RemoteIcons.higher(iconColor),
           ),
         ],
