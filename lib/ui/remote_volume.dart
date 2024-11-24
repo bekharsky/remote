@@ -9,12 +9,14 @@ class RemoteVolume extends StatefulWidget {
   final double size;
   final void Function() onPressedLower;
   final void Function() onPressedHigher;
+  final void Function() onPressedMute;
 
   const RemoteVolume({
     Key? key,
     this.size = 166,
     required this.onPressedLower,
     required this.onPressedHigher,
+    required this.onPressedMute,
   }) : super(key: key);
 
   @override
@@ -22,8 +24,15 @@ class RemoteVolume extends StatefulWidget {
 }
 
 class _RemoteVolumeState extends State<RemoteVolume> {
-  late final double _width = widget.size / 2;
+  late final double _width = widget.size / 3;
   late final double _height = widget.size / 4;
+  // TODO: set muted from real TV state
+  bool _isMuted = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +54,20 @@ class _RemoteVolumeState extends State<RemoteVolume> {
               ),
             ),
             child: RemoteIcons.lower(iconColor),
+          ),
+          RemoteTap(
+            onPressed: () {
+              setState(() {
+                _isMuted = !_isMuted;
+              });
+
+              widget.onPressedMute();
+            },
+            width: _width,
+            height: _height,
+            child: _isMuted
+                ? RemoteIcons.mute(iconColor)
+                : RemoteIcons.volume(iconColor),
           ),
           RemoteTap(
             onPressed: widget.onPressedHigher,

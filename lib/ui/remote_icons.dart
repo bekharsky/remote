@@ -86,6 +86,18 @@ class RemoteIcons {
         color: color ?? _lightText,
       );
 
+  static Icon mute([Color? color]) => Icon(
+        Icons.volume_off,
+        size: _size * 1.4,
+        color: color ?? _lightText,
+      );
+
+  static Icon volume([Color? color]) => Icon(
+        Icons.volume_up,
+        size: _size * 1.4,
+        color: color ?? _lightText,
+      );
+
   static Icon num([Color? color]) => Icon(
         Icons.onetwothree,
         size: _size * 1.4,
