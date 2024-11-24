@@ -22,10 +22,10 @@ class RemoteDPad extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RemoteDPadState createState() => _RemoteDPadState();
+  RemoteDPadState createState() => RemoteDPadState();
 }
 
-class _RemoteDPadState extends State<RemoteDPad>
+class RemoteDPadState extends State<RemoteDPad>
     with SingleTickerProviderStateMixin {
   int? highlightedSlice;
   bool centerHighlighted = false;

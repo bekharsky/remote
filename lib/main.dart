@@ -165,12 +165,12 @@ class RemotePanelState extends State<RemotePanel> {
     commander.sendKey(keyCode);
   }
 
-  onAppCallback(String appId) {
+  void onAppCallback(String appId) {
     log('App launch: $appId');
     commander.launchApp(appId);
   }
 
-  onSheetShiftCallback(double offset) {
+  void onSheetShiftCallback(double offset) {
     final range = sheetStops[0] - sheetStops[1];
     final diff = offset - sheetStops[1];
 

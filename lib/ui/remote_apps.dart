@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import '../types/tv_app.dart';
 
