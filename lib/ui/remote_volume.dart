@@ -44,7 +44,15 @@ class _RemoteVolumeState extends State<RemoteVolume> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RemoteTap(
-            onPressed: widget.onPressedLower,
+            onPressed: () {
+              setState(() {
+                if (_isMuted) {
+                  _isMuted = false;
+                }
+              });
+
+              widget.onPressedLower();
+            },
             width: _width,
             height: _height,
             style: const BoxDecoration(
@@ -70,7 +78,15 @@ class _RemoteVolumeState extends State<RemoteVolume> {
                 : RemoteIcons.volume(iconColor),
           ),
           RemoteTap(
-            onPressed: widget.onPressedHigher,
+            onPressed: () {
+              setState(() {
+                if (_isMuted) {
+                  _isMuted = false;
+                }
+              });
+
+              widget.onPressedHigher();
+            },
             width: _width,
             height: _height,
             style: const BoxDecoration(
