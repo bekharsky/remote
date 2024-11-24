@@ -46,6 +46,7 @@ class _RemoteVolumeState extends State<RemoteVolume> {
       decoration: _decoration,
       clipBehavior: Clip.antiAlias,
       width: widget.size,
+      height: widget.size / 4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
