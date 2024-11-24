@@ -12,7 +12,7 @@ import 'dart:developer';
 import 'package:sheet/route.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_button.dart';
-import 'package:remote/ui/remote_rocker.dart';
+import 'package:remote/ui/remote_volume.dart';
 import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tap.dart';
 import 'package:sheet/sheet.dart';
