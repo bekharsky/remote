@@ -28,17 +28,8 @@ class _RemoteVolumeState extends State<RemoteVolume> {
   late final double _height = widget.size / 4;
   // TODO: set muted from real TV state
   bool _isMuted = false;
-  final _downStyle = const BoxDecoration(
-    borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(9999),
-      bottomLeft: Radius.circular(9999),
-    ),
-  );
-  final _upStyle = const BoxDecoration(
-    borderRadius: BorderRadius.only(
-      topRight: Radius.circular(9999),
-      bottomRight: Radius.circular(9999),
-    ),
+  final _decoration = const BoxDecoration(
+    borderRadius: BorderRadius.all(Radius.circular(9999)),
   );
 
   @override
@@ -51,7 +42,10 @@ class _RemoteVolumeState extends State<RemoteVolume> {
     final theme = AppTheme.of(context);
     final iconColor = theme.colors.onPrimary;
 
-    return SizedBox(
+    return Container(
+      decoration: _decoration,
+      clipBehavior: Clip.antiAlias,
+      width: widget.size,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -67,7 +61,6 @@ class _RemoteVolumeState extends State<RemoteVolume> {
             },
             width: _width,
             height: _height,
-            style: _downStyle,
             child: RemoteIcons.lower(iconColor),
           ),
           RemoteTap(
@@ -96,7 +89,6 @@ class _RemoteVolumeState extends State<RemoteVolume> {
             },
             width: _width,
             height: _height,
-            style: _upStyle,
             child: RemoteIcons.higher(iconColor),
           ),
         ],
