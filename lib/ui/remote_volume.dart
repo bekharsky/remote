@@ -5,12 +5,12 @@ import 'package:remote/ui/remote_tap.dart';
 
 enum Pressed { lower, higher, none }
 
-class RemoteRocker extends StatefulWidget {
+class RemoteVolume extends StatefulWidget {
   final double size;
   final void Function() onPressedLower;
   final void Function() onPressedHigher;
 
-  const RemoteRocker({
+  const RemoteVolume({
     Key? key,
     this.size = 166,
     required this.onPressedLower,
@@ -18,10 +18,10 @@ class RemoteRocker extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RemoteRocker> createState() => _RemoteRockerState();
+  State<RemoteVolume> createState() => _RemoteVolumeState();
 }
 
-class _RemoteRockerState extends State<RemoteRocker> {
+class _RemoteVolumeState extends State<RemoteVolume> {
   late final double _width = widget.size / 2;
   late final double _height = widget.size / 4;
 

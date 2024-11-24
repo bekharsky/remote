@@ -288,7 +288,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      RemoteRocker(
+                      RemoteVolume(
                         size: _ringSize,
                         onPressedLower: () {
                           log('Volume down button pressed');
