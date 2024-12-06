@@ -299,7 +299,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                           widget.onPressedCallback(KeyCode.KEY_VOLUP);
                         },
                         onPressedMute: () {
-                          log('Volume nmute button pressed');
+                          log('Volume mute button pressed');
                           widget.onPressedCallback(KeyCode.KEY_MUTE);
                         },
                       ),
