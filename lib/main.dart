@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/services/commander.dart';
@@ -13,20 +12,12 @@ import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
 import 'package:remote/types/tv_app.dart';
 import 'package:remote/ui/remote_apps.dart';
+import 'package:remote/ui/remote_scroll_behavior.dart';
 import 'package:remote/ui/remote_sheet.dart';
 import 'package:remote/ui/remote_tv_name.dart';
 import 'package:remote/ui/window_title_bar.dart';
 import 'package:sheet/route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class MyCustomScrollBehavior extends ScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.trackpad,
-      };
-}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +53,7 @@ class RemoteControllerApp extends StatelessWidget {
       colors: remoteColors,
       textStyles: remoteTextStyles,
       child: ScrollConfiguration(
-        behavior: MyCustomScrollBehavior().copyWith(scrollbars: false),
+        behavior: RemoteScrollBehavior().copyWith(scrollbars: false),
         child: WidgetsApp(
           debugShowCheckedModeBanner: false,
           color: remoteColors.primary,
