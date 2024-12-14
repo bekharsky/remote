@@ -23,7 +23,7 @@ class RemoteRocker extends StatefulWidget {
 
 class _RemoteRockerState extends State<RemoteRocker> {
   late final double _width = 48;
-  late final double _height = 36;
+  late final double _height = 40;
   // TODO: set muted from real TV state
   bool _isMuted = false;
   bool _isProgram = false;

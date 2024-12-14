@@ -37,7 +37,6 @@ class RemoteSheet extends StatefulWidget {
 class RemoteSheetState extends State<RemoteSheet> {
   final SheetController controller = SheetController();
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
-  static final double _rockerSize = _isMobile ? 220 : 240;
   static final double _buttonSize = _isMobile ? 64 : 48;
   static final double _powerButtonSize = _isMobile ? 48 : 36;
   static final double _powerPad = (_buttonSize - _powerButtonSize) / 2;
