@@ -12,7 +12,7 @@ import 'dart:developer';
 import 'package:sheet/route.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_button.dart';
-import 'package:remote/ui/remote_volume.dart';
+import 'package:remote/ui/remote_rocker.dart';
 import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tap.dart';
 import 'package:sheet/sheet.dart';
@@ -37,7 +37,7 @@ class RemoteSheet extends StatefulWidget {
 class RemoteSheetState extends State<RemoteSheet> {
   final SheetController controller = SheetController();
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
-  static final double _ringSize = _isMobile ? 220 : 180;
+  static final double _rockerSize = _isMobile ? 220 : 240;
   static final double _buttonSize = _isMobile ? 64 : 48;
   static final double _powerButtonSize = _isMobile ? 48 : 36;
   static final double _powerPad = (_buttonSize - _powerButtonSize) / 2;
@@ -124,6 +124,7 @@ class RemoteSheetState extends State<RemoteSheet> {
             Padding(
               padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
               child: Column(
+                spacing: 4,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,9 +192,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: _powerButtonSize * (_isMobile ? 2 : 1),
-                  ),
+                  SizedBox(height: _powerButtonSize / 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -216,7 +215,6 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
                   RemoteDPad(
                     size: 200.0,
                     colors: List.filled(4, theme.colors.primary),
@@ -249,7 +247,6 @@ class RemoteSheetState extends State<RemoteSheet> {
                       widget.onPressedCallback(KeyCode.KEY_ENTER);
                     },
                   ),
-                  const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -271,7 +268,6 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -284,12 +280,11 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: _buttonSize / 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      RemoteVolume(
-                        size: _ringSize,
+                      RemoteRocker(
                         onPressedLower: () {
                           log('Volume down button pressed');
                           widget.onPressedCallback(KeyCode.KEY_VOLDOWN);

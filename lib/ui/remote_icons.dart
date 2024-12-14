@@ -21,7 +21,7 @@ class RemoteIcons {
       );
 
   static Icon tv([Color? color]) => Icon(
-        Icons.tv,
+        Icons.connected_tv,
         size: _size,
         color: color ?? const Color.fromRGBO(255, 255, 255, 0.102),
       );
@@ -88,13 +88,31 @@ class RemoteIcons {
 
   static Icon mute([Color? color]) => Icon(
         Icons.volume_off,
-        size: _size * 1.4,
+        size: _size,
         color: color ?? _lightText,
       );
 
-  static Icon volume([Color? color]) => Icon(
+  static Icon unmute([Color? color]) => Icon(
         Icons.volume_up,
-        size: _size * 1.4,
+        size: _size,
+        color: color ?? _lightText,
+      );
+
+  static Icon channelUp([Color? color]) => Icon(
+        Icons.keyboard_arrow_up,
+        size: _size,
+        color: color ?? _lightText,
+      );
+
+  static Icon channelDown([Color? color]) => Icon(
+        Icons.keyboard_arrow_down,
+        size: _size,
+        color: color ?? _lightText,
+      );
+
+  static Icon program([Color? color]) => Icon(
+        Icons.dvr,
+        size: _size,
         color: color ?? _lightText,
       );
 
