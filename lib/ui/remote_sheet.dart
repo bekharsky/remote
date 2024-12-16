@@ -88,6 +88,7 @@ class RemoteSheetState extends State<RemoteSheet> {
     return Sheet(
       minExtent: 430,
       maxExtent: 570,
+      // TODO: allow sheet to bounce up just a bit
       physics: const SnapSheetPhysics(
         relative: false,
         stops: [570, 430],
