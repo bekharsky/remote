@@ -10,7 +10,7 @@ class RemoteIcons {
 
   static Icon power([Color? color]) => Icon(
         Icons.power_settings_new_rounded,
-        size: _size,
+        size: _size * 1.2,
         color: color ?? const Color.fromRGBO(183, 28, 28, 1),
       );
 
@@ -22,7 +22,7 @@ class RemoteIcons {
 
   static Icon tv([Color? color]) => Icon(
         Icons.connected_tv,
-        size: _size,
+        size: _size * 1.2,
         color: color ?? const Color.fromRGBO(255, 255, 255, 0.102),
       );
 

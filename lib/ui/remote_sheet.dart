@@ -132,8 +132,11 @@ class RemoteSheetState extends State<RemoteSheet> {
                         padding: EdgeInsets.only(
                           left: _powerPad,
                         ),
-                        child: RemoteButton(
-                          size: _powerButtonSize,
+                        child: RemoteTap(
+                          width: _powerButtonSize,
+                          height: _powerButtonSize,
+                          startColor: Colors.transparent,
+                          activeColor: Colors.transparent,
                           onPressed: () async {
                             log('Power button pressed');
                             final prefs = await SharedPreferences.getInstance();
