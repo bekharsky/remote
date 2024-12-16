@@ -83,7 +83,8 @@ class RemoteSheetState extends State<RemoteSheet> {
       // TODO: allow sheet to bounce up just a bit
       physics: const SnapSheetPhysics(
         relative: false,
-        stops: [570, 430],
+        stops: [430, 570],
+        parent: BouncingScrollPhysics(),
       ),
       controller: controller,
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
