@@ -6,6 +6,7 @@ import 'package:remote/ui/remote_tap.dart';
 enum Pressed { lower, higher, none }
 
 class RemoteRocker extends StatefulWidget {
+  // TODO: maybe just use some service?
   final void Function() onPressedVolumeUp;
   final void Function() onPressedVolumeDown;
   final void Function() onPressedVolumeMute;
@@ -30,7 +31,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
   late final double _height = 40;
   // TODO: set muted from real TV state
   bool _isMuted = false;
-  bool _isProgram = false;
+  bool _isChannel = false;
 
   @override
   void initState() {
@@ -53,7 +54,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
         children: [
           RemoteTap(
             onPressed: () {
-              if (_isProgram) {
+              if (_isChannel) {
                 // TODO: channel switch
               } else {
                 setState(() {
@@ -67,7 +68,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
             },
             width: _width,
             height: _height,
-            child: _isProgram
+            child: _isChannel
                 ? RemoteIcons.channelDown(iconColor)
                 : RemoteIcons.lower(iconColor),
           ),
@@ -86,16 +87,16 @@ class _RemoteRockerState extends State<RemoteRocker> {
           RemoteTap(
             onPressed: () {
               setState(() {
-                _isProgram = !_isProgram;
+                _isChannel = !_isChannel;
               });
             },
             width: _width,
             height: _height,
-            child: RemoteIcons.program(_isProgram ? activeColor : iconColor),
+            child: RemoteIcons.program(_isChannel ? activeColor : iconColor),
           ),
           RemoteTap(
             onPressed: () {
-              if (_isProgram) {
+              if (_isChannel) {
                 // TODO: channel switch
               } else {
                 setState(() {
@@ -109,7 +110,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
             },
             width: _width,
             height: _height,
-            child: _isProgram
+            child: _isChannel
                 ? RemoteIcons.channelUp(iconColor)
                 : RemoteIcons.higher(iconColor),
           ),
