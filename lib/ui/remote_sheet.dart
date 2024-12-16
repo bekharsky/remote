@@ -45,21 +45,12 @@ class RemoteSheetState extends State<RemoteSheet> {
 
   @override
   void initState() {
-    delayAppsHide();
-
     controller.addListener(() {
       double offset = controller.offset;
       widget.onSheetShiftCallback(offset);
     });
 
     super.initState();
-  }
-
-  Future<void> delayAppsHide() {
-    return Future<void>.delayed(
-      const Duration(milliseconds: 1000),
-      () => toggleSheet(true),
-    );
   }
 
   void toggleSheet([bool force = false]) {
@@ -86,6 +77,7 @@ class RemoteSheetState extends State<RemoteSheet> {
     final iconColor = theme.colors.onPrimary;
 
     return Sheet(
+      initialExtent: 570,
       minExtent: 430,
       maxExtent: 570,
       // TODO: allow sheet to bounce up just a bit

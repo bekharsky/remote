@@ -90,7 +90,7 @@ class RemotePanelState extends State<RemotePanel> {
   // TODO: why passing this fails on invalid const in the sheet?
   static const List<double> sheetStops = [570, 430];
   EdgeInsets appsListShift = const EdgeInsets.only(top: 16);
-  double shift = 0;
+  double shift = 1;
   late Commander commander;
   SharedPreferences? prefs;
   String name = '';
