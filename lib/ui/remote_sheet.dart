@@ -86,10 +86,11 @@ class RemoteSheetState extends State<RemoteSheet> {
     final iconColor = theme.colors.onPrimary;
 
     return Sheet(
+      minExtent: 430,
+      maxExtent: 570,
       physics: const SnapSheetPhysics(
         relative: false,
         stops: [570, 430],
-        parent: BouncingSheetPhysics(),
       ),
       controller: controller,
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
