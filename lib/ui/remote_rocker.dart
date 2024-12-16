@@ -6,15 +6,19 @@ import 'package:remote/ui/remote_tap.dart';
 enum Pressed { lower, higher, none }
 
 class RemoteRocker extends StatefulWidget {
-  final void Function() onPressedLower;
-  final void Function() onPressedHigher;
-  final void Function() onPressedMute;
+  final void Function() onPressedVolumeUp;
+  final void Function() onPressedVolumeDown;
+  final void Function() onPressedVolumeMute;
+  final void Function() onPressedChannelUp;
+  final void Function() onPressedChannelDown;
 
   const RemoteRocker({
     Key? key,
-    required this.onPressedLower,
-    required this.onPressedHigher,
-    required this.onPressedMute,
+    required this.onPressedVolumeUp,
+    required this.onPressedVolumeDown,
+    required this.onPressedVolumeMute,
+    required this.onPressedChannelUp,
+    required this.onPressedChannelDown,
   }) : super(key: key);
 
   @override
@@ -58,7 +62,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
                   }
                 });
 
-                widget.onPressedLower();
+                widget.onPressedVolumeDown();
               }
             },
             width: _width,
@@ -73,7 +77,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
                 _isMuted = !_isMuted;
               });
 
-              widget.onPressedMute();
+              widget.onPressedVolumeMute();
             },
             width: _width,
             height: _height,
@@ -100,7 +104,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
                   }
                 });
 
-                widget.onPressedHigher();
+                widget.onPressedVolumeUp();
               }
             },
             width: _width,

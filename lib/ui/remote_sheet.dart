@@ -284,17 +284,25 @@ class RemoteSheetState extends State<RemoteSheet> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       RemoteRocker(
-                        onPressedLower: () {
-                          log('Volume down button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_VOLDOWN);
-                        },
-                        onPressedHigher: () {
+                        onPressedVolumeUp: () {
                           log('Volume up button pressed');
                           widget.onPressedCallback(KeyCode.KEY_VOLUP);
                         },
-                        onPressedMute: () {
+                        onPressedVolumeDown: () {
+                          log('Volume down button pressed');
+                          widget.onPressedCallback(KeyCode.KEY_VOLDOWN);
+                        },
+                        onPressedVolumeMute: () {
                           log('Volume mute button pressed');
                           widget.onPressedCallback(KeyCode.KEY_MUTE);
+                        },
+                        onPressedChannelUp: () {
+                          log('Next program button pressed');
+                          widget.onPressedCallback(KeyCode.KEY_CHUP);
+                        },
+                        onPressedChannelDown: () {
+                          log('Next program button pressed');
+                          widget.onPressedCallback(KeyCode.KEY_CHDOWN);
                         },
                       ),
                     ],
