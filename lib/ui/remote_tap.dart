@@ -106,6 +106,7 @@ class _RemoteTapState extends State<RemoteTap>
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {
+          // TODO: blend when icon is active too
           return Container(
             width: widget.width,
             height: widget.height,
