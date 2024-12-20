@@ -124,7 +124,9 @@ class _RemoteTapState extends State<RemoteTap>
             child: ColorFiltered(
               colorFilter: ColorFilter.mode(
                 _currentColor,
-                _isTapped ? BlendMode.screen : BlendMode.dst,
+                _isTapped || _controller.isAnimating
+                    ? BlendMode.screen
+                    : BlendMode.dst,
               ),
               child: widget.child,
             ),
