@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:remote/theme/app_theme.dart';
@@ -55,6 +57,8 @@ class _RemoteTapState extends State<RemoteTap>
       ).animate(_controller);
 
       _colorTween.addListener(() {
+        log('${_controller.value}');
+
         setState(() {
           _currentColor = _colorTween.value!;
         });
@@ -124,7 +128,7 @@ class _RemoteTapState extends State<RemoteTap>
             child: ColorFiltered(
               colorFilter: ColorFilter.mode(
                 _currentColor,
-                _isTapped || _controller.isAnimating
+                _isTapped || _controller.value < 0.5
                     ? BlendMode.screen
                     : BlendMode.dst,
               ),
