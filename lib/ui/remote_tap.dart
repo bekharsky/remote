@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:remote/theme/app_theme.dart';
@@ -57,8 +55,6 @@ class _RemoteTapState extends State<RemoteTap>
       ).animate(_controller);
 
       _colorTween.addListener(() {
-        log('${_controller.value}');
-
         setState(() {
           _currentColor = _colorTween.value!;
         });
