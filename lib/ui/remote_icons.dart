@@ -68,6 +68,18 @@ class RemoteIcons {
         color: color ?? _lightText,
       );
 
+  static Icon rewind([Color? color]) => Icon(
+        Icons.fast_rewind,
+        size: _size,
+        color: color ?? _lightText,
+      );
+
+  static Icon ff([Color? color]) => Icon(
+        Icons.fast_forward,
+        size: _size,
+        color: color ?? _lightText,
+      );
+
   static Icon back([Color? color]) => Icon(
         Icons.arrow_back,
         size: _size,
