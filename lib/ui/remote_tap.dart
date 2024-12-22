@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:remote/theme/app_theme.dart';
 
@@ -85,6 +86,10 @@ class _RemoteTapState extends State<RemoteTap>
 
   void _handleTapUp(TapUpDetails details) {
     _controller.forward(from: 0);
+
+    setState(() {
+      _isTapped = false;
+    });
   }
 
   void _resetHighlight(BuildContext context) {
@@ -106,7 +111,6 @@ class _RemoteTapState extends State<RemoteTap>
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {
-          // TODO: blend when icon is active too
           return Container(
             width: widget.width,
             height: widget.height,
@@ -117,7 +121,15 @@ class _RemoteTapState extends State<RemoteTap>
                       ? _colorTween.value
                       : _currentColor,
             ),
-            child: widget.child,
+            child: ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                _currentColor,
+                _isTapped || _controller.value < 0.5
+                    ? BlendMode.screen
+                    : BlendMode.dst,
+              ),
+              child: widget.child,
+            ),
           );
         },
       ),

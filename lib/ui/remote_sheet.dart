@@ -45,21 +45,12 @@ class RemoteSheetState extends State<RemoteSheet> {
 
   @override
   void initState() {
-    delayAppsHide();
-
     controller.addListener(() {
       double offset = controller.offset;
       widget.onSheetShiftCallback(offset);
     });
 
     super.initState();
-  }
-
-  Future<void> delayAppsHide() {
-    return Future<void>.delayed(
-      const Duration(milliseconds: 1000),
-      () => toggleSheet(true),
-    );
   }
 
   void toggleSheet([bool force = false]) {
@@ -86,10 +77,13 @@ class RemoteSheetState extends State<RemoteSheet> {
     final iconColor = theme.colors.onPrimary;
 
     return Sheet(
+      initialExtent: 570,
+      minExtent: 430,
+      maxExtent: 570,
       physics: const SnapSheetPhysics(
         relative: false,
-        stops: [570, 430],
-        parent: BouncingSheetPhysics(),
+        stops: [430, 570],
+        parent: BouncingScrollPhysics(),
       ),
       controller: controller,
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
@@ -132,8 +126,11 @@ class RemoteSheetState extends State<RemoteSheet> {
                         padding: EdgeInsets.only(
                           left: _powerPad,
                         ),
-                        child: RemoteButton(
-                          size: _powerButtonSize,
+                        child: RemoteTap(
+                          width: _powerButtonSize,
+                          height: _powerButtonSize,
+                          startColor: Colors.transparent,
+                          activeColor: Colors.transparent,
                           onPressed: () async {
                             log('Power button pressed');
                             final prefs = await SharedPreferences.getInstance();
@@ -203,6 +200,35 @@ class RemoteSheetState extends State<RemoteSheet> {
                         },
                         child: RemoteIcons.play(iconColor),
                       ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(9999),
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RemoteTap(
+                              onPressed: () {
+                                log('Rewind button pressed');
+                                widget.onPressedCallback(KeyCode.KEY_REWIND);
+                              },
+                              width: 48,
+                              height: 40,
+                              child: RemoteIcons.rewind(),
+                            ),
+                            RemoteTap(
+                              onPressed: () {
+                                log('Fast forward button pressed');
+                                widget.onPressedCallback(KeyCode.KEY_FF);
+                              },
+                              width: 48,
+                              height: 40,
+                              child: RemoteIcons.ff(),
+                            ),
+                          ],
+                        ),
+                      ),
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
@@ -214,6 +240,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
+                  SizedBox(height: _powerButtonSize / 2),
                   RemoteDPad(
                     size: 200.0,
                     colors: List.filled(4, theme.colors.primary),
