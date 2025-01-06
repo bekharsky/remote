@@ -100,13 +100,39 @@ class Commander {
     return completer.future;
   }
 
+  Future<String?> getInstalledApps() async {
+    final Completer<String> completer = Completer<String>();
+    socket = await WebSocket.connect(wssUri.toString());
+
+    socket?.listen((message) {
+      var data = jsonDecode(message);
+
+      if (data['event'] == 'ms.channel.connect') {
+        token = data['data']['token'] ?? token;
+
+        String command = jsonEncode({
+          "method": "ms.channel.emit",
+          "params": {"event": "ed.installedApp.get", "to": "host", "data": ""}
+        });
+
+        socket?.add(command);
+      } else if (data['event'] == 'ed.installedApp.get') {
+        log(message);
+
+        // socket?.close();
+        completer.complete('$token');
+      }
+    });
+
+    return completer.future;
+  }
+
   Future<String?> launchApp(String appId) async {
     final Completer<String> completer = Completer<String>();
     socket = await WebSocket.connect(wssUri.toString());
 
     socket?.listen((message) {
       var data = jsonDecode(message);
-      log(message);
 
       if (data['event'] == 'ms.channel.connect') {
         token = data['data']['token'] ?? token;

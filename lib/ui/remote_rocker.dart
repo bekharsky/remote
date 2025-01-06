@@ -6,7 +6,6 @@ import 'package:remote/ui/remote_tap.dart';
 enum Pressed { lower, higher, none }
 
 class RemoteRocker extends StatefulWidget {
-  // TODO: maybe just use some service?
   final void Function() onPressedVolumeUp;
   final void Function() onPressedVolumeDown;
   final void Function() onPressedVolumeMute;
@@ -55,7 +54,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
           RemoteTap(
             onPressed: () {
               if (_isChannel) {
-                // TODO: channel switch
+                widget.onPressedChannelDown();
               } else {
                 setState(() {
                   if (_isMuted) {
@@ -97,7 +96,7 @@ class _RemoteRockerState extends State<RemoteRocker> {
           RemoteTap(
             onPressed: () {
               if (_isChannel) {
-                // TODO: channel switch
+                widget.onPressedChannelUp();
               } else {
                 setState(() {
                   if (_isMuted) {

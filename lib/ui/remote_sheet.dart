@@ -210,21 +210,21 @@ class RemoteSheetState extends State<RemoteSheet> {
                           children: [
                             RemoteTap(
                               onPressed: () {
-                                log('Rewind button pressed');
-                                widget.onPressedCallback(KeyCode.KEY_REWIND);
+                                log('Rewind skip button pressed');
+                                widget.onPressedCallback(KeyCode.KEY_REWIND_);
                               },
                               width: 48,
                               height: 40,
-                              child: RemoteIcons.rewind(),
+                              child: RemoteIcons.prev(),
                             ),
                             RemoteTap(
                               onPressed: () {
-                                log('Fast forward button pressed');
-                                widget.onPressedCallback(KeyCode.KEY_FF);
+                                log('Fast forward skip button pressed');
+                                widget.onPressedCallback(KeyCode.KEY_FF_);
                               },
                               width: 48,
                               height: 40,
-                              child: RemoteIcons.ff(),
+                              child: RemoteIcons.next(),
                             ),
                           ],
                         ),
@@ -288,7 +288,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         size: _buttonSize,
                         onPressed: () {
                           log('123 button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_DYNAMIC);
+                          widget.onPressedCallback(KeyCode.KEY_MORE);
                         },
                         child: RemoteIcons.num(iconColor),
                       ),

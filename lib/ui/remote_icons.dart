@@ -80,6 +80,18 @@ class RemoteIcons {
         color: color ?? _lightText,
       );
 
+  static Icon prev([Color? color]) => Icon(
+        Icons.skip_previous,
+        size: _size,
+        color: color ?? _lightText,
+      );
+
+  static Icon next([Color? color]) => Icon(
+        Icons.skip_next,
+        size: _size,
+        color: color ?? _lightText,
+      );
+
   static Icon back([Color? color]) => Icon(
         Icons.arrow_back,
         size: _size,

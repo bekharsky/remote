@@ -158,7 +158,8 @@ class RemotePanelState extends State<RemotePanel> {
 
   void onAppCallback(String appId) {
     log('App launch: $appId');
-    commander.launchApp(appId);
+    // commander.launchApp(appId);
+    commander.getInstalledApps();
   }
 
   void onSheetShiftCallback(double offset) {

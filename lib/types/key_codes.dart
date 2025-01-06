@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 // https://github.com/ersinayaz/rn-samsung-tv-remote/blob/master/Keys.md
+// https://github.com/ollo69/ha-samsungtv-smart/blob/master/docs/Key_codes.md
 
 enum KeyCode {
   KEY_MENU,
@@ -31,7 +32,7 @@ enum KeyCode {
   KEY_PIP_SWAP,
   KEY_PLUS100,
   KEY_CAPTION,
-  KEY_PMODE,
+  KEY_PMODE, // Brings on picture mode menu
   KEY_TTX_MIX,
   KEY_TV,
   KEY_PICTURE_SIZE,
@@ -68,9 +69,9 @@ enum KeyCode {
   KEY_TOOLS,
   KEY_INSTANT_REPLAY,
   KEY_LINK,
-  KEY_FF_,
+  KEY_FF_, // Act as skip next in the default player
   KEY_GUIDE,
-  KEY_REWIND_,
+  KEY_REWIND_, // Act as skip previous in the default player
   KEY_ANGLE,
   KEY_RESERVED1,
   KEY_ZOOM1,
