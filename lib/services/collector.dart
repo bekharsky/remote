@@ -25,6 +25,7 @@ class Collector {
 
       final uri = Uri.parse(location).replace(port: 8001, path: '/api/v2/');
       final response = await http.get(uri, headers: headers);
+      log(response.body);
       final deviceInfo = TvInfo.fromJson(json.decode(response.body));
       final device = deviceInfo.device;
       final tv = ConnectedTv(

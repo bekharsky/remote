@@ -6,6 +6,7 @@ import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_dpad.dart';
+import 'package:remote/ui/remote_skip_rocker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'dart:developer';
@@ -22,6 +23,7 @@ class RemoteSheet extends StatefulWidget {
   final void Function(ConnectedTv) onTvSelectCallback;
   final void Function(KeyCode) onPressedCallback;
   final void Function(double) onSheetShiftCallback;
+  final skipEnabled = false;
 
   const RemoteSheet({
     Key? key,
@@ -200,35 +202,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         },
                         child: RemoteIcons.play(iconColor),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(9999),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RemoteTap(
-                              onPressed: () {
-                                log('Rewind skip button pressed');
-                                widget.onPressedCallback(KeyCode.KEY_REWIND_);
-                              },
-                              width: 48,
-                              height: 40,
-                              child: RemoteIcons.prev(),
-                            ),
-                            RemoteTap(
-                              onPressed: () {
-                                log('Fast forward skip button pressed');
-                                widget.onPressedCallback(KeyCode.KEY_FF_);
-                              },
-                              width: 48,
-                              height: 40,
-                              child: RemoteIcons.next(),
-                            ),
-                          ],
-                        ),
-                      ),
+                      if (widget.skipEnabled) RemoteSkipRocker(widget: widget),
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
