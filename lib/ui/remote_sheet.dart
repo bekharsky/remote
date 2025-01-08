@@ -23,7 +23,7 @@ class RemoteSheet extends StatefulWidget {
   final void Function(ConnectedTv) onTvSelectCallback;
   final void Function(KeyCode) onPressedCallback;
   final void Function(double) onSheetShiftCallback;
-  final skipEnabled = false;
+  final allowSkip = false;
 
   const RemoteSheet({
     Key? key,
@@ -202,7 +202,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         },
                         child: RemoteIcons.play(iconColor),
                       ),
-                      if (widget.skipEnabled) RemoteSkipRocker(widget: widget),
+                      if (widget.allowSkip) RemoteSkipRocker(widget: widget),
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
