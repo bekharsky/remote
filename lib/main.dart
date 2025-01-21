@@ -186,7 +186,9 @@ class RemotePanelState extends State<RemotePanel> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              WindowTitleBar(isMac: _isMac),
+              if (!Platform.isAndroid && !Platform.isIOS) ...[
+                WindowTitleBar(isMac: _isMac)
+              ],
               RemoteTvName(name: name, model: modelName),
               if (apps.isNotEmpty) ...[
                 Container(

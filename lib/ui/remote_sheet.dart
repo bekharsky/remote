@@ -99,23 +99,26 @@ class RemoteSheetState extends State<RemoteSheet> {
         ),
         child: Column(
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              GestureDetector(
-                onTap: toggleSheet,
-                behavior: HitTestBehavior.opaque,
-                child: Container(
-                  padding: const EdgeInsets.all(12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: toggleSheet,
+                  behavior: HitTestBehavior.opaque,
                   child: Container(
-                    height: 4,
-                    width: 56,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(73, 73, 73, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(2)),
+                    padding: const EdgeInsets.all(12),
+                    child: Container(
+                      height: 4,
+                      width: 56,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(73, 73, 73, 1),
+                        borderRadius: BorderRadius.all(Radius.circular(2)),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ]),
+              ],
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
               child: Column(
@@ -214,7 +217,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
-                  SizedBox(height: _powerButtonSize / 2),
+                  if (widget.allowSkip) SizedBox(height: _powerButtonSize / 2),
                   RemoteDPad(
                     size: 200.0,
                     colors: List.filled(4, theme.colors.primary),
