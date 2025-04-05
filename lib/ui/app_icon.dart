@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:remote/types/tv_app.dart';
 
 class AppIcon extends StatelessWidget {
@@ -20,8 +20,7 @@ class AppIcon extends StatelessWidget {
         fit: BoxFit.cover,
       );
     } else {
-      print('Icon bytes are null or empty!');
-      return Container(); // Показать пустой контейнер, если нет иконки
+      return Container(); // TODO: show generic icon
     }
   }
 }
