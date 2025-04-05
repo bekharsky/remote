@@ -156,8 +156,6 @@ class Commander {
         sub.cancel();
         final rawApps = data['data']['data'] as List;
 
-        print(rawApps);
-
         for (int i = 0; i < rawApps.length; i++) {
           final app = rawApps[i];
           final appInfo = TvApp(
@@ -219,7 +217,6 @@ class Commander {
   }
 
   Future<String?> launchApp(String appId) async {
-    print('launch $appId');
     await _ensureConnected();
     final completer = Completer<String>();
     final isNative = appId.contains('.');
