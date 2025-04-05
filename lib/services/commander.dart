@@ -156,7 +156,6 @@ class Commander {
         sub.cancel();
         final rawApps = data['data']['data'] as List;
 
-        // Асинхронно обрабатываем каждое приложение
         for (int i = 0; i < rawApps.length; i++) {
           final app = rawApps[i];
           final appInfo = TvApp(
@@ -167,7 +166,6 @@ class Commander {
             position: i,
           );
 
-          // Получаем иконку для текущего приложения
           final appWithIcon = await _fetchIconForApp(appInfo);
           apps.add(appWithIcon);
         }
@@ -211,7 +209,7 @@ class Commander {
       const Duration(seconds: 3),
       onTimeout: () {
         sub.cancel();
-        return app; // возвращаем без иконки, если не успели загрузить
+        return app;
       },
     );
   }
