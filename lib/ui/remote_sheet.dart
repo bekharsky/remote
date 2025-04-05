@@ -6,6 +6,7 @@ import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_dpad.dart';
+import 'package:remote/ui/remote_skip_rocker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'dart:developer';
@@ -22,6 +23,7 @@ class RemoteSheet extends StatefulWidget {
   final void Function(ConnectedTv) onTvSelectCallback;
   final void Function(KeyCode) onPressedCallback;
   final void Function(double) onSheetShiftCallback;
+  final allowSkip = false;
 
   const RemoteSheet({
     Key? key,
@@ -97,23 +99,26 @@ class RemoteSheetState extends State<RemoteSheet> {
         ),
         child: Column(
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              GestureDetector(
-                onTap: toggleSheet,
-                behavior: HitTestBehavior.opaque,
-                child: Container(
-                  padding: const EdgeInsets.all(12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: toggleSheet,
+                  behavior: HitTestBehavior.opaque,
                   child: Container(
-                    height: 4,
-                    width: 56,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(73, 73, 73, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(2)),
+                    padding: const EdgeInsets.all(12),
+                    child: Container(
+                      height: 4,
+                      width: 56,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(73, 73, 73, 1),
+                        borderRadius: BorderRadius.all(Radius.circular(2)),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ]),
+              ],
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
               child: Column(
@@ -200,35 +205,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         },
                         child: RemoteIcons.play(iconColor),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(9999),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RemoteTap(
-                              onPressed: () {
-                                log('Rewind button pressed');
-                                widget.onPressedCallback(KeyCode.KEY_REWIND);
-                              },
-                              width: 48,
-                              height: 40,
-                              child: RemoteIcons.rewind(),
-                            ),
-                            RemoteTap(
-                              onPressed: () {
-                                log('Fast forward button pressed');
-                                widget.onPressedCallback(KeyCode.KEY_FF);
-                              },
-                              width: 48,
-                              height: 40,
-                              child: RemoteIcons.ff(),
-                            ),
-                          ],
-                        ),
-                      ),
+                      if (widget.allowSkip) RemoteSkipRocker(widget: widget),
                       RemoteButton(
                         size: _buttonSize,
                         onPressed: () {
@@ -240,7 +217,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                       ),
                     ],
                   ),
-                  SizedBox(height: _powerButtonSize / 2),
+                  if (widget.allowSkip) SizedBox(height: _powerButtonSize / 2),
                   RemoteDPad(
                     size: 200.0,
                     colors: List.filled(4, theme.colors.primary),
@@ -288,7 +265,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                         size: _buttonSize,
                         onPressed: () {
                           log('123 button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_DYNAMIC);
+                          widget.onPressedCallback(KeyCode.KEY_MORE);
                         },
                         child: RemoteIcons.num(iconColor),
                       ),
