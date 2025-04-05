@@ -156,19 +156,6 @@ class RemotePanelState extends State<RemotePanel> {
     commander.sendKey(keyCode);
   }
 
-  Future<void> onAppCallback(String appId) async {
-    log('App launch: $appId');
-    // commander.launchApp(appId);
-    // commander.getInstalledApps();
-    // final apps = await commander.getAppsWithIcons();
-
-    // for (var app in apps) {
-    //   // ignore: avoid_print
-    //   print(
-    //       '${app.name} (${app.appId}) - icon size: ${app.iconBytes?.length ?? 0}');
-    // }
-  }
-
   void onSheetShiftCallback(double offset) {
     final range = sheetStops[0] - sheetStops[1];
     final diff = offset - sheetStops[1];
@@ -203,7 +190,7 @@ class RemotePanelState extends State<RemotePanel> {
                   opacity: 1 - shift,
                   child: RemoteApps(
                     loadApps: commander.getAppsWithIcons,
-                    onAppCallback: (appId) => print('Запуск $appId'),
+                    launchApp: commander.launchApp,
                   ),
                 ),
               )

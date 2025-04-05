@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:remote/ui/app_drag_handle.dart';
 import 'package:remote/ui/app_remove_icon.dart';
@@ -8,12 +6,12 @@ import '../types/tv_app.dart';
 
 class RemoteApps extends StatefulWidget {
   final Future<List<TvApp>> Function() loadApps;
-  final void Function(String) onAppCallback;
+  final Future<String?> Function(String) launchApp;
 
   const RemoteApps({
     Key? key,
     required this.loadApps,
-    required this.onAppCallback,
+    required this.launchApp,
   }) : super(key: key);
 
   @override
@@ -22,7 +20,6 @@ class RemoteApps extends StatefulWidget {
 
 class _RemoteAppsState extends State<RemoteApps>
     with SingleTickerProviderStateMixin {
-  late final Function(String) onAppCallback = widget.onAppCallback;
   bool showControls = false;
   late final AnimationController _shakeController;
   late final Animation<double> _shakeAnimation;
@@ -101,7 +98,7 @@ class _RemoteAppsState extends State<RemoteApps>
             },
             onTap: () {
               if (!showControls) {
-                onAppCallback(id);
+                widget.launchApp(id);
               }
             },
             child: AnimatedBuilder(

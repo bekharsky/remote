@@ -156,6 +156,8 @@ class Commander {
         sub.cancel();
         final rawApps = data['data']['data'] as List;
 
+        print(rawApps);
+
         for (int i = 0; i < rawApps.length; i++) {
           final app = rawApps[i];
           final appInfo = TvApp(
@@ -186,7 +188,9 @@ class Commander {
       'params': {
         'event': 'ed.apps.icon',
         'to': 'host',
-        'data': {'iconPath': app.iconPath},
+        'data': {
+          'iconPath': app.iconPath,
+        },
       },
     });
 
@@ -214,27 +218,30 @@ class Commander {
     );
   }
 
-//   Future<String?> launchApp(String appId) async {
-//     await _ensureConnected();
-//     final complete  late StreamSubscription sub;
-// r = Completer<String>();
+  Future<String?> launchApp(String appId) async {
+    print('launch $appId');
+    await _ensureConnected();
+    final completer = Completer<String>();
+    final isNative = appId.contains('.');
+    final actionType = isNative ? 'NATIVE_LAUNCH' : 'DEEP_LINK';
 
-//     final command = jsonEncode({
-//       'method': 'ms.channel.emit',
-//       'params': {
-//         'event': 'ed.apps.launch',
-//         'to': 'host',
-//         'data': {
-//           'appId': appId,
-//           'action_type': 'NATIVE_LAUNCH',
-//         },
-//       }
-//     });
+    final command = jsonEncode({
+      'method': 'ms.channel.emit',
+      'params': {
+        'event': 'ed.apps.launch',
+        'to': 'host',
+        'data': {
+          'appId': appId,
+          'action_type': actionType,
+        },
+      }
+    });
 
-//     socket?.add(command);
-//     completer.complete('App launch command sent');
-//     return completer.future;
-//   }
+    socket?.add(command);
+    completer.complete(appId);
+
+    return completer.future;
+  }
 
   Future<void> disconnect() async {
     await socket?.close();
