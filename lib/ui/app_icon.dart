@@ -12,14 +12,16 @@ class AppIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = app.icon;
-    final path = '$appIconsPath/$icon';
-
-    return Image.asset(
-      width: 120,
-      height: 120,
-      path,
-      fit: BoxFit.cover,
-    );
+    if (app.iconBytes != null && app.iconBytes!.isNotEmpty) {
+      return Image.memory(
+        app.iconBytes!,
+        width: 120,
+        height: 120,
+        fit: BoxFit.cover,
+      );
+    } else {
+      print('Icon bytes are null or empty!');
+      return Container(); // Показать пустой контейнер, если нет иконки
+    }
   }
 }

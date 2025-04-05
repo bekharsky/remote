@@ -104,7 +104,7 @@ class RemotePanelState extends State<RemotePanel> {
   void initState() {
     super.initState();
     initPrefs();
-    initApps();
+    // initApps();
   }
 
   Future<void> initPrefs() async {
@@ -121,18 +121,18 @@ class RemotePanelState extends State<RemotePanel> {
     commander = Commander(name: appName, host: host, token: token);
   }
 
-  Future<void> initApps() async {
-    final config = await DefaultAssetBundle.of(context).loadString(appsConfig);
-    final List<dynamic> data = jsonDecode(config);
+  // Future<void> initApps() async {
+  //   final config = await DefaultAssetBundle.of(context).loadString(appsConfig);
+  //   final List<dynamic> data = jsonDecode(config);
 
-    setState(() {
-      apps = data
-          .map((json) => TvApp.fromJson(json))
-          .where((app) => app.visible && app.orgs.isNotEmpty)
-          .toList();
-      apps.sort((a, b) => a.position.compareTo(b.position));
-    });
-  }
+  //   setState(() {
+  //     apps = data
+  //         .map((json) => TvApp.fromJson(json))
+  //         .where((app) => app.visible && app.orgs.isNotEmpty)
+  //         .toList();
+  //     apps.sort((a, b) => a.position.compareTo(b.position));
+  //   });
+  // }
 
   onTvSelectCallback(ConnectedTv tv) async {
     setState(() {
@@ -160,13 +160,13 @@ class RemotePanelState extends State<RemotePanel> {
     log('App launch: $appId');
     // commander.launchApp(appId);
     // commander.getInstalledApps();
-    final apps = await commander.getAppsWithIcons();
+    // final apps = await commander.getAppsWithIcons();
 
-    for (var app in apps) {
-      // ignore: avoid_print
-      print(
-          '${app.name} (${app.appId}) - icon size: ${app.iconBytes?.length ?? 0}');
-    }
+    // for (var app in apps) {
+    //   // ignore: avoid_print
+    //   print(
+    //       '${app.name} (${app.appId}) - icon size: ${app.iconBytes?.length ?? 0}');
+    // }
   }
 
   void onSheetShiftCallback(double offset) {
@@ -197,18 +197,16 @@ class RemotePanelState extends State<RemotePanel> {
                 WindowTitleBar(isMac: _isMac)
               ],
               RemoteTvName(name: name, model: modelName),
-              if (apps.isNotEmpty) ...[
-                Container(
-                  padding: appsListShift,
-                  child: Opacity(
-                    opacity: 1 - shift,
-                    child: RemoteApps(
-                      apps: apps,
-                      onAppCallback: onAppCallback,
-                    ),
+              Container(
+                padding: appsListShift,
+                child: Opacity(
+                  opacity: 1 - shift,
+                  child: RemoteApps(
+                    loadApps: commander.getAppsWithIcons,
+                    onAppCallback: (appId) => print('Запуск $appId'),
                   ),
-                )
-              ],
+                ),
+              )
             ],
           ),
         ),

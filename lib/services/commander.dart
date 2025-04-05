@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:remote/types/key_codes.dart';
-import 'package:remote/types/tv_app_info.dart';
+import 'package:remote/types/tv_app.dart';
 
 class SamsungHttpOverrides extends HttpOverrides {
   @override
@@ -133,9 +133,9 @@ class Commander {
     return completer.future;
   }
 
-  Future<List<AppInfo>> getAppsWithIcons() async {
+  Future<List<TvApp>> getAppsWithIcons() async {
     await _ensureConnected();
-    final completer = Completer<List<AppInfo>>();
+    final completer = Completer<List<TvApp>>();
 
     final command = jsonEncode({
       'method': 'ms.channel.emit',
@@ -146,7 +146,7 @@ class Commander {
       }
     });
 
-    final List<AppInfo> apps = [];
+    final List<TvApp> apps = [];
 
     late StreamSubscription sub;
     sub = _messageController.stream.listen((message) async {
@@ -156,18 +156,23 @@ class Commander {
         sub.cancel();
         final rawApps = data['data']['data'] as List;
 
-        for (final app in rawApps) {
-          final appInfo = AppInfo(
+        // Асинхронно обрабатываем каждое приложение
+        for (int i = 0; i < rawApps.length; i++) {
+          final app = rawApps[i];
+          final appInfo = TvApp(
             appId: app['appId'],
             name: app['name'],
             iconPath: app['icon'],
+            visible: true,
+            position: i,
           );
-          apps.add(appInfo);
+
+          // Получаем иконку для текущего приложения
+          final appWithIcon = await _fetchIconForApp(appInfo);
+          apps.add(appWithIcon);
         }
 
-        final appsWithIcons =
-            await Future.wait(apps.map((app) => _fetchIconForApp(app)));
-        completer.complete(appsWithIcons);
+        completer.complete(apps);
       }
     });
 
@@ -175,8 +180,8 @@ class Commander {
     return completer.future;
   }
 
-  Future<AppInfo> _fetchIconForApp(AppInfo app) async {
-    final completer = Completer<AppInfo>();
+  Future<TvApp> _fetchIconForApp(TvApp app) async {
+    final completer = Completer<TvApp>();
 
     final command = jsonEncode({
       'method': 'ms.channel.emit',
@@ -206,7 +211,7 @@ class Commander {
       const Duration(seconds: 3),
       onTimeout: () {
         sub.cancel();
-        return app; // возвращаем без иконки
+        return app; // возвращаем без иконки, если не успели загрузить
       },
     );
   }
