@@ -156,10 +156,17 @@ class RemotePanelState extends State<RemotePanel> {
     commander.sendKey(keyCode);
   }
 
-  void onAppCallback(String appId) {
+  Future<void> onAppCallback(String appId) async {
     log('App launch: $appId');
     // commander.launchApp(appId);
-    commander.getInstalledApps();
+    // commander.getInstalledApps();
+    final apps = await commander.getAppsWithIcons();
+
+    for (var app in apps) {
+      // ignore: avoid_print
+      print(
+          '${app.name} (${app.appId}) - icon size: ${app.iconBytes?.length ?? 0}');
+    }
   }
 
   void onSheetShiftCallback(double offset) {

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:remote/ui/app_drag_handle.dart';
+import 'package:remote/ui/app_remove_icon.dart';
+import 'package:remote/ui/app_icon.dart';
 import '../types/tv_app.dart';
 
 class RemoteApps extends StatefulWidget {
@@ -101,9 +104,9 @@ class _RemoteAppsState extends State<RemoteApps>
                     clipBehavior: Clip.antiAlias,
                     child: Stack(
                       children: [
-                        Thumb(app: app),
+                        AppIcon(app: app),
                         if (showControls) ...[
-                          DragHandle(index: index),
+                          AppDragHandle(index: index),
                           Positioned(
                             top: 8,
                             left: 8,
@@ -111,7 +114,7 @@ class _RemoteAppsState extends State<RemoteApps>
                               onTap: () {
                                 onRemoveHandler(index);
                               },
-                              child: const RemoveIcon(),
+                              child: const AppRemoveIcon(),
                             ),
                           ),
                         ],
@@ -131,89 +134,6 @@ class _RemoteAppsState extends State<RemoteApps>
             apps.insert(newIndex, app);
           });
         },
-      ),
-    );
-  }
-}
-
-class RemoveIcon extends StatelessWidget {
-  const RemoveIcon({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const ColorFiltered(
-      colorFilter: ColorFilter.mode(
-        Colors.white38,
-        BlendMode.srcATop,
-      ),
-      child: Icon(
-        Icons.close,
-        size: 16,
-        color: Colors.black,
-      ),
-    );
-  }
-}
-
-class DragHandle extends StatelessWidget {
-  const DragHandle({super.key, required this.index});
-
-  final int index;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 8,
-      right: 8,
-      child: ReorderableDragStartListener(
-        index: index,
-        child: const DragIcon(),
-      ),
-    );
-  }
-}
-
-class Thumb extends StatelessWidget {
-  const Thumb({
-    super.key,
-    required this.app,
-  });
-
-  final TvApp app;
-  final appIconsPath = 'assets/icons';
-
-  @override
-  Widget build(BuildContext context) {
-    final icon = app.icon;
-    final path = '$appIconsPath/$icon';
-
-    return Image.asset(
-      width: 120,
-      height: 120,
-      path,
-      fit: BoxFit.cover,
-    );
-  }
-}
-
-class DragIcon extends StatelessWidget {
-  const DragIcon({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const ColorFiltered(
-      colorFilter: ColorFilter.mode(
-        Colors.white38,
-        BlendMode.srcATop,
-      ),
-      child: Icon(
-        Icons.drag_indicator,
-        size: 16,
-        color: Colors.black,
       ),
     );
   }
