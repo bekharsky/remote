@@ -19,11 +19,12 @@ class Commander {
   WebSocket? socket;
   String? token;
   String? host;
+  final void Function(String newToken)? onTokenUpdate;
 
   final _messageController = StreamController<String>.broadcast();
   bool _reconnectLock = false;
 
-  Commander({required String name, this.host, this.token}) {
+  Commander({required String name, this.host, this.token, this.onTokenUpdate}) {
     HttpOverrides.global = SamsungHttpOverrides();
     final base64Name = base64.encode(utf8.encode(name));
     wssUri = Uri(
@@ -63,6 +64,8 @@ class Commander {
               ...wssUri!.queryParameters,
               'token': token!,
             });
+
+            onTokenUpdate?.call(token!);
           }
         },
         onDone: () {

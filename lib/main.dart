@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:developer';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
@@ -104,7 +102,6 @@ class RemotePanelState extends State<RemotePanel> {
   void initState() {
     super.initState();
     initPrefs();
-    // initApps();
   }
 
   Future<void> initPrefs() async {
@@ -118,21 +115,13 @@ class RemotePanelState extends State<RemotePanel> {
       mac = prefs?.getString('mac') ?? '';
     });
 
-    commander = Commander(name: appName, host: host, token: token);
+    initCommander();
   }
 
-  // Future<void> initApps() async {
-  //   final config = await DefaultAssetBundle.of(context).loadString(appsConfig);
-  //   final List<dynamic> data = jsonDecode(config);
-
-  //   setState(() {
-  //     apps = data
-  //         .map((json) => TvApp.fromJson(json))
-  //         .where((app) => app.visible && app.orgs.isNotEmpty)
-  //         .toList();
-  //     apps.sort((a, b) => a.position.compareTo(b.position));
-  //   });
-  // }
+  initCommander() {
+    print("$token, $appName");
+    commander = Commander(name: appName, host: host, token: token);
+  }
 
   onTvSelectCallback(ConnectedTv tv) async {
     setState(() {
@@ -142,7 +131,15 @@ class RemotePanelState extends State<RemotePanel> {
       mac = tv.wifiMac;
     });
 
-    commander = Commander(name: appName, host: host);
+    commander = Commander(
+      name: appName,
+      host: host,
+      onTokenUpdate: (newToken) {
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.setString('token', newToken);
+        });
+      },
+    );
     token = await commander.fetchToken();
 
     prefs?.setString('name', tv.name);
@@ -173,8 +170,6 @@ class RemotePanelState extends State<RemotePanel> {
     return Stack(
       children: <Widget>[
         Container(
-          height: double.infinity,
-          width: double.infinity,
           alignment: Alignment.center,
           color: theme.colors.surface,
           child: Column(
