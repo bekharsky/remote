@@ -134,11 +134,7 @@ class RemotePanelState extends State<RemotePanel> {
       mac = tv.wifiMac;
     });
 
-    commander = Commander(
-      name: appName,
-      host: host,
-    );
-    token = await commander?.fetchToken();
+    final token = await commander?.reconnect();
 
     prefs?.setString('name', tv.name);
     prefs?.setString('modelName', tv.modelName);

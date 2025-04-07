@@ -86,6 +86,22 @@ class Commander {
     }
   }
 
+  Future<String?> reconnect() async {
+    await disconnect();
+
+    token = null;
+    socket = null;
+
+    if (wssUri != null) {
+      wssUri = wssUri!.replace(queryParameters: {
+        ...wssUri!.queryParameters,
+        'token': '',
+      });
+    }
+
+    return await fetchToken();
+  }
+
   Future<String?> fetchToken() async {
     await _ensureConnected();
     return token;
