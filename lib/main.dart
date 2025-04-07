@@ -84,12 +84,11 @@ class RemotePanelState extends State<RemotePanel> {
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
   static final bool _isMac = Platform.isMacOS;
   static const appName = 'TV Remote';
-  static const appsConfig = 'assets/apps.json';
   // TODO: why passing this fails on invalid const in the sheet?
   static const List<double> sheetStops = [570, 430];
   EdgeInsets appsListShift = const EdgeInsets.only(top: 16);
   double shift = 1;
-  late Commander commander;
+  Commander? commander;
   SharedPreferences? prefs;
   String name = '';
   String modelName = '';
@@ -139,13 +138,25 @@ class RemotePanelState extends State<RemotePanel> {
       name: appName,
       host: host,
     );
-    token = await commander.fetchToken();
+    token = await commander?.fetchToken();
 
     prefs?.setString('name', tv.name);
     prefs?.setString('modelName', tv.modelName);
     prefs?.setString('host', tv.ip);
     prefs?.setString('token', token ?? '');
     prefs?.setString('mac', mac ?? '');
+  }
+
+  void onKeyCallback(KeyCode keyCode) {
+    commander?.sendKey(keyCode);
+  }
+
+  Future<List<TvApp>> onLoadAppsCallback() {
+    return commander!.getAppsWithIcons();
+  }
+
+  void onLaunchAppCallback(String appId) {
+    commander?.launchApp(appId);
   }
 
   void onSheetShiftCallback(double offset) {
@@ -178,10 +189,12 @@ class RemotePanelState extends State<RemotePanel> {
                 padding: appsListShift,
                 child: Opacity(
                   opacity: 1 - shift,
-                  child: RemoteApps(
-                    loadApps: commander.getAppsWithIcons,
-                    launchApp: commander.launchApp,
-                  ),
+                  child: commander == null
+                      ? null
+                      : RemoteApps(
+                          loadApps: onLoadAppsCallback,
+                          launchApp: onLaunchAppCallback,
+                        ),
                 ),
               )
             ],
@@ -189,7 +202,7 @@ class RemotePanelState extends State<RemotePanel> {
         ),
         RemoteSheet(
           onTvSelectCallback: onTvSelectCallback,
-          onPressedCallback: commander.sendKey,
+          onPressedCallback: onKeyCallback,
           onSheetShiftCallback: onSheetShiftCallback,
         ),
       ],
