@@ -92,7 +92,6 @@ class RemotePanelState extends State<RemotePanel> {
   SharedPreferences? prefs;
   String name = '';
   String modelName = '';
-  String? token;
   String? host;
   String? mac;
   List<TvApp> apps = [];
@@ -109,7 +108,6 @@ class RemotePanelState extends State<RemotePanel> {
     setState(() {
       name = prefs?.getString('name') ?? 'Connect TV';
       modelName = prefs?.getString('modelName') ?? 'Click on the TV icon';
-      token = prefs?.getString('token') ?? '';
       host = prefs?.getString('host') ?? '';
       mac = prefs?.getString('mac') ?? '';
     });
@@ -117,7 +115,7 @@ class RemotePanelState extends State<RemotePanel> {
     commander = Commander(
       name: appName,
       host: host,
-      token: token,
+      token: prefs?.getString('token') ?? '',
       onTokenUpdate: (newToken) {
         SharedPreferences.getInstance().then((prefs) {
           prefs.setString('token', newToken);
