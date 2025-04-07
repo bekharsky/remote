@@ -115,12 +115,16 @@ class RemotePanelState extends State<RemotePanel> {
       mac = prefs?.getString('mac') ?? '';
     });
 
-    initCommander();
-  }
-
-  initCommander() {
-    print("$token, $appName");
-    commander = Commander(name: appName, host: host, token: token);
+    commander = Commander(
+      name: appName,
+      host: host,
+      token: token,
+      onTokenUpdate: (newToken) {
+        SharedPreferences.getInstance().then((prefs) {
+          prefs.setString('token', newToken);
+        });
+      },
+    );
   }
 
   onTvSelectCallback(ConnectedTv tv) async {
@@ -134,11 +138,6 @@ class RemotePanelState extends State<RemotePanel> {
     commander = Commander(
       name: appName,
       host: host,
-      onTokenUpdate: (newToken) {
-        SharedPreferences.getInstance().then((prefs) {
-          prefs.setString('token', newToken);
-        });
-      },
     );
     token = await commander.fetchToken();
 
@@ -147,10 +146,6 @@ class RemotePanelState extends State<RemotePanel> {
     prefs?.setString('host', tv.ip);
     prefs?.setString('token', token ?? '');
     prefs?.setString('mac', mac ?? '');
-  }
-
-  void onKeyCallback(KeyCode keyCode) {
-    commander.sendKey(keyCode);
   }
 
   void onSheetShiftCallback(double offset) {
@@ -194,7 +189,7 @@ class RemotePanelState extends State<RemotePanel> {
         ),
         RemoteSheet(
           onTvSelectCallback: onTvSelectCallback,
-          onPressedCallback: onKeyCallback,
+          onPressedCallback: commander.sendKey,
           onSheetShiftCallback: onSheetShiftCallback,
         ),
       ],

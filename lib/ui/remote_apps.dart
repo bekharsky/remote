@@ -6,7 +6,7 @@ import '../types/tv_app.dart';
 
 class RemoteApps extends StatefulWidget {
   final Future<List<TvApp>> Function() loadApps;
-  final Future<String?> Function(String) launchApp;
+  final void Function(String) launchApp;
 
   const RemoteApps({
     Key? key,
