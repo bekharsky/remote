@@ -7,28 +7,23 @@ import 'package:remote/ui/remote_sheet_media_controls.dart';
 import 'package:remote/ui/remote_sheet_toggle.dart';
 import 'dart:io';
 import 'dart:developer';
-import 'package:sheet/route.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_button.dart';
 import 'package:remote/ui/remote_rocker.dart';
-import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tap.dart';
 import 'package:sheet/sheet.dart';
-import 'package:remote/types/tv.dart';
 
 class RemoteSheet extends StatefulWidget {
-  final void Function(ConnectedTv) onTvSelectCallback;
-  final void Function(KeyCode) onPressedCallback;
-  final void Function(double) onSheetShiftCallback;
+  final void Function(KeyCode) onPressed;
+  final void Function(double) onSheetShift;
   final VoidCallback onPowerPressed;
   final VoidCallback onTvListPressed;
   final allowSkip = false;
 
   const RemoteSheet({
     super.key,
-    required this.onTvSelectCallback,
-    required this.onPressedCallback,
-    required this.onSheetShiftCallback,
+    required this.onPressed,
+    required this.onSheetShift,
     required this.onPowerPressed,
     required this.onTvListPressed,
   });
@@ -50,7 +45,7 @@ class RemoteSheetState extends State<RemoteSheet> {
   void initState() {
     controller.addListener(() {
       double offset = controller.offset;
-      widget.onSheetShiftCallback(offset);
+      widget.onSheetShift(offset);
     });
 
     super.initState();
@@ -134,7 +129,7 @@ class RemoteSheetState extends State<RemoteSheet> {
               allowSkip: widget.allowSkip,
               buttonSize: _buttonSize,
               spacing: _powerButtonSize / 2,
-              onPressed: widget.onPressedCallback,
+              onPressed: widget.onPressed,
             ),
             if (widget.allowSkip) SizedBox(height: _powerButtonSize / 2),
             RemoteSheetDPad(
@@ -161,12 +156,12 @@ class RemoteSheetState extends State<RemoteSheet> {
 
                 if (keyCode != null) {
                   log('${keyCode.name} button pressed');
-                  widget.onPressedCallback(keyCode);
+                  widget.onPressed(keyCode);
                 }
               },
               onCenterClick: () {
                 log('${KeyCode.KEY_ENTER.name} button pressed');
-                widget.onPressedCallback(KeyCode.KEY_ENTER);
+                widget.onPressed(KeyCode.KEY_ENTER);
               },
             ),
             Row(
@@ -176,7 +171,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                   size: _buttonSize,
                   onPressed: () {
                     log('Back aka return button pressed');
-                    widget.onPressedCallback(KeyCode.KEY_RETURN);
+                    widget.onPressed(KeyCode.KEY_RETURN);
                   },
                   child: RemoteIcons.back(iconColor),
                 ),
@@ -184,7 +179,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                   size: _buttonSize,
                   onPressed: () {
                     log('123 button pressed');
-                    widget.onPressedCallback(KeyCode.KEY_MORE);
+                    widget.onPressed(KeyCode.KEY_MORE);
                   },
                   child: RemoteIcons.num(iconColor),
                 ),
@@ -193,7 +188,7 @@ class RemoteSheetState extends State<RemoteSheet> {
             RemoteButton(
               size: _buttonSize,
               onPressed: () {
-                widget.onPressedCallback(KeyCode.KEY_HOME);
+                widget.onPressed(KeyCode.KEY_HOME);
               },
               child: RemoteIcons.home(iconColor),
             ),
@@ -202,23 +197,23 @@ class RemoteSheetState extends State<RemoteSheet> {
             RemoteRocker(
               onPressedVolumeUp: () {
                 log('Volume up button pressed');
-                widget.onPressedCallback(KeyCode.KEY_VOLUP);
+                widget.onPressed(KeyCode.KEY_VOLUP);
               },
               onPressedVolumeDown: () {
                 log('Volume down button pressed');
-                widget.onPressedCallback(KeyCode.KEY_VOLDOWN);
+                widget.onPressed(KeyCode.KEY_VOLDOWN);
               },
               onPressedVolumeMute: () {
                 log('Volume mute button pressed');
-                widget.onPressedCallback(KeyCode.KEY_MUTE);
+                widget.onPressed(KeyCode.KEY_MUTE);
               },
               onPressedChannelUp: () {
                 log('Next program button pressed');
-                widget.onPressedCallback(KeyCode.KEY_CHUP);
+                widget.onPressed(KeyCode.KEY_CHUP);
               },
               onPressedChannelDown: () {
                 log('Next program button pressed');
-                widget.onPressedCallback(KeyCode.KEY_CHDOWN);
+                widget.onPressed(KeyCode.KEY_CHDOWN);
               },
             ),
           ],

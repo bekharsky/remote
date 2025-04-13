@@ -86,7 +86,7 @@ class RemotePanelState extends State<RemotePanel> {
     prefs?.setString('mac', mac ?? '');
   }
 
-  void onKeyCallback(KeyCode keyCode) {
+  void onKeyPressed(KeyCode keyCode) {
     commander?.sendKey(keyCode);
   }
 
@@ -98,7 +98,7 @@ class RemotePanelState extends State<RemotePanel> {
     commander?.launchApp(appId);
   }
 
-  void onSheetShiftCallback(double offset) {
+  void onSheetShift(double offset) {
     final range = sheetStops[0] - sheetStops[1];
     final diff = offset - sheetStops[1];
 
@@ -124,7 +124,7 @@ class RemotePanelState extends State<RemotePanel> {
     } catch (e) {
       debugPrint('Power check failed: $e');
     } finally {
-      onKeyCallback(KeyCode.KEY_POWER);
+      onKeyPressed(KeyCode.KEY_POWER);
     }
   }
 
@@ -175,9 +175,8 @@ class RemotePanelState extends State<RemotePanel> {
           ),
         ),
         RemoteSheet(
-          onTvSelectCallback: onTvSelectCallback,
-          onPressedCallback: onKeyCallback,
-          onSheetShiftCallback: onSheetShiftCallback,
+          onPressed: onKeyPressed,
+          onSheetShift: onSheetShift,
           onPowerPressed: onPowerPressed,
           onTvListPressed: () => onTvListPressed(context),
         ),
