@@ -1,14 +1,10 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:remote/services/soap_upnp.dart';
-import 'package:remote/services/wake_on_lan.dart';
 import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_sheet_dpad.dart';
 import 'package:remote/ui/remote_sheet_media_controls.dart';
 import 'package:remote/ui/remote_sheet_toggle.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'dart:developer';
 import 'package:sheet/route.dart';
@@ -24,6 +20,8 @@ class RemoteSheet extends StatefulWidget {
   final void Function(ConnectedTv) onTvSelectCallback;
   final void Function(KeyCode) onPressedCallback;
   final void Function(double) onSheetShiftCallback;
+  final VoidCallback onPowerPressed;
+  final VoidCallback onTvListPressed;
   final allowSkip = false;
 
   const RemoteSheet({
@@ -31,6 +29,8 @@ class RemoteSheet extends StatefulWidget {
     required this.onTvSelectCallback,
     required this.onPressedCallback,
     required this.onSheetShiftCallback,
+    required this.onPowerPressed,
+    required this.onTvListPressed,
   });
 
   @override
@@ -91,6 +91,7 @@ class RemoteSheetState extends State<RemoteSheet> {
       controller: controller,
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       child: Container(
+        padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
         decoration: BoxDecoration(
           color: theme.colors.background,
           borderRadius: const BorderRadius.only(
@@ -100,185 +101,125 @@ class RemoteSheetState extends State<RemoteSheet> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: 4,
           children: [
             RemoteSheetHandle(onTap: toggleSheet),
             Padding(
-              padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
-              child: Column(
-                spacing: 4,
+              padding: EdgeInsets.fromLTRB(_powerPad, 0, _powerPad, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: _powerPad,
-                        ),
-                        child: RemoteTap(
-                          width: _powerButtonSize,
-                          height: _powerButtonSize,
-                          startColor: Colors.transparent,
-                          activeColor: Colors.transparent,
-                          onPressed: () async {
-                            log('Power button pressed');
-                            final prefs = await SharedPreferences.getInstance();
-                            final host = prefs.getString('host') ?? '';
-                            final mac = prefs.getString('mac') ?? '';
-                            const timeout = Duration(milliseconds: 500);
-
-                            final timer = Timer(timeout, () {
-                              WakeOnLan(mac).wake();
-                            });
-
-                            try {
-                              await SoapUpnp(host).getVolume();
-                              timer.cancel();
-                            } catch (e) {
-                              log(e.toString());
-                            } finally {
-                              widget.onPressedCallback(KeyCode.KEY_POWER);
-                            }
-                          },
-                          child: RemoteIcons.power(),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          right: _powerPad,
-                        ),
-                        child: RemoteTap(
-                          width: _powerButtonSize,
-                          height: _powerButtonSize,
-                          // TODO: how to override theme colors still?
-                          startColor: Colors.transparent,
-                          activeColor: Colors.transparent,
-                          onPressed: () {
-                            // TODO: move that to the main section/window frame
-                            log('TV list button pressed');
-                            Navigator.of(context).push(
-                              CupertinoSheetRoute<void>(
-                                builder: (BuildContext context) {
-                                  return Material(
-                                    color: Colors.transparent,
-                                    child: SheetMediaQuery(
-                                      child: TvList(
-                                        onTapCallback:
-                                            widget.onTvSelectCallback,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: RemoteIcons.tv(),
-                        ),
-                      ),
-                    ],
+                  RemoteTap(
+                    width: _powerButtonSize,
+                    height: _powerButtonSize,
+                    startColor: Colors.transparent,
+                    activeColor: Colors.transparent,
+                    onPressed: widget.onPowerPressed,
+                    child: RemoteIcons.power(),
                   ),
-                  SizedBox(height: _powerButtonSize / 2),
-                  RemoteSheetMediaControls(
-                    allowSkip: widget.allowSkip,
-                    buttonSize: _buttonSize,
-                    spacing: _powerButtonSize / 2,
-                    onPressed: widget.onPressedCallback,
-                  ),
-                  if (widget.allowSkip) SizedBox(height: _powerButtonSize / 2),
-                  RemoteShetDPad(
-                    size: 200.0,
-                    colors: List.filled(4, theme.colors.primary),
-                    icons: [
-                      RemoteIcons.arrowRight(iconColor),
-                      RemoteIcons.arrowBottom(iconColor),
-                      RemoteIcons.arrowLeft(iconColor),
-                      RemoteIcons.arrowUp(iconColor),
-                    ],
-                    activeColor: theme.colors.active,
-                    onSliceClick: (index) {
-                      log('Slice clicked: $index');
-
-                      const keyCodeMap = {
-                        0: KeyCode.KEY_RIGHT,
-                        1: KeyCode.KEY_DOWN,
-                        2: KeyCode.KEY_LEFT,
-                        3: KeyCode.KEY_UP,
-                      };
-
-                      final keyCode = keyCodeMap[index];
-
-                      if (keyCode != null) {
-                        log('${keyCode.name} button pressed');
-                        widget.onPressedCallback(keyCode);
-                      }
-                    },
-                    onCenterClick: () {
-                      log('${KeyCode.KEY_ENTER.name} button pressed');
-                      widget.onPressedCallback(KeyCode.KEY_ENTER);
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RemoteButton(
-                        size: _buttonSize,
-                        onPressed: () {
-                          log('Back aka return button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_RETURN);
-                        },
-                        child: RemoteIcons.back(iconColor),
-                      ),
-                      RemoteButton(
-                        size: _buttonSize,
-                        onPressed: () {
-                          log('123 button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_MORE);
-                        },
-                        child: RemoteIcons.num(iconColor),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RemoteButton(
-                        size: _buttonSize,
-                        onPressed: () {
-                          widget.onPressedCallback(KeyCode.KEY_HOME);
-                        },
-                        child: RemoteIcons.home(iconColor),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: _buttonSize / 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RemoteRocker(
-                        onPressedVolumeUp: () {
-                          log('Volume up button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_VOLUP);
-                        },
-                        onPressedVolumeDown: () {
-                          log('Volume down button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_VOLDOWN);
-                        },
-                        onPressedVolumeMute: () {
-                          log('Volume mute button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_MUTE);
-                        },
-                        onPressedChannelUp: () {
-                          log('Next program button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_CHUP);
-                        },
-                        onPressedChannelDown: () {
-                          log('Next program button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_CHDOWN);
-                        },
-                      ),
-                    ],
+                  RemoteTap(
+                    width: _powerButtonSize,
+                    height: _powerButtonSize,
+                    // TODO: how to override theme colors still?
+                    startColor: Colors.transparent,
+                    activeColor: Colors.transparent,
+                    onPressed: widget.onTvListPressed,
+                    child: RemoteIcons.tv(),
                   ),
                 ],
               ),
+            ),
+            SizedBox(height: _powerButtonSize / 2),
+            RemoteSheetMediaControls(
+              allowSkip: widget.allowSkip,
+              buttonSize: _buttonSize,
+              spacing: _powerButtonSize / 2,
+              onPressed: widget.onPressedCallback,
+            ),
+            if (widget.allowSkip) SizedBox(height: _powerButtonSize / 2),
+            RemoteSheetDPad(
+              size: 200.0,
+              colors: List.filled(4, theme.colors.primary),
+              icons: [
+                RemoteIcons.arrowRight(iconColor),
+                RemoteIcons.arrowBottom(iconColor),
+                RemoteIcons.arrowLeft(iconColor),
+                RemoteIcons.arrowUp(iconColor),
+              ],
+              activeColor: theme.colors.active,
+              onSliceClick: (index) {
+                log('Slice clicked: $index');
+
+                const keyCodeMap = {
+                  0: KeyCode.KEY_RIGHT,
+                  1: KeyCode.KEY_DOWN,
+                  2: KeyCode.KEY_LEFT,
+                  3: KeyCode.KEY_UP,
+                };
+
+                final keyCode = keyCodeMap[index];
+
+                if (keyCode != null) {
+                  log('${keyCode.name} button pressed');
+                  widget.onPressedCallback(keyCode);
+                }
+              },
+              onCenterClick: () {
+                log('${KeyCode.KEY_ENTER.name} button pressed');
+                widget.onPressedCallback(KeyCode.KEY_ENTER);
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RemoteButton(
+                  size: _buttonSize,
+                  onPressed: () {
+                    log('Back aka return button pressed');
+                    widget.onPressedCallback(KeyCode.KEY_RETURN);
+                  },
+                  child: RemoteIcons.back(iconColor),
+                ),
+                RemoteButton(
+                  size: _buttonSize,
+                  onPressed: () {
+                    log('123 button pressed');
+                    widget.onPressedCallback(KeyCode.KEY_MORE);
+                  },
+                  child: RemoteIcons.num(iconColor),
+                ),
+              ],
+            ),
+            RemoteButton(
+              size: _buttonSize,
+              onPressed: () {
+                widget.onPressedCallback(KeyCode.KEY_HOME);
+              },
+              child: RemoteIcons.home(iconColor),
+            ),
+            SizedBox(height: _buttonSize / 2),
+            // TODO: just pass onPressed
+            RemoteRocker(
+              onPressedVolumeUp: () {
+                log('Volume up button pressed');
+                widget.onPressedCallback(KeyCode.KEY_VOLUP);
+              },
+              onPressedVolumeDown: () {
+                log('Volume down button pressed');
+                widget.onPressedCallback(KeyCode.KEY_VOLDOWN);
+              },
+              onPressedVolumeMute: () {
+                log('Volume mute button pressed');
+                widget.onPressedCallback(KeyCode.KEY_MUTE);
+              },
+              onPressedChannelUp: () {
+                log('Next program button pressed');
+                widget.onPressedCallback(KeyCode.KEY_CHUP);
+              },
+              onPressedChannelDown: () {
+                log('Next program button pressed');
+                widget.onPressedCallback(KeyCode.KEY_CHDOWN);
+              },
             ),
           ],
         ),

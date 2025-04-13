@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remote/ui/remote_button.dart';
-import 'package:remote/ui/remote_skip_rocker.dart';
+import 'package:remote/ui/remote_sheet_skip_rocker.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/theme/app_theme.dart';

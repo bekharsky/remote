@@ -1,16 +1,23 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+// import 'package:flutter/widgets.dart';
 import 'package:remote/services/commander.dart';
+import 'package:remote/services/soap_upnp.dart';
+import 'package:remote/services/wake_on_lan.dart';
 import 'package:remote/theme/app_theme.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/types/tv.dart';
 import 'package:remote/types/tv_app.dart';
 import 'package:remote/ui/remote_apps.dart';
 import 'package:remote/ui/remote_sheet.dart';
+import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tv_name.dart';
 import 'package:remote/ui/window_title_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sheet/route.dart';
+import 'package:sheet/sheet.dart';
 
 class RemotePanel extends StatefulWidget {
   const RemotePanel({super.key});
@@ -101,6 +108,43 @@ class RemotePanelState extends State<RemotePanel> {
     });
   }
 
+  void onPowerPressed() async {
+    final timeout = const Duration(milliseconds: 500);
+    final timer = Timer(timeout, () {
+      if (mac != null && mac!.isNotEmpty) {
+        WakeOnLan(mac!).wake();
+      }
+    });
+
+    try {
+      if (host != null && host!.isNotEmpty) {
+        await SoapUpnp(host!).getVolume();
+        timer.cancel();
+      }
+    } catch (e) {
+      debugPrint('Power check failed: $e');
+    } finally {
+      onKeyCallback(KeyCode.KEY_POWER);
+    }
+  }
+
+  void onTvListPressed(BuildContext context) {
+    Navigator.of(context).push(
+      CupertinoSheetRoute<void>(
+        builder: (BuildContext context) {
+          return Material(
+            color: Colors.transparent,
+            child: SheetMediaQuery(
+              child: TvList(
+                onTapCallback: onTvSelectCallback,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -134,6 +178,8 @@ class RemotePanelState extends State<RemotePanel> {
           onTvSelectCallback: onTvSelectCallback,
           onPressedCallback: onKeyCallback,
           onSheetShiftCallback: onSheetShiftCallback,
+          onPowerPressed: onPowerPressed,
+          onTvListPressed: () => onTvListPressed(context),
         ),
       ],
     );
