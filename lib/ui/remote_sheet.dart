@@ -6,6 +6,7 @@ import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_dpad.dart';
+import 'package:remote/ui/remote_sheet_toggle.dart';
 import 'package:remote/ui/remote_skip_rocker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
@@ -98,27 +99,9 @@ class RemoteSheetState extends State<RemoteSheet> {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: toggleSheet,
-                  behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    child: Container(
-                      height: 4,
-                      width: 56,
-                      decoration: const BoxDecoration(
-                        color: Color.fromRGBO(73, 73, 73, 1),
-                        borderRadius: BorderRadius.all(Radius.circular(2)),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            RemoteSheetHandle(onTap: toggleSheet),
             Padding(
               padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
               child: Column(
