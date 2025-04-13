@@ -7,11 +7,11 @@ class AppTheme extends InheritedWidget {
   final AppTextStyles textStyles;
 
   const AppTheme({
-    Key? key,
+    super.key,
     required this.colors,
     required this.textStyles,
-    required Widget child,
-  }) : super(child: child, key: key);
+    required super.child,
+  });
 
   static AppTheme of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppTheme>()!;
