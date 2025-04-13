@@ -7,11 +7,11 @@ class RemoteButton extends StatelessWidget {
   final double size;
 
   const RemoteButton({
-    Key? key,
+    super.key,
     this.size = 48,
     required this.onPressed,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
