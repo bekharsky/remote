@@ -2,16 +2,15 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_icons.dart';
-import 'package:remote/ui/remote_sheet.dart';
 import 'package:remote/ui/remote_tap.dart';
 
-class RemoteSkipRocker extends StatelessWidget {
-  const RemoteSkipRocker({
+class RemoteSheetSkipRocker extends StatelessWidget {
+  const RemoteSheetSkipRocker({
     super.key,
-    required this.widget,
+    required this.onPressed,
   });
 
-  final RemoteSheet widget;
+  final void Function(KeyCode) onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +21,11 @@ class RemoteSkipRocker extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        // TODO: show those only on default player app
-        // TODO: add separator on rockers
         children: [
           RemoteTap(
             onPressed: () {
               log('Rewind skip button pressed');
-              widget.onPressedCallback(KeyCode.KEY_REWIND_);
+              onPressed(KeyCode.KEY_REWIND_);
             },
             width: 48,
             height: 40,
@@ -37,7 +34,7 @@ class RemoteSkipRocker extends StatelessWidget {
           RemoteTap(
             onPressed: () {
               log('Fast forward skip button pressed');
-              widget.onPressedCallback(KeyCode.KEY_FF_);
+              onPressed(KeyCode.KEY_FF_);
             },
             width: 48,
             height: 40,

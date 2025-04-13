@@ -6,8 +6,8 @@ import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_dpad.dart';
+import 'package:remote/ui/remote_sheet_media_controls.dart';
 import 'package:remote/ui/remote_sheet_toggle.dart';
-import 'package:remote/ui/remote_skip_rocker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'dart:developer';
@@ -27,11 +27,11 @@ class RemoteSheet extends StatefulWidget {
   final allowSkip = false;
 
   const RemoteSheet({
-    Key? key,
+    super.key,
     required this.onTvSelectCallback,
     required this.onPressedCallback,
     required this.onSheetShiftCallback,
-  }) : super(key: key);
+  });
 
   @override
   RemoteSheetState createState() => RemoteSheetState();
@@ -177,28 +177,11 @@ class RemoteSheetState extends State<RemoteSheet> {
                     ],
                   ),
                   SizedBox(height: _powerButtonSize / 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RemoteButton(
-                        size: _buttonSize,
-                        onPressed: () {
-                          log('Play button pressed');
-                          widget.onPressedCallback(KeyCode.KEY_PLAY);
-                        },
-                        child: RemoteIcons.play(iconColor),
-                      ),
-                      if (widget.allowSkip) RemoteSkipRocker(widget: widget),
-                      RemoteButton(
-                        size: _buttonSize,
-                        onPressed: () {
-                          log('Pause button pressed');
-                          // TODO: detect play state
-                          widget.onPressedCallback(KeyCode.KEY_PAUSE);
-                        },
-                        child: RemoteIcons.pause(iconColor),
-                      ),
-                    ],
+                  RemoteSheetMediaControls(
+                    allowSkip: widget.allowSkip,
+                    buttonSize: _buttonSize,
+                    spacing: _powerButtonSize / 2,
+                    onPressed: widget.onPressedCallback,
                   ),
                   if (widget.allowSkip) SizedBox(height: _powerButtonSize / 2),
                   RemoteDPad(

@@ -11,7 +11,7 @@ class RemoteDPad extends StatefulWidget {
   final Function()? onCenterClick;
 
   const RemoteDPad({
-    Key? key,
+    super.key,
     this.slices = 4,
     required this.colors,
     required this.activeColor,
@@ -19,7 +19,7 @@ class RemoteDPad extends StatefulWidget {
     this.size = 200.0,
     this.onSliceClick,
     this.onCenterClick,
-  }) : super(key: key);
+  });
 
   @override
   RemoteDPadState createState() => RemoteDPadState();
