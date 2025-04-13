@@ -39,7 +39,7 @@ dependencies:
     sheet: ^1.0.0
     http: ^1.3.0
     shared_preferences: ^2.2.0
-    xml: ^6.3.0
+    xml: ^6.5.0
 
 dev_dependencies:
     flutter_test:
