@@ -5,7 +5,7 @@ import 'package:remote/services/wake_on_lan.dart';
 import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
-import 'package:remote/ui/remote_dpad.dart';
+import 'package:remote/ui/remote_sheet_dpad.dart';
 import 'package:remote/ui/remote_sheet_media_controls.dart';
 import 'package:remote/ui/remote_sheet_toggle.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -184,7 +184,7 @@ class RemoteSheetState extends State<RemoteSheet> {
                     onPressed: widget.onPressedCallback,
                   ),
                   if (widget.allowSkip) SizedBox(height: _powerButtonSize / 2),
-                  RemoteDPad(
+                  RemoteShetDPad(
                     size: 200.0,
                     colors: List.filled(4, theme.colors.primary),
                     icons: [
