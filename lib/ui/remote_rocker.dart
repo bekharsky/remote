@@ -13,13 +13,13 @@ class RemoteRocker extends StatefulWidget {
   final void Function() onPressedChannelDown;
 
   const RemoteRocker({
-    Key? key,
+    super.key,
     required this.onPressedVolumeUp,
     required this.onPressedVolumeDown,
     required this.onPressedVolumeMute,
     required this.onPressedChannelUp,
     required this.onPressedChannelDown,
-  }) : super(key: key);
+  });
 
   @override
   State<RemoteRocker> createState() => _RemoteRockerState();
@@ -43,15 +43,15 @@ class _RemoteRockerState extends State<RemoteRocker> {
     final iconColor = theme.colors.onPrimary;
     final activeColor = theme.colors.active;
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(9999),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          RemoteTap(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(9999),
+            bottomLeft: Radius.circular(9999),
+          ),
+          child: RemoteTap(
             onPressed: () {
               if (_isChannel) {
                 widget.onPressedChannelDown();
@@ -71,29 +71,35 @@ class _RemoteRockerState extends State<RemoteRocker> {
                 ? RemoteIcons.channelDown(iconColor)
                 : RemoteIcons.lower(iconColor),
           ),
-          RemoteTap(
-            onPressed: () {
-              setState(() {
-                _isMuted = !_isMuted;
-              });
+        ),
+        RemoteTap(
+          onPressed: () {
+            setState(() {
+              _isMuted = !_isMuted;
+            });
 
-              widget.onPressedVolumeMute();
-            },
-            width: _width,
-            height: _height,
-            child: RemoteIcons.mute(_isMuted ? activeColor : iconColor),
+            widget.onPressedVolumeMute();
+          },
+          width: _width,
+          height: _height,
+          child: RemoteIcons.mute(_isMuted ? activeColor : iconColor),
+        ),
+        RemoteTap(
+          onPressed: () {
+            setState(() {
+              _isChannel = !_isChannel;
+            });
+          },
+          width: _width,
+          height: _height,
+          child: RemoteIcons.program(_isChannel ? activeColor : iconColor),
+        ),
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(9999),
+            bottomRight: Radius.circular(9999),
           ),
-          RemoteTap(
-            onPressed: () {
-              setState(() {
-                _isChannel = !_isChannel;
-              });
-            },
-            width: _width,
-            height: _height,
-            child: RemoteIcons.program(_isChannel ? activeColor : iconColor),
-          ),
-          RemoteTap(
+          child: RemoteTap(
             onPressed: () {
               if (_isChannel) {
                 widget.onPressedChannelUp();
@@ -113,8 +119,8 @@ class _RemoteRockerState extends State<RemoteRocker> {
                 ? RemoteIcons.channelUp(iconColor)
                 : RemoteIcons.higher(iconColor),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
