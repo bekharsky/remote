@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:remote/theme/app_theme.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/types/key_codes.dart';
-import 'package:remote/ui/remote_sheet_dpad.dart';
-import 'package:remote/ui/remote_sheet_media_controls.dart';
+import 'package:remote/ui/remote_dpad.dart';
+import 'package:remote/ui/remote_media_controls.dart';
 import 'package:remote/ui/remote_sheet_toggle.dart';
 import 'dart:io';
 import 'dart:developer';
@@ -98,7 +98,7 @@ class RemoteSheetState extends State<RemoteSheet> {
           crossAxisAlignment: CrossAxisAlignment.center,
           spacing: 4,
           children: [
-            RemoteSheetHandle(onTap: toggleSheet),
+            RemoteSheetToggle(onTap: toggleSheet),
             Padding(
               padding: EdgeInsets.fromLTRB(_powerPad, 0, _powerPad, 0),
               child: Row(
@@ -125,14 +125,13 @@ class RemoteSheetState extends State<RemoteSheet> {
               ),
             ),
             SizedBox(height: _powerButtonSize / 2),
-            RemoteSheetMediaControls(
+            RemoteMediaControls(
               allowSkip: widget.allowSkip,
               buttonSize: _buttonSize,
               spacing: _powerButtonSize / 2,
               onPressed: widget.onPressed,
             ),
-            if (widget.allowSkip) SizedBox(height: _powerButtonSize / 2),
-            RemoteSheetDPad(
+            RemoteDPad(
               size: 200.0,
               colors: List.filled(4, theme.colors.primary),
               icons: [

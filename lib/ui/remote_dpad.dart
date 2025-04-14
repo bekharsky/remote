@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/widgets.dart';
 
-class RemoteSheetDPad extends StatefulWidget {
+class RemoteDPad extends StatefulWidget {
   final int slices;
   final List<Color> colors;
   final Color activeColor;
@@ -10,7 +10,7 @@ class RemoteSheetDPad extends StatefulWidget {
   final Function(int)? onSliceClick;
   final Function()? onCenterClick;
 
-  const RemoteSheetDPad({
+  const RemoteDPad({
     super.key,
     this.slices = 4,
     required this.colors,
@@ -22,10 +22,10 @@ class RemoteSheetDPad extends StatefulWidget {
   });
 
   @override
-  RemoteSheetDPadState createState() => RemoteSheetDPadState();
+  RemoteDPadState createState() => RemoteDPadState();
 }
 
-class RemoteSheetDPadState extends State<RemoteSheetDPad>
+class RemoteDPadState extends State<RemoteDPad>
     with SingleTickerProviderStateMixin {
   int? highlightedSlice;
   bool centerHighlighted = false;

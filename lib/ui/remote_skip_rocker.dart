@@ -4,8 +4,8 @@ import 'package:remote/types/key_codes.dart';
 import 'package:remote/ui/remote_icons.dart';
 import 'package:remote/ui/remote_tap.dart';
 
-class RemoteSheetSkipRocker extends StatelessWidget {
-  const RemoteSheetSkipRocker({
+class RemoteSkipRocker extends StatelessWidget {
+  const RemoteSkipRocker({
     super.key,
     required this.onPressed,
   });

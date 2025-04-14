@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-class RemoteSheetHandle extends StatelessWidget {
+class RemoteSheetToggle extends StatelessWidget {
   final VoidCallback onTap;
 
-  const RemoteSheetHandle({
+  const RemoteSheetToggle({
     super.key,
     required this.onTap,
   });
