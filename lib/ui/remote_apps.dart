@@ -9,10 +9,10 @@ class RemoteApps extends StatefulWidget {
   final void Function(String) launchApp;
 
   const RemoteApps({
-    Key? key,
+    super.key,
     required this.loadApps,
     required this.launchApp,
-  }) : super(key: key);
+  });
 
   @override
   State<RemoteApps> createState() => _RemoteAppsState();

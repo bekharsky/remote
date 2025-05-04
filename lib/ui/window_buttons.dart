@@ -16,7 +16,7 @@ final closeButtonColors = WindowButtonColors(
 );
 
 class WindowButtons extends StatelessWidget {
-  const WindowButtons({Key? key}) : super(key: key);
+  const WindowButtons({super.key});
   @override
   Widget build(BuildContext context) {
     return Row(
