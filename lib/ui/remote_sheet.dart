@@ -30,9 +30,6 @@ class RemoteSheet extends StatefulWidget {
 class RemoteSheetState extends State<RemoteSheet> {
   final SheetController controller = SheetController();
   static final bool _isMobile = Platform.isIOS || Platform.isAndroid;
-  static final double _buttonSize = _isMobile ? 64 : 48;
-  static final double _powerButtonSize = _isMobile ? 48 : 36;
-  static final double _powerPad = (_buttonSize - _powerButtonSize) / 2;
   static final double _hPad = _isMobile ? 48 : 24;
   static final double _vPad = _isMobile ? 24 : 16;
 
@@ -67,7 +64,6 @@ class RemoteSheetState extends State<RemoteSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
-    final iconColor = theme.colors.onPrimary;
 
     return Sheet(
       initialExtent: 570,
