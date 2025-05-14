@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:remote/services/commander.dart';
 import 'package:remote/services/soap_upnp.dart';
@@ -16,8 +15,7 @@ import 'package:remote/ui/remote_tv_list.dart';
 import 'package:remote/ui/remote_tv_name.dart';
 import 'package:remote/ui/window_title_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sheet/route.dart';
-import 'package:sheet/sheet.dart';
+import 'package:flutter/cupertino.dart';
 
 class RemotePanel extends StatefulWidget {
   const RemotePanel({super.key});
@@ -130,15 +128,10 @@ class RemotePanelState extends State<RemotePanel> {
 
   void onTvListPressed(BuildContext context) {
     Navigator.of(context).push(
-      CupertinoSheetRoute<void>(
+      CupertinoSheetRoute(
         builder: (BuildContext context) {
-          return Material(
-            color: Colors.transparent,
-            child: SheetMediaQuery(
-              child: TvList(
-                onTapCallback: onTvSelectCallback,
-              ),
-            ),
+          return TvList(
+            onTapCallback: onTvSelectCallback,
           );
         },
       ),

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart'; // Только для иконки
 import 'package:remote/services/collector.dart';
 import '../types/tv.dart';
 
@@ -41,75 +42,66 @@ class TvListState extends State<TvList> {
       dummyTv,
       dummyTv,
       dummyTv,
-      dummyTv,
-      dummyTv,
-      dummyTv,
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ConnectedTv>>(
-      future: _tvsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data?.length ?? 0,
-            itemBuilder: (context, index) {
-              return ListTile(
-                dense: true,
-                horizontalTitleGap: 6,
-                minLeadingWidth: 0,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 4,
-                ),
-                title: Text(
-                  snapshot.data?[index].name ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 10),
-                ),
-                subtitle: Text(
-                  snapshot.data?[index].modelName ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 8),
-                ),
-                leading: Container(
-                  alignment: Alignment.center,
-                  width: 48,
-                  child: const Icon(Icons.tv),
-                ),
-                // leading: const Icon(Icons.tv),
-                onTap: () async {
-                  Navigator.of(context).pop();
-                  final tv = snapshot.data?[index];
-
-                  if (tv == null) {
-                    return;
-                  }
-
-                  widget.onTapCallback(tv);
+    return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.systemBackground,
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Select a TV'),
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: FutureBuilder<List<ConnectedTv>>(
+          future: _tvsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CupertinoActivityIndicator(radius: 14),
+              );
+            } else if (snapshot.hasError) {
+              return const Center(
+                child: Text('Error loading TVs'),
+              );
+            } else if (snapshot.hasData) {
+              final items = snapshot.data!;
+              return ListView.builder(
+                itemCount: items.length,
+                padding: const EdgeInsets.only(top: 8),
+                itemBuilder: (context, index) {
+                  final tv = items[index];
+                  return CupertinoListTile.notched(
+                    title: Text(
+                      tv.name,
+                      style: const TextStyle(fontSize: 14),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text(
+                      tv.modelName,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: CupertinoColors.systemGrey,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    leading: const Icon(Icons.tv, size: 24),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onTapCallback(tv);
+                    },
+                  );
                 },
               );
-            },
-          );
-        } else if (snapshot.hasError) {
-          return const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Error loading items'),
-            ],
-          );
-        } else {
-          return const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-            ],
-          );
-        }
-      },
+            } else {
+              return const Center(child: Text('No TVs found'));
+            }
+          },
+        ),
+      ),
     );
   }
 }
