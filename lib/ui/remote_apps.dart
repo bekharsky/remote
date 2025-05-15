@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:remote/ui/app_drag_handle.dart';
 import 'package:remote/ui/app_remove_icon.dart';
 import 'package:remote/ui/app_icon.dart';
+import 'package:remote/ui/remote_apps_skeleton.dart';
 import '../types/tv_app.dart';
 
 class RemoteApps extends StatefulWidget {
@@ -67,7 +68,7 @@ class _RemoteAppsState extends State<RemoteApps>
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return RemoteAppsSkeleton();
     }
 
     return SizedBox(

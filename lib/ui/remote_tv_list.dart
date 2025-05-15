@@ -68,12 +68,13 @@ class TvListState extends State<TvList> {
   Widget build(BuildContext context) {
     return Focus(
       focusNode: _focusNode,
-      onKey: (FocusNode node, RawKeyEvent event) {
+      onKeyEvent: (FocusNode node, KeyEvent event) {
         if (event.logicalKey == LogicalKeyboardKey.escape &&
-            event is RawKeyDownEvent) {
+            event is KeyDownEvent) {
           Navigator.of(context).maybePop();
           return KeyEventResult.handled;
         }
+
         return KeyEventResult.ignored;
       },
       child: CupertinoPageScaffold(

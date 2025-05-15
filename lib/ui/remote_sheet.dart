@@ -40,7 +40,10 @@ class RemoteSheetState extends State<RemoteSheet>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this);
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
   }
 
   void _animateTo(double target, {bool spring = false}) {
