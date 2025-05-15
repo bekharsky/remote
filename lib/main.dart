@@ -42,21 +42,11 @@ class RemoteControllerApp extends StatelessWidget {
       textStyles: remoteTextStyles,
       child: ScrollConfiguration(
         behavior: RemoteScrollBehavior().copyWith(scrollbars: false),
-        child: WidgetsApp(
+        child: CupertinoApp(
           debugShowCheckedModeBanner: false,
           color: remoteColors.primary,
           title: 'TV Remote',
-          onGenerateRoute: (RouteSettings settings) {
-            if (settings.name == '/') {
-              return CupertinoPageRoute<void>(
-                builder: (BuildContext context) {
-                  return const RemotePanel();
-                },
-              );
-            }
-
-            return null;
-          },
+          home: const RemotePanel(),
         ),
       ),
     );

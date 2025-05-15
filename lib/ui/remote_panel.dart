@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-// import 'package:flutter/widgets.dart';
 import 'package:remote/services/commander.dart';
 import 'package:remote/services/soap_upnp.dart';
 import 'package:remote/services/wake_on_lan.dart';
@@ -127,15 +125,23 @@ class RemotePanelState extends State<RemotePanel> {
   }
 
   void onTvListPressed(BuildContext context) {
-    Navigator.of(context).push(
-      CupertinoSheetRoute(
-        builder: (BuildContext context) {
-          return TvList(
-            onTapCallback: onTvSelectCallback,
-          );
-        },
-      ),
+    showCupertinoSheet(
+      context: context,
+      pageBuilder: (BuildContext context) {
+        return TvList(
+          onTapCallback: onTvSelectCallback,
+        );
+      },
     );
+    // Navigator.of(context).push(
+    //   CupertinoSheetRoute(
+    //     builder: (BuildContext context) {
+    //       return TvList(
+    //         onTapCallback: onTvSelectCallback,
+    //       );
+    //     },
+    //   ),
+    // );
   }
 
   @override
