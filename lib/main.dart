@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:remote/theme/app_colors.dart';
 import 'package:remote/theme/app_text_styles.dart';
 import 'package:remote/theme/app_theme.dart';
 import 'package:remote/ui/remote_panel.dart';
 import 'package:remote/ui/remote_scroll_behavior.dart';
-import 'package:sheet/route.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +48,7 @@ class RemoteControllerApp extends StatelessWidget {
           title: 'TV Remote',
           onGenerateRoute: (RouteSettings settings) {
             if (settings.name == '/') {
-              return MaterialExtendedPageRoute<void>(
+              return CupertinoPageRoute<void>(
                 builder: (BuildContext context) {
                   return const RemotePanel();
                 },
