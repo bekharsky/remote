@@ -137,20 +137,23 @@ class RemoteSheetState extends State<RemoteSheet>
                       ),
                     ),
                     padding: EdgeInsets.fromLTRB(_hPad, 0, _hPad, _vPad),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        RemoteSheetToggle(onTap: toggleSheet),
-                        Flexible(
-                          child: RemoteControls(
+                    child: OverflowBox(
+                      alignment: Alignment.topCenter,
+                      minHeight: 0,
+                      maxHeight: double.infinity,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          RemoteSheetToggle(onTap: toggleSheet),
+                          RemoteControls(
                             onPressed: widget.onPressed,
                             onPowerPressed: widget.onPowerPressed,
                             onTvListPressed: widget.onTvListPressed,
                             allowSkip: widget.allowSkip,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
